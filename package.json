@@ -1,0 +1,36 @@
+{
+  "name": "gold_glass_shop",
+  "version": "1.0.0",
+  "description": "Glass Gold Group - Online Store [VueJS & NuxtJS based app]",
+  "author": "Hristiyan Yordanov <mr.yordanoff@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "autolint": "eslint --ext .js,.vue --ignore-path .gitignore . --fix",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "nuxt": "^1.0.0-rc11",
+    "vue-headroom": "^0.8.1",
+    "vue-multiselect": "^2.0.8",
+    "vue-notifications": "^0.9.0",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.3.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-html": "^3.1.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
