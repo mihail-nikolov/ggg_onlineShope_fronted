@@ -4,7 +4,7 @@ module.exports = {
 	 ** Headers of the page
 	 */
 	head: {
-		title: 'Auto glasses - Glass Gold Group - Online Store',
+		title: 'Glass Gold Group - Online Shop',
 		meta: [{
 			charset: 'utf-8'
 		}, {
@@ -13,14 +13,21 @@ module.exports = {
 		}, {
 			hid: 'description',
 			name: 'description',
-			content: 'Glass Gold Group - Online Store [VueJS & NuxtJS based app]'
+			content: 'Glass Gold Group - Online Shop [VueJS & NuxtJS based app]'
 		}],
-		link: [{
-			rel: 'icon',
-			type: 'image/x-icon',
-			href: '/favicon-gold.ico'
-		}]
+		link: [
+			{ rel: 'icon', type: 'image/x-icon', href: '/favicon-gold.ico' },
+			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+		]
 	},
+	plugins: [{
+		src: '~/plugins/vue-notifications',
+		ssr: true
+	}, {
+		src: '~/plugins/vuetify',
+		ssr: true
+	}],
+	css: ['~/assets/app.styl'],
 	/*
 	 ** Customize the progress bar color
 	 */
@@ -31,12 +38,12 @@ module.exports = {
 	 ** Build configuration
 	 */
 	build: {
-		vendor: ['vue-notifications'],
+		vendor: ['axios', 'vuetify', 'vue-notifications'],
 		/*
 		 ** Run ESLint on save
 		 */
 		extend(config, ctx) {
-			if (ctx.dev && ctx.isClient) {
+			if (ctx.isDev && ctx.isClient) {
 				config.module.rules.push({
 					enforce: 'pre',
 					test: /\.(js|vue)$/,
@@ -45,9 +52,5 @@ module.exports = {
 				});
 			}
 		}
-	},
-	plugins: [{
-		src: '~/plugins/vue-notifications',
-		ssr: false
-	}]
+	}
 };

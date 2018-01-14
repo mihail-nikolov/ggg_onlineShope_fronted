@@ -6,7 +6,7 @@
 </template>
 
 <script>
-	import HeaderComponent from './../components/HeaderComponent.vue';
+	import HeaderComponent from '~/components/HeaderComponent.vue';
 
 	export default {
 		components: {
@@ -18,17 +18,17 @@
 <style>
 @font-face {
 	font-family: 'JosefinSansRegular';
-	src: url('./../assets/Fonts/JosefinSans-Regular.ttf');
+	src: url('~/assets/Fonts/JosefinSans-Regular.ttf');
 }
 
 @font-face {
 	font-family: 'JosefinSansLight';
-	src: url('./../assets/Fonts/JosefinSans-Light.ttf');
+	src: url('~/assets/Fonts/JosefinSans-Light.ttf');
 }
 
 @font-face {
 	font-family: 'JosefinSansBold';
-	src: url('./../assets/Fonts/JosefinSans-Bold.ttf');
+	src: url('~/assets/Fonts/JosefinSans-Bold.ttf');
 }
 
 body, html {

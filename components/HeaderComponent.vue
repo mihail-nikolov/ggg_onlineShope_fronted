@@ -1,20 +1,26 @@
 <template>
 	<!-- <headroom> -->
-		<header>
-			<div class="header-container">
-				<a v-bind:href="homeLink" class="logo-img" title="Автостъкла Glass Gold Group: Homepage"></a>
-				<div class="header-elements">
-					<ul>
-						<li v-for="item in menuitems">
-							<a :href="toLowerCase(item)">{{ item }}</a>
-						</li>
-					</ul>
-				</div>
-				<nuxt-link to="/cart" class="cart-container">
-					<div class="cart"></div>
-				</nuxt-link>
+	<header>
+		<div class="header-container">
+			<a v-bind:href="homeLink" class="logo-img" title="Автостъкла Glass Gold Group: Homepage"></a>
+			<div class="header-elements">
+				<ul>
+					<li v-for="item in menuitems">
+						<a :href="toLowerCase(item)">{{ item }}</a>
+					</li>
+				</ul>
 			</div>
-		</header>
+			<nuxt-link to="/cart" class="cart-container">
+				<div class="text-xs-center">
+					<v-badge left>
+						<span slot="badge">6</span>
+						<!-- <v-icon large color="grey lighten-1">shopping_cart</v-icon> -->
+						<div class="cart"></div>
+					</v-badge>
+				</div>
+			</nuxt-link>
+		</div>
+	</header>
 	<!-- </headroom> -->
 </template>
 
@@ -82,7 +88,7 @@
 		-moz-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.65);
 		box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.65);
 		background: #292F36;
-	} 
+	}
 	
 	.logo-img {
 		display: inline-block;
