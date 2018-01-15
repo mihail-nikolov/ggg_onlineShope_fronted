@@ -57,6 +57,9 @@ const actions = {
 	setProductTypes({ commit }, productTypes) {
 		commit('SET_PRODUCT_TYPES', productTypes);
 	},
+	clearProducts({ commit }) {
+		commit('SET_ALL_PRODUCTS', []);
+	},
 	async fetchMakes({ commit }) {
 		axios.get(`http://localhost:60918/api/Makes`)
 			.then(response => {

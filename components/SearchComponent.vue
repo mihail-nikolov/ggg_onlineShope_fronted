@@ -58,6 +58,7 @@
 				if (this.makeValue === null) {
 					this.modelValue = null;
 					this.$store.dispatch("modules/products/setModels", []);
+					this.$store.dispatch("modules/products/clearProducts");
 				}
 			},
 			modelValue() {
@@ -72,6 +73,7 @@
 				if (this.modelValue === null) {
 					this.bodyTypeValue = null;
 					this.$store.dispatch("modules/products/setBodyTypes", []);
+					this.$store.dispatch("modules/products/clearProducts");
 				}
 			},
 			bodyTypeValue() {
@@ -88,6 +90,7 @@
 				if (this.bodyTypeValue === null) {
 					this.productTypeValue = null;
 					this.$store.dispatch("modules/products/setProductTypes", []);
+					this.$store.dispatch("modules/products/clearProducts");
 				}
 			},
 			productTypeValue() {
@@ -128,18 +131,17 @@
 	}
 	.search-multiselect {
 		display: inline-block;
-		margin-left: 10px;
 		width: 350px;
 		height: 100px;
 	}
 	.search-labels {
-		margin-left: 10px;
+		/*margin-left: 10px;*/
 	}
 	.search-results {
 		width: 100vw;
 	}
 	.search-selectors-container {
 		height: 250px;
-		margin-left: 100px;
+		/*margin-left: 100px;*/
 	}
 </style>

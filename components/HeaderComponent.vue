@@ -1,5 +1,4 @@
 <template>
-	<!-- <headroom> -->
 	<header>
 		<div class="header-container">
 			<a v-bind:href="homeLink" class="logo-img" title="Автостъкла Glass Gold Group: Homepage"></a>
@@ -12,16 +11,11 @@
 			</div>
 			<nuxt-link to="/cart" class="cart-container">
 				<div class="text-xs-center">
-					<v-badge left>
-						<span slot="badge">6</span>
-						<!-- <v-icon large color="grey lighten-1">shopping_cart</v-icon> -->
-						<div class="cart"></div>
-					</v-badge>
+					<div class="cart"></div>
 				</div>
 			</nuxt-link>
 		</div>
 	</header>
-	<!-- </headroom> -->
 </template>
 
 <script>
@@ -59,7 +53,6 @@
 		width: 100vw;
 		color: white;
 	}
-	
 	header a {
 		color: white;
 		text-decoration: none;
@@ -67,11 +60,9 @@
 		-webkit-transition: all 0.2s ease;
 		transition: all 0.2s ease;
 	}
-	
 	header a:hover {
 		color: #008C4E;
 	}
-	
 	.header-container {
 		height: 60px;
 		width: inherit;
@@ -89,7 +80,6 @@
 		box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.65);
 		background: #292F36;
 	}
-	
 	.logo-img {
 		display: inline-block;
 		background-image: url('./../static/logo2.png');
@@ -100,12 +90,10 @@
 		height: inherit;
 		justify-content: flex-start;
 	}
-	
 	.logo-img:hover {
 		background-image: url('./../static/logo3.png');
 		cursor: pointer;
 	}
-	
 	.header-elements {
 		font-family: "JosefinSansBold";
 		font-size: 18px;
@@ -114,12 +102,10 @@
 		height: 60px;
 		display: inline-block;
 	}
-	
 	.cart-container {
 		margin-left: 50px;
 		padding-top: 15px;
 	}
-	
 	.cart {
 		height: 35px;
 		width: 35px;
@@ -127,7 +113,6 @@
 		background-repeat: no-repeat;
 		background-size: contain;
 	}
-	
 	.cart:hover {
 		background-image: url('./../static/cart_focused.png');
 	}
