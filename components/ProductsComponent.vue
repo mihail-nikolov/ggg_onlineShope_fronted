@@ -7,9 +7,10 @@
 
 		</div>
 
-		<div class="product-container" v-if="foundProducts.length" v-for="(product, index) in foundProducts">
+		<div class="product" v-if="foundProducts.length" v-for="(product, index) in foundProducts">
 			<product-card
-				class="product"
+				class="product-card"
+				:eurocode="product.EuroCode"
 				:description="product.Description"
 				:color="picker(index)"
 			/>
@@ -68,7 +69,7 @@
 		font-size: 26px;
 	}
 	
-	.product-container {
+	.product {
 		/*height: 50px;*/
 		font-size: 20px;
 		position: relative;
@@ -81,7 +82,7 @@
 		margin-top: 20px;
 	}
 	
-	.product {
+	.product-card {
 		height: 60px;
 		width: 100%;
 	}

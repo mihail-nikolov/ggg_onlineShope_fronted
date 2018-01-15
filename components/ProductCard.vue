@@ -1,17 +1,17 @@
 <template>
 	<div>
 		<v-toolbar absolute :color="color" dark>
-			<v-toolbar-side-icon></v-toolbar-side-icon>
+			<v-toolbar-title class="code">{{eurocode}}</v-toolbar-title>
 			<v-toolbar-title>{{description}}</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-btn icon>
-				<v-icon>search</v-icon>
+				<v-icon>build</v-icon>
 			</v-btn>
 			<v-btn icon>
-				<v-icon>favorite</v-icon>
+				<v-icon>camera_alt</v-icon>
 			</v-btn>
 			<v-btn icon>
-				<v-icon>more_vert</v-icon>
+				<v-icon>add_shopping_cart</v-icon>
 			</v-btn>
 		</v-toolbar>
 	</div>
@@ -19,10 +19,13 @@
 
 <script>
 export default {
-	props: ['description', 'color']
+	props: ['eurocode', 'description', 'color']
 };
 </script>
 
 <style lang="css" scoped>
-
+	.code {
+		width: 200px;
+		color: black;
+	}
 </style>
