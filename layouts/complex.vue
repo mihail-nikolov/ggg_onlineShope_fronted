@@ -14,12 +14,14 @@
 		</v-navigation-drawer>
 		<v-toolbar color="blue-grey" dark fixed app clipped-right>
 			<a v-bind:href="homeLink" class="logo-img" title="Автостъкла Glass Gold Group: Homepage"></a>
-			<v-toolbar-title>Search</v-toolbar-title>
-			<v-toolbar-title>About</v-toolbar-title>
-			<v-toolbar-title>Contact</v-toolbar-title>
-			<v-toolbar-title>Login</v-toolbar-title>
+      <v-btn flat dark>Search</v-btn>
+      <v-btn flat dark>About</v-btn>
+      <v-btn flat dark>Contact</v-btn>
+      <v-btn flat dark>Login</v-btn>
 			<v-spacer></v-spacer>
-			<v-icon @click.stop="drawerRight = !drawerRight">shopping_cart</v-icon>
+			<v-btn flat icon @click.stop="drawerRight = !drawerRight">
+				<v-icon>shopping_cart</v-icon>
+			</v-btn>
 		</v-toolbar>
 		<v-content>
 			<v-container fluid fill-height>
@@ -28,7 +30,9 @@
 				</v-layout>
 			</v-container>
 		</v-content>
-		<v-navigation-drawer right temporary v-model="right" fixed></v-navigation-drawer>
+		<v-navigation-drawer right temporary v-model="right" fixed>
+			<div>HEY</div>
+		</v-navigation-drawer>
 		<v-footer color="blue-grey" class="white--text" app>
 			<span>Gold Glass Group</span>
 			<v-spacer></v-spacer>
