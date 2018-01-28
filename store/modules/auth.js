@@ -41,7 +41,7 @@ const actions = {
 			return {message:"Login successful. You'll be automatically redirected to 'Advanced search' page.", status: 'success'};
 		} catch (error) {
 			if (error.response && (error.response.status === 401 || error.response.status === 400)) {
-				return {message:'Bad credentials!', status: 'error'};
+				return {message:'Bad credentials entered. Please try again.', status: 'error'};
 			} else {
 				return {message:error, status: 'error'};
 			}

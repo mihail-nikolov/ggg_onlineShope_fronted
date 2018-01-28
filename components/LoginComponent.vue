@@ -79,7 +79,7 @@
 							comp.email = '';
 							comp.password = '';
 							comp.$store.dispatch("modules/general/setSnackbarNotification", {
-								message: "Login unsuccessfull! Please fill in all the required fields and try again.",
+								message: "Please fill in all the required fields and try again.",
 								status: "error"
 							});
 						}
