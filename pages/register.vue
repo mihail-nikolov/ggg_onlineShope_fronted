@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<login-component/>
+		<register-component/>
 	</div>
 </template>
 
 <script>
-	import LoginComponent from '~/components/LoginComponent';
+	import RegisterComponent from '~/components/RegisterComponent';
 	export default {
 		layout: 'default',
 		components: {
-			LoginComponent
+			RegisterComponent
 		}
 	};
 </script>

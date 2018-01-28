@@ -1,146 +1,80 @@
 <template>
-	<div>
-		<HeaderComponent />
-		<nuxt/>
-	</div>
+	<v-app id="inspire">
+		<v-navigation-drawer fixed v-model="drawerRight" temporary right clipped app>
+			<v-list dense>
+			</v-list>
+		</v-navigation-drawer>
+		<v-toolbar color="blue-grey darken-3" dark fixed app clipped-right>
+			<a v-bind:href="homeLink" class="logo-img" title="Glass Gold Group: Homepage"></a>
+			<nuxt-link to="/"><v-btn flat dark>Search</v-btn></nuxt-link>
+			<nuxt-link to="/about"><v-btn flat dark>About</v-btn></nuxt-link>
+			<nuxt-link to="/contact"><v-btn flat dark>Contact</v-btn></nuxt-link>
+			<nuxt-link to="/" v-if="isLoggedIn"><v-btn flat dark @click="onLogoutClick">Logout</v-btn></nuxt-link>
+			<nuxt-link to="/login" v-else><v-btn flat dark>Login</v-btn></nuxt-link>
+			<v-spacer></v-spacer>
+			<v-btn flat icon @click="onCartClick">
+				<v-icon>shopping_cart</v-icon>
+			</v-btn>
+		</v-toolbar>
+		<v-content>
+			<v-container fluid fill-height>
+				<v-layout justify-center align-center>
+					<nuxt/>
+				</v-layout>
+			</v-container>
+		</v-content>
+		<v-footer color="blue-grey darken-3" class="white--text" app>
+			<span>Gold Glass Group&reg;</span>
+			<v-spacer></v-spacer>
+			<span>&copy; 2018</span>
+		</v-footer>
+	</v-app>
 </template>
 
 <script>
-	import HeaderComponent from '~/components/HeaderComponent.vue';
-
 	export default {
-		components: {
-			HeaderComponent
+		data() {
+			return {
+				drawerRight: false,
+				homeLink: "http://www.glassgoldgroup.eu/"
+			};
+		},
+		props: {
+			source: String
+		},
+		computed: {
+			isLoggedIn () {
+				return this.$store.getters["modules/auth/isLoggedIn"];
+			}
+		},
+		watch: {
+		},
+		methods: {
+			onCartClick() {
+				this.drawerRight = !this.drawerRight;
+			},
+			onLogoutClick() {
+				this.$store.dispatch("modules/auth/logout");
+			}
 		}
 	};
 </script>
 
-<style>
-@font-face {
-	font-family: 'JosefinSansRegular';
-	src: url('~/assets/Fonts/JosefinSans-Regular.ttf');
-}
+<style lang="css" scoped>
+	.logo-img {
+		display: inline-block;
+		background-image: url('./../static/logo/logo.png');
+		background-repeat: no-repeat;
+		width: 110px;
+		background-position-y: center;
+		height: 40px;
+		justify-content: flex-start;
+	}
+	.logo-img:hover {
+		cursor: pointer;
+	}
 
-@font-face {
-	font-family: 'JosefinSansLight';
-	src: url('~/assets/Fonts/JosefinSans-Light.ttf');
-}
-
-@font-face {
-	font-family: 'JosefinSansBold';
-	src: url('~/assets/Fonts/JosefinSans-Bold.ttf');
-}
-
-body, html {
-	font-family: ''PT Serif', serif';
-	margin: 0;
-	overflow-x: hidden;
-}
-/*
-a {
-	transition: 0.2s all ease;
-	text-decoration: none;
-	color: #E6534B;
-}
-
-a:hover {
-	color: #fc7c5f;
-}*/
-
-.flexrow {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: center;
-			-ms-flex-pack: center;
-					justify-content: center;
-}
-
-.special, h1, h2, h3, li, button.submit, .quant-text {
-	/*font-family: 'Montserrat', sans-serif;*/
-	/*text-transform: uppercase;*/
-	letter-spacing: 0.08em;
-	/*font-size: 12px;*/
-}
-
-h2 {
-	font-size: 20px;
-	margin: 0 0 5px;
-	text-align: center;
-}
-
-li {
-	list-style: none;
-	display: inline-block;
-}
-
-input {
-	background: #eee;
-}
-
-button {
-	border: none;
-	border-radius: 1000px;
-	padding: 8px 13px;
-	outline: none;
-	cursor: pointer;
-}
-button.inc {
-	background: white;
-	color: black;
-}
-button.submit {
-	background: black;
-	color: white;
-	margin-left: 20px;
-	padding: 12px 14px;
-	width: 240px;
-	-webkit-transition: 0.25s all ease-in;
-	transition: 0.25s all ease-in;
-}
-button.submit:hover {
-	opacity: 0.8;
-	-webkit-transition: 0.25s all ease-out;
-	transition: 0.25s all ease-out;
-}
-
-.quant-text {
-	display: inline-block;
-	text-align: center;
-	width: 140px;
-	padding: 8px;
-	padding: 8px;
-}
-
-.quantity {
-	border: 2px solid black;
-	width: 235px;
-	padding-left: 3px;
-	border-radius: 1000px;
-	background: #fff;
-	margin-left: 20px;
-}
-
-.item {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: block;
-	display: flex;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-			-ms-flex-direction: column;
-					flex-direction: column;
-	width: 280px;
-	height: 440px;
-	-ms-flex-pack: distribute;
-			justify-content: space-around;
-	background: #eee;
-	padding: 20px 10px;
-	margin: 30px;
-}
-.item img {
-	-ms-flex-item-align: center;
-			-ms-grid-row-align: center;
-			align-self: center;
-}
+	v-toolbar, v-footer {
+		color: #2a3943;
+	}
 </style>

@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 module.exports = {
 	/*
 	 ** Headers of the page
@@ -17,17 +16,21 @@ module.exports = {
 		}],
 		link: [
 			{ rel: 'icon', type: 'image/x-icon', href: '/favicon-gold.ico' },
-			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' },
+			{ rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', media: 'screen', charset: 'utf-8' }
+
 		]
 	},
+	/* custom plugins */
 	plugins: [{
-		src: '~/plugins/vue-notifications',
-		ssr: true
-	}, {
 		src: '~/plugins/vuetify',
 		ssr: true
+	}, {
+		src: '~/plugins/simple-vue-validator',
+		ssr: true
 	}],
-	css: ['~/assets/app.styl'],
+	/* stylus */
+	css: ['~/assets/app.styl', '~/assets/main.css'],
 	/*
 	 ** Customize the progress bar color
 	 */
@@ -38,7 +41,7 @@ module.exports = {
 	 ** Build configuration
 	 */
 	build: {
-		vendor: ['axios', 'vuetify', 'vue-notifications'],
+		vendor: ['axios', 'vuetify', 'simple-vue-validator'],
 		/*
 		 ** Run ESLint on save
 		 */

@@ -12,6 +12,7 @@ module.exports = {
 	],
 	// add your custom rules here
 	rules: {
+		"no-useless-escape": 0,
 		"no-unused-vars": 0,
 		"indent": ["error", "tab"],
 		"semi": ["error", "always"],

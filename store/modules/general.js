@@ -1,21 +1,34 @@
 const state = () => ({
-	baseUrl: '',
-	userName: ''
+	baseUrl: 'http://localhost:60918/',
+	snackbarNotification:[]
 });
 
 const mutations = {
-	setBaseUrl(state, url) {
-		state.baseUrl = url;
+	SET_SNACKBAR_NOTIFICATION(state, {message, status}) {
+		state.snackbarNotification.push({message, status});
+	},
+	CLEAR_NOTIFICATION(state) {
+		state.snackbarNotification = [];
 	}
 };
 
 const getters = {
+	getSnackbarNotification(state) {
+		return state.snackbarNotification;
+	},
 	getBaseUrl(state) {
 		return state.baseUrl;
 	}
 };
 
-const actions = {};
+const actions = {
+	setSnackbarNotification({ commit }, {message, status}) {
+		commit('SET_SNACKBAR_NOTIFICATION', {message, status});
+	},
+	clearSnackbarNotification({ commit }) {
+		commit('CLEAR_NOTIFICATION');
+	}
+};
 
 export default {
 	namespaced: true,

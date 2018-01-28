@@ -1,7 +1,7 @@
-/*jshint esversion: 6 */
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import auth from './modules/auth';
 import general from './modules/general';
 import ui from './modules/ui';
 import products from './modules/products';
@@ -11,6 +11,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
 	modules: {
+		auth,
 		general,
 		ui,
 		products,
