@@ -1,31 +1,67 @@
 <template>
-	<div>
-		<v-toolbar absolute :color="color" dark>
-			<v-toolbar-title class="code">{{eurocode}}</v-toolbar-title>
-			<v-toolbar-title>{{description}}</v-toolbar-title>
-			<v-spacer></v-spacer>
-			<v-btn icon>
-				<v-icon>build</v-icon>
-			</v-btn>
-			<v-btn icon>
-				<v-icon>camera_alt</v-icon>
-			</v-btn>
-			<v-btn icon>
-				<v-icon>add_shopping_cart</v-icon>
-			</v-btn>
-		</v-toolbar>
-	</div>
+	<v-layout>
+		<v-flex xs1 sm12>
+			<v-card class="card" :color="color">
+				<v-card-media class="white--text" height="200px" contain :src="product.Images[0]">
+				</v-card-media>
+				<v-card-title class="description-text">
+					<span class="description-text">{{product.Description}}</span>
+				</v-card-title>
+				<v-card-actions class="card-actions">
+					<v-btn flat color="primary" @click="onAddProductToCart(product)">
+						<!-- <v-icon dark>fa-search</v-icon> -->Add to cart</v-btn>
+					<v-btn flat color="primary" @click="onProductDetails(product)">Details</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-flex>
+	</v-layout>
 </template>
 
 <script>
-export default {
-	props: ['eurocode', 'description', 'color']
-};
+	export default {
+		props: ['product', 'color'],
+		methods: {
+			onAddProductToCart(product) {
+				this.$emit('onAddProductToCart', product);
+			},
+			onProductDetails(product) {
+				this.$emit('onProductDetails', product);
+			}
+		}
+	};
 </script>
 
 <style lang="css" scoped>
 	.code {
 		width: 200px;
 		color: black;
+	}
+	
+	.card {
+		border-radius: 5px;
+		height: 350px;
+		box-shadow: 0 0 6px 2px hsla(0, 0%, 0%, 0.2);
+	}
+	
+	.description-container {
+		height: 50px;
+		text-overflow: ellipsis;
+	}
+	
+	.description-text {
+		height: 80px;
+		text-overflow: ellipsis;
+		/*white-space: nowrap;*/
+		width: 100%;
+		display: block;
+		overflow: hidden;
+	}
+	
+	.card-actions {
+		display: -webkit-flex;
+		-webkit-align-items: center;
+		display: flex;
+		align-items: center;
+		box-shadow: 0 0 3px 1px hsla(0, 0%, 0%, 0.2);
 	}
 </style>

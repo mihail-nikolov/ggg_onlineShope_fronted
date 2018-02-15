@@ -9,30 +9,38 @@
 			<nuxt-link to="/"><v-btn flat dark>Search</v-btn></nuxt-link>
 			<nuxt-link to="/about"><v-btn flat dark>About</v-btn></nuxt-link>
 			<nuxt-link to="/contact"><v-btn flat dark>Contact</v-btn></nuxt-link>
-			<nuxt-link to="/" v-if="isLoggedIn"><v-btn flat dark @click="onLogoutClick">Logout</v-btn></nuxt-link>
-			<nuxt-link to="/login" v-else><v-btn flat dark>Login</v-btn></nuxt-link>
+			<nuxt-link to="/"><v-btn v-if="isLoggedIn" flat dark @click="onLogoutClick">Logout</v-btn></nuxt-link>
+			<nuxt-link to="/login"><v-btn v-if="!isLoggedIn" flat dark>Login</v-btn></nuxt-link>
 			<v-spacer></v-spacer>
 			<v-btn flat icon @click="onCartClick">
 				<v-icon>shopping_cart</v-icon>
 			</v-btn>
 		</v-toolbar>
-		<v-content>
+		<v-content id="main-content">
 			<v-container fluid fill-height>
 				<v-layout justify-center align-center>
 					<nuxt/>
 				</v-layout>
 			</v-container>
 		</v-content>
-		<v-footer color="blue-grey darken-3" class="white--text" app>
+		<v-footer color="blue-grey darken-3" class="white--text" fixed app>
 			<span>Gold Glass Group&reg;</span>
 			<v-spacer></v-spacer>
 			<span>&copy; 2018</span>
 		</v-footer>
+		<snack-bar></snack-bar>
 	</v-app>
 </template>
 
 <script>
+	import Snackbar from '~/components/Snackbar';
 	export default {
+		components: {
+			'snack-bar': Snackbar
+		},
+		mounted() {
+			this.$store.dispatch('modules/auth/autoLogin');
+		},
 		data() {
 			return {
 				drawerRight: false,
@@ -53,7 +61,7 @@
 			onCartClick() {
 				this.drawerRight = !this.drawerRight;
 			},
-			onLogoutClick() {
+			onLogoutClick(e) {
 				this.$store.dispatch("modules/auth/logout");
 			}
 		}
@@ -73,8 +81,12 @@
 	.logo-img:hover {
 		cursor: pointer;
 	}
+	#main-content {
+		background-size: cover;
+		/*background-image: url("../static/car-generated.png");*/
+	}
 
 	v-toolbar, v-footer {
-		color: #2a3943;
+		/*color: #2a3943;*/
 	}
 </style>

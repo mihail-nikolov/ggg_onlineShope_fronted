@@ -1,5 +1,4 @@
 const state = () => ({
-	baseUrl: 'http://localhost:60918/',
 	snackbarNotification:[]
 });
 
@@ -15,14 +14,12 @@ const mutations = {
 const getters = {
 	getSnackbarNotification(state) {
 		return state.snackbarNotification;
-	},
-	getBaseUrl(state) {
-		return state.baseUrl;
 	}
 };
 
 const actions = {
 	setSnackbarNotification({ commit }, {message, status}) {
+		this.dispatch("modules/general/clearSnackbarNotification");
 		commit('SET_SNACKBAR_NOTIFICATION', {message, status});
 	},
 	clearSnackbarNotification({ commit }) {

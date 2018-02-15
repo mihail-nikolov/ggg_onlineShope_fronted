@@ -22,6 +22,7 @@ const mutations = {
 		state.productTypes = productTypes;
 	},
 	SET_ALL_PRODUCTS(state, allProducts) {
+		// console.log("allProducts ", allProducts);
 		state.allProducts = allProducts;
 	}
 };
@@ -45,69 +46,119 @@ const getters = {
 };
 
 const actions = {
-	setMakes({ commit }, makes) {
+	setMakes({commit}, makes) {
 		commit('SET_MAKES', makes);
 	},
-	setModels({ commit }, models) {
+	setModels({commit}, models) {
 		commit('SET_MODELS', models);
 	},
-	setBodyTypes({ commit }, bodyTypes) {
+	setBodyTypes({commit}, bodyTypes) {
 		commit('SET_BODY_TYPES', bodyTypes);
 	},
-	setProductTypes({ commit }, productTypes) {
+	setProductTypes({commit}, productTypes) {
 		commit('SET_PRODUCT_TYPES', productTypes);
 	},
-	clearProducts({ commit }) {
+	clearProducts({commit}) {
 		commit('SET_ALL_PRODUCTS', []);
 	},
-	async fetchMakes({ commit }) {
+	async fetchMakes({commit}) {
 		axios.get(`http://localhost:60918/api/Makes`)
 			.then(response => {
+				if (response && response.data && response.data.length > 0) {
+					this.dispatch("modules/general/setSnackbarNotification", {
+						message: "Makes successfully fetched.",
+						status: "success"
+					});
+				}
 				commit('SET_MAKES', response.data);
 			})
 			.catch(e => {
+				this.dispatch("modules/general/setSnackbarNotification", {
+					message: "Makes unsuccessfully fetched. " + e,
+					status: "error"
+				});
 				console.log("error setMakes -> ", e);
-				this.errors.push(e);
 			});
 	},
-	async fetchModels({ commit }, makeId) {
-		axios.get('http://localhost:60918/api/Models/GetByMakeId/' + makeId)
+	async fetchModels({commit}, make) {
+		axios.get('http://localhost:60918/api/Models/GetByMakeId/' + make.Id)
 			.then(response => {
+				if (response && response.data && response.data.length > 0) {
+					this.dispatch("modules/general/setSnackbarNotification", {
+						message: make.Name + " models successfully fetched.",
+						status: "success"
+					});
+				}
 				commit('SET_MODELS', response.data);
 			})
 			.catch(e => {
+				this.dispatch("modules/general/setSnackbarNotification", {
+					message: make.Name + " models unsuccessfully fetched. " + e,
+					status: "error"
+				});
 				console.log("error setModels -> ", e);
-				this.errors.push(e);
 			});
 	},
-	async fetchBodyTypes({ commit }, reqBody) {
-		axios.post('http://localhost:60918/api/BodyTypes/GetByMakeAndModelIds', reqBody)
+	async fetchBodyTypes({commit}, data) {
+		axios.post('http://localhost:60918/api/BodyTypes/GetByMakeAndModelIds', data.reqBody)
 			.then(response => {
+				if (response && response.data && response.data.length > 0) {
+					this.dispatch("modules/general/setSnackbarNotification", {
+						message: "Body types for " + data.makeModelName + " are successfully fetched.",
+						status: "success"
+					});
+				}
 				commit('SET_BODY_TYPES', response.data);
 			})
 			.catch(e => {
+				this.dispatch("modules/general/setSnackbarNotification", {
+					message: "Body types for " + data.makeModelName + " are unsuccessfully fetched. " + e,
+					status: "error"
+				});
 				console.log("error setBodyTypes -> ", e);
-				this.errors.push(e);
 			});
 	},
-	async fetchProductTypes({ commit }, reqBody) {
-		axios.post('http://localhost:60918/api/Products/GetProductTypes', reqBody)
+	async fetchProductTypes({commit}, data) {
+		axios.post('http://localhost:60918/api/Products/GetProductTypes', data.reqBody)
 			.then(response => {
+				console.log("fetchProductTypes res ", response.data);
+				if (response && response.data && response.data.length > 0) {
+					this.dispatch("modules/general/setSnackbarNotification", {
+						message: "Product types  for " + data.makeModelName + " are successfully fetched.",
+						status: "success"
+					});
+				}
 				commit('SET_PRODUCT_TYPES', response.data);
 			})
 			.catch(e => {
+				this.dispatch("modules/general/setSnackbarNotification", {
+					message: "Product types  for " + data.makeModelName + " are unsuccessfully fetched.",
+					status: "error"
+				});
 				console.log("error setProductTypes -> ", e);
-				this.errors.push(e);
 			});
 	},
-	async searchForProducts({ commit }, reqBody) {
+	async searchForProducts({commit}, reqBody) {
+		let store = this;
 		axios.post('http://localhost:60918/api/Products/FindByVehicleInfo', reqBody)
 			.then(response => {
+				response.data.forEach(function(product) {
+					if (product.Images.length > 0) {
+						product.Images.forEach(function(image, index, object) {
+							let tempPath = "/Images/" + image + ".jpg";
+							object[index] = tempPath;
+						});
+						if (product.Images.length === 0) {
+							product.Images.push("/Images/no-image.png");
+						}
+					} else {
+						product.Images.push("/Images/no-image.png");
+					}
+				});
 				commit('SET_ALL_PRODUCTS', response.data);
 			})
 			.catch(e => {
 				console.log("error serchForProducts -> ", e);
-				this.errors.push(e);
 			});
 	}
 };

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="search-results">
 		<search-component/>
 		<products-component/>
 	</div>
@@ -18,5 +18,7 @@
 </script>
 
 <style scoped>
-	
+	.search-results {
+		width: 90vw;
+	}
 </style>

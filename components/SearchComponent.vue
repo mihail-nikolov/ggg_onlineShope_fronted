@@ -1,23 +1,17 @@
 <template>
-	<div class="search-component-container">
+	<v-container align-center class="search-component-container">
 
 		<h2 class="advanced-search">Advanced search</h2>
-		<div class="search-selectors-container">
-			<div class="search-multiselect">
-				<label class="search-labels">Makes</label>
-				<multiselect v-model="makeValue" :options="makeOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Make"></multiselect>
-			</div>
-			<div class="search-multiselect">
-				<label class="search-labels">Models</label>
-				<multiselect v-model="modelValue" :options="modelOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Model"></multiselect>
-			</div>
-			<div class="search-multiselect">
-				<label class="search-labels">Body types</label>
-				<multiselect v-model="bodyTypeValue" :options="bodyTypeOptions" track-by="Id" label="Description" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select body type"></multiselect>
-			</div>
-		</div>
+		<v-container align-center class="search-selectors-container">
 
-	</div>
+				<multiselect class="search-multiselect" v-model="makeValue" :options="makeOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Make"></multiselect>
+			
+				<multiselect class="search-multiselect" v-model="modelValue" :options="modelOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Model"></multiselect>
+
+				<multiselect class="search-multiselect" v-model="bodyTypeValue" :options="bodyTypeOptions" track-by="Id" label="Description" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select body type"></multiselect>
+
+		</v-container>
+	</v-container>
 </template>
 
 <script>
@@ -35,16 +29,16 @@
 			};
 		},
 		computed: {
-			makeOptions () {
+			makeOptions() {
 				return this.$store.getters["modules/products/getMakes"];
 			},
-			modelOptions () {
+			modelOptions() {
 				return this.$store.getters["modules/products/getModels"];
 			},
-			bodyTypeOptions () {
+			bodyTypeOptions() {
 				return this.$store.getters["modules/products/getBodyTypes"];
 			},
-			productTypeOptions () {
+			productTypeOptions() {
 				return this.$store.getters["modules/products/getProductTypes"];
 			}
 		},
@@ -52,7 +46,7 @@
 		watch: {
 			makeValue() {
 				if (this.makeValue && this.makeValue.Id) {
-					this.$store.dispatch("modules/products/fetchModels", this.makeValue.Id);
+					this.$store.dispatch("modules/products/fetchModels", this.makeValue);
 					this.modelValue = null;
 				}
 				if (this.makeValue === null) {
@@ -67,7 +61,7 @@
 						MakeId: this.makeValue.Id,
 						ModelId: this.modelValue.Id
 					};
-					this.$store.dispatch("modules/products/fetchBodyTypes", reqBody);
+					this.$store.dispatch("modules/products/fetchBodyTypes", {reqBody:reqBody, makeModelName: this.makeValue.Name + " " + this.modelValue.Name});
 					this.bodyTypeValue = null;
 				}
 				if (this.modelValue === null) {
@@ -83,7 +77,7 @@
 						ModelId: this.modelValue.Id,
 						BodyTypeId: this.bodyTypeValue.Id
 					};
-					this.$store.dispatch("modules/products/fetchProductTypes", reqBody);
+					this.$store.dispatch("modules/products/fetchProductTypes", {reqBody:reqBody, makeModelName: this.makeValue.Name + " " + this.modelValue.Name + " " + this.bodyTypeValue.Description});
 					this.$store.dispatch("modules/products/searchForProducts", reqBody);
 					this.productTypeValue = null;
 				}
@@ -106,12 +100,6 @@
 			}
 		},
 		async created() {
-			// console.log("store - > ", this.$store);
-			// this.$store.dispatch("modules/cart/addItemToCart", "ko staa");
-			// app.$store.getters["modules/products/getMakes"];
-			// this.$store.state.modules.cart.addedItems.forEach(function(elem, index) {
-			// 	console.log("item " + index, elem);
-			// });
 			this.$store.dispatch("modules/products/fetchMakes");
 		}
 	};
@@ -126,20 +114,28 @@
 		font-size: 60px;
 		margin-bottom: 50px;
 	}
+	
 	.search-component-container {
+		margin-top: 20vh;
 		font-family: "JosefinSansBold";
+		text-align: center;
 	}
+	
 	.search-multiselect {
+		background-color: transparent;
 		display: inline-block;
 		width: 350px;
 		height: 100px;
 	}
+	
 	.search-labels {
 		/*margin-left: 10px;*/
 	}
+	
 	.search-results {
 		width: 100vw;
 	}
+	
 	.search-selectors-container {
 		height: 250px;
 		/*margin-left: 100px;*/

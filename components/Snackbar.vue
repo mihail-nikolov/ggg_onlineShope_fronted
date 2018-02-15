@@ -1,6 +1,6 @@
 <template>
 	<div class="snackbar">
-		<v-snackbar v-model="show" :timeout="snackbarTimeout" :color="status">{{ message }}</v-snackbar>
+		<v-snackbar v-model="show" :timeout="0" :color="status">{{ message }}</v-snackbar>
 	</div>
 </template>
 
@@ -8,10 +8,11 @@
 	export default {
 		data() {
 			return {
-				snackbarTimeout: 3000,
+				snackbarTimeout: 6000,
 				show: false,
 				message: '',
-				status: ''
+				status: '',
+				timer: 0
 			};
 		},
 		computed: {
@@ -21,10 +22,20 @@
 		},
 		watch: {
 			notification() {
-				if (this.notification.length > 0) {
-					this.message = this.notification[0].message;
-					this.status = this.notification[0].status;
-					this.show = true;
+				let comp = this;
+				if (comp.timer) {
+					clearTimeout(comp.timer);
+					comp.timer = 0;
+				}
+				if (comp.notification.length > 0) {
+					comp.message = comp.notification[0].message;
+					comp.status = comp.notification[0].status;
+					comp.show = true;
+					comp.timer = setTimeout(() => {
+						comp.show = false;
+					}, comp.snackbarTimeout);
+				} else {
+					comp.show = false;
 				}
 			},
 			show(value) {
@@ -39,6 +50,9 @@
 				this.message = '';
 				this.$store.dispatch("modules/general/clearSnackbarNotification");
 			}
+		},
+		mounted() {
+			console.log("mount");
 		}
 	};
 </script>

@@ -16,8 +16,7 @@ module.exports = {
 		}],
 		link: [
 			{ rel: 'icon', type: 'image/x-icon', href: '/favicon-gold.ico' },
-			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' },
-			{ rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', media: 'screen', charset: 'utf-8' }
+			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
 
 		]
 	},
@@ -41,15 +40,16 @@ module.exports = {
 	 ** Build configuration
 	 */
 	build: {
-		vendor: ['axios', 'vuetify', 'simple-vue-validator'],
+		vendor: ['axios', 'vuetify', 'simple-vue-validator', 'babel-polyfill'],
 		/*
 		 ** Run ESLint on save
 		 */
 		extend(config, ctx) {
+			config.node = { fs: 'empty' };
 			if (ctx.isDev && ctx.isClient) {
 				config.module.rules.push({
 					enforce: 'pre',
-					test: /\.(js|vue)$/,
+					test: /\.vue$/,
 					loader: 'eslint-loader',
 					exclude: /(node_modules)/
 				});

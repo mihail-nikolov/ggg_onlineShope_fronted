@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<v-container>
 		<v-form>
 			<form-component elemType="email" v-model="email" fieldName="Email" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
 			<form-component elemType="password" v-model="password" fieldName="Password" :hasError="validation.hasError('password')" :firstError="validation.firstError('password')"></form-component>
@@ -18,19 +18,16 @@
 				</div>
 			</button>
 		</v-form>
-		<snack-bar></snack-bar>
-	</div>
+	</v-container>
 </template>
 
 <script>
 	import SimpleVueValidation from 'simple-vue-validator';
 	import FormInputComponent from '~/components/Form/FormInputComponent';
-	import Snackbar from '~/components/Snackbar';
 	const Validator = SimpleVueValidation.Validator;
 	export default {
 		name: 'RegisterComponent',
 		components: {
-			'snack-bar': Snackbar,
 			'form-component': FormInputComponent
 		},
 		data() {
@@ -65,7 +62,7 @@
 					.then(function(success) {
 						let notification = {};
 						if (success) {
-							console.log("val success OBJ to PASS -> ", {
+							comp.$store.dispatch("modules/auth/register", {
 								Email: comp.email,
 								Password: comp.password,
 								ConfirmPassword: comp.confirmedPassword,
@@ -77,12 +74,7 @@
 								PhoneNumber: comp.phone,
 								PercentageReduction: 0 // TODO: ask misho WTF is that?
 							});
-							comp.$store.dispatch("modules/general/setSnackbarNotification", {
-								message: "Registration successful. Please check your email for confirmation.",
-								status: "success"
-							});
 						} else {
-							console.log("val error");
 							comp.$store.dispatch("modules/general/setSnackbarNotification", {
 								message: "Please fill in all the required fields with correct data.",
 								status: "error"

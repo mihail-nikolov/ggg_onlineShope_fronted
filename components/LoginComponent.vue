@@ -1,8 +1,8 @@
 <template>
-	<div>
+	<v-container>
 		<v-form>
-			<form-component elemType="email" v-model="email" fieldName="Email" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
-			<form-component elemType="password" v-model="password" fieldName="Password" :hasError="validation.hasError('password')" :firstError="validation.firstError('password')"></form-component>
+			<form-component @onKeyUp="onKeyUp" elemType="email" v-model="email" fieldName="Email" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
+			<form-component @onKeyUp="onKeyUp" elemType="password" v-model="password" fieldName="Password" :hasError="validation.hasError('password')" :firstError="validation.firstError('password')"></form-component>
 			<button type="button" class="button buttonBlue" @click="onSubmit">Login
 				<div class="ripples buttonRipples" v-bind:class="{ 'is-active': isButtonClicked }">
 					<span class="ripplesCircle" v-bind:style="{ top: circleY, left: circleX }"></span>
@@ -12,19 +12,16 @@
 				<v-btn flat light>Sign up</v-btn>
 			</nuxt-link>
 		</v-form>
-		<snack-bar></snack-bar>
-	</div>
+	</v-container>
 </template>
 
 <script>
 	import SimpleVueValidation from 'simple-vue-validator';
 	import FormInputComponent from '~/components/Form/FormInputComponent';
-	import Snackbar from '~/components/Snackbar';
 	const Validator = SimpleVueValidation.Validator;
 	export default {
 		name: 'LoginComponent',
 		components: {
-			'snack-bar': Snackbar,
 			'form-component': FormInputComponent
 		},
 		data() {
@@ -41,7 +38,7 @@
 		methods: {
 			onSubmit(e) {
 				let comp = this;
-				if (!comp.isButtonClicked) {
+				if (!comp.isButtonClicked && e) {
 					comp.isButtonClicked = true;
 					comp.circleX = e.pageX - (e.pageX - e.offsetX) + 'px';
 					comp.circleY = e.pageY - (e.pageY - e.offsetY) + 'px';
@@ -52,38 +49,24 @@
 				comp.$validate()
 					.then(function(success) {
 						if (success) {
-							console.log("val success");
 							comp.$store.dispatch("modules/auth/login", {
 								email: comp.email,
 								password: comp.password
-							}).then(function(response) {
-								if (response && response.status === 'success') {
-									comp.$store.dispatch("modules/general/setSnackbarNotification", {
-										message: response.message,
-										status: response.status
-									});
-									setTimeout(function () {
-										comp.$nuxt.$router.push({ path: `/` });
-									}, 1500);
-								} else if (response && response.status === 'error') {
-									comp.email = '';
-									comp.password = '';
-									comp.$store.dispatch("modules/general/setSnackbarNotification", {
-										message: response.message,
-										status: response.status
-									});
-								}
 							});
 						} else {
-							console.log("val error");
-							comp.email = '';
-							comp.password = '';
 							comp.$store.dispatch("modules/general/setSnackbarNotification", {
 								message: "Please fill in all the required fields and try again.",
 								status: "error"
 							});
+							comp.email = '';
+							comp.password = '';
 						}
 					});
+			},
+			onKeyUp(e) {
+				if (e.key === 'Enter') {
+					this.onSubmit();
+				}
 			}
 		},
 		validators: {
@@ -92,11 +75,6 @@
 			},
 			password(value) {
 				return Validator.value(value).required();
-			}
-		},
-		watch: {
-			isButtonClicked() {
-				// console.log("isButtonClicked", this.isButtonClicked);
 			}
 		}
 	};

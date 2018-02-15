@@ -1,6 +1,6 @@
 <template>
 	<div class="group">
-		<input :type="elemType" v-bind:value="value" v-on:input="updateValue($event.target.value)" @blur="onBlur" v-bind:class="{ used: isUsed }">
+		<input :type="elemType" v-bind:value="value" v-on:input="updateValue($event.target.value)" @blur="onBlur" v-bind:class="{ used: isUsed }" v-on:keyup="emitKeyUpEvent">
 		<span class="highlight"></span>
 		<span class="bar"></span>
 		<label :class="{errorVal: hasError}">{{fieldName}} {{firstError}}</label>
@@ -25,6 +25,9 @@
 			},
 			updateValue(value) {
 				this.$emit('input', value);
+			},
+			emitKeyUpEvent(e) {
+				this.$emit('onKeyUp', e);
 			}
 		}
 	};
