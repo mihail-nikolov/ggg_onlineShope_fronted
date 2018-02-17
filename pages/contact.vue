@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<v-container class="contact-page">
 		
-	</div>
+	</v-container>
 </template>
 
 <script>

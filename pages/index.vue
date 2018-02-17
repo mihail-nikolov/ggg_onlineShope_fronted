@@ -1,8 +1,8 @@
 <template>
-	<div class="search-results">
+	<v-container class="index-page">
 		<search-component/>
 		<products-component/>
-	</div>
+	</v-container>
 </template>
 
 <script>

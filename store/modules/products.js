@@ -81,6 +81,8 @@ const actions = {
 			});
 	},
 	async fetchModels({commit}, make) {
+		let store = this;
+		store.dispatch('modules/general/activateLoading');
 		axios.get('http://localhost:60918/api/Models/GetByMakeId/' + make.Id)
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
@@ -89,9 +91,11 @@ const actions = {
 						status: "success"
 					});
 				}
+				store.dispatch('modules/general/deactivateLoading');
 				commit('SET_MODELS', response.data);
 			})
 			.catch(e => {
+				store.dispatch('modules/general/deactivateLoading');
 				this.dispatch("modules/general/setSnackbarNotification", {
 					message: make.Name + " models unsuccessfully fetched. " + e,
 					status: "error"
@@ -100,6 +104,8 @@ const actions = {
 			});
 	},
 	async fetchBodyTypes({commit}, data) {
+		let store = this;
+		store.dispatch('modules/general/activateLoading');
 		axios.post('http://localhost:60918/api/BodyTypes/GetByMakeAndModelIds', data.reqBody)
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
@@ -108,9 +114,11 @@ const actions = {
 						status: "success"
 					});
 				}
+				store.dispatch('modules/general/deactivateLoading');
 				commit('SET_BODY_TYPES', response.data);
 			})
 			.catch(e => {
+				store.dispatch('modules/general/deactivateLoading');
 				this.dispatch("modules/general/setSnackbarNotification", {
 					message: "Body types for " + data.makeModelName + " are unsuccessfully fetched. " + e,
 					status: "error"
@@ -119,6 +127,8 @@ const actions = {
 			});
 	},
 	async fetchProductTypes({commit}, data) {
+		let store = this;
+		store.dispatch('modules/general/activateLoading');
 		axios.post('http://localhost:60918/api/Products/GetProductTypes', data.reqBody)
 			.then(response => {
 				console.log("fetchProductTypes res ", response.data);
@@ -128,9 +138,11 @@ const actions = {
 						status: "success"
 					});
 				}
+				store.dispatch('modules/general/deactivateLoading');
 				commit('SET_PRODUCT_TYPES', response.data);
 			})
 			.catch(e => {
+				store.dispatch('modules/general/deactivateLoading');
 				this.dispatch("modules/general/setSnackbarNotification", {
 					message: "Product types  for " + data.makeModelName + " are unsuccessfully fetched.",
 					status: "error"
@@ -140,6 +152,8 @@ const actions = {
 	},
 	async searchForProducts({commit}, reqBody) {
 		let store = this;
+		console.log("reqBody -> ", reqBody);
+		store.dispatch('modules/general/activateLoading');
 		axios.post('http://localhost:60918/api/Products/FindByVehicleInfo', reqBody)
 			.then(response => {
 				response.data.forEach(function(product) {
@@ -155,9 +169,11 @@ const actions = {
 						product.Images.push("/Images/no-image.png");
 					}
 				});
+				store.dispatch('modules/general/deactivateLoading');
 				commit('SET_ALL_PRODUCTS', response.data);
 			})
 			.catch(e => {
+				store.dispatch('modules/general/deactivateLoading');
 				console.log("error serchForProducts -> ", e);
 			});
 	}

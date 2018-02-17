@@ -63,6 +63,11 @@ const getters = {
 const actions = {
 	autoLogin({ commit }) {
 		console.log("AUTOLOGIN");
+		const savedCartItems = JSON.parse(sessionStorage.getItem('autoGlassAddedToCartItems'));
+		if (savedCartItems) {
+			console.log("savedCartItems existing..");
+			this.dispatch("modules/cart/autoLoadItems", {savedCartItems:savedCartItems});
+		}
 		const token = localStorage.getItem('autoGlassToken');
 		if (!token) {
 			return;

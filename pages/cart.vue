@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<v-container class="cart-page">
 		<div class="cartunit">
 			<h2>Your cart</h2>
 			<p>Thank you for shopping with us.</p>
@@ -10,7 +10,7 @@
 				</p>
 			</div>
 		</div>
-	</div>
+	</v-container>
 </template>
 
 <script>

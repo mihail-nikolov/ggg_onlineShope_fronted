@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<v-container class="about-page">
 		
-	</div>
+	</v-container>
 </template>
 
 <script>

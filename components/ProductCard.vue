@@ -2,15 +2,20 @@
 	<v-layout>
 		<v-flex xs1 sm12>
 			<v-card class="card" :color="color">
-				<v-card-media class="white--text" height="200px" contain :src="product.Images[0]">
+				<v-card-media height="200px" contain :src="product.Images[0]">
 				</v-card-media>
 				<v-card-title class="description-text">
 					<span class="description-text">{{product.Description}}</span>
 				</v-card-title>
-				<v-card-actions class="card-actions">
-					<v-btn flat color="primary" @click="onAddProductToCart(product)">
-						<!-- <v-icon dark>fa-search</v-icon> -->Add to cart</v-btn>
-					<v-btn flat color="primary" @click="onProductDetails(product)">Details</v-btn>
+				<v-card-actions>
+					<v-btn :color="color" @click="onAddProductToCart(product)" style="width:50%">
+						<v-icon left>fa-cart-plus</v-icon>
+						Add to cart
+					</v-btn>
+					<v-btn :color="color" @click="onProductDetails(product)" style="width:50%">
+						<v-icon left>fa-info-circle</v-icon>
+						Details
+					</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-flex>

@@ -1,7 +1,7 @@
 <template>
 	<v-container align-center class="search-component-container">
 
-		<h2 class="advanced-search">Advanced search</h2>
+		<h2 class="advanced-search">Advanced Search</h2>
 		<v-container align-center class="search-selectors-container">
 
 				<multiselect class="search-multiselect" v-model="makeValue" :options="makeOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Make"></multiselect>
@@ -9,8 +9,11 @@
 				<multiselect class="search-multiselect" v-model="modelValue" :options="modelOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Model"></multiselect>
 
 				<multiselect class="search-multiselect" v-model="bodyTypeValue" :options="bodyTypeOptions" track-by="Id" label="Description" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select body type"></multiselect>
-
 		</v-container>
+		<v-btn flat color="primary" @click="onSearchClicked">
+			<v-icon left>fa-search</v-icon>
+			Search
+		</v-btn>
 	</v-container>
 </template>
 
@@ -42,7 +45,17 @@
 				return this.$store.getters["modules/products/getProductTypes"];
 			}
 		},
-		methods: {},
+		methods: {
+			onSearchClicked() {
+				let reqBody = {
+					"MakeId": this.makeValue && this.makeValue.Id || null,
+					"ModelId": this.modelValue && this.modelValue.Id || null,
+					"BodyTypeId": this.bodyTypeValue && this.bodyTypeValue.Id || null,
+					"ProductType": this.productTypeValue && this.productTypeValue.Id || null
+				};
+				this.$store.dispatch("modules/products/searchForProducts", reqBody);
+			}
+		},
 		watch: {
 			makeValue() {
 				if (this.makeValue && this.makeValue.Id) {
@@ -78,7 +91,6 @@
 						BodyTypeId: this.bodyTypeValue.Id
 					};
 					this.$store.dispatch("modules/products/fetchProductTypes", {reqBody:reqBody, makeModelName: this.makeValue.Name + " " + this.modelValue.Name + " " + this.bodyTypeValue.Description});
-					this.$store.dispatch("modules/products/searchForProducts", reqBody);
 					this.productTypeValue = null;
 				}
 				if (this.bodyTypeValue === null) {
@@ -116,8 +128,6 @@
 	}
 	
 	.search-component-container {
-		margin-top: 20vh;
-		font-family: "JosefinSansBold";
 		text-align: center;
 	}
 	
@@ -128,16 +138,11 @@
 		height: 100px;
 	}
 	
-	.search-labels {
-		/*margin-left: 10px;*/
-	}
-	
 	.search-results {
 		width: 100vw;
 	}
 	
 	.search-selectors-container {
 		height: 250px;
-		/*margin-left: 100px;*/
 	}
 </style>

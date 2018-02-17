@@ -7,3 +7,15 @@
 .multiselect__option--highlight {
 	background-color: #37474F !important;
 }
+.carousel__item {
+	background-size: contain !important;
+}
+
+.index-page,
+.login-page,
+.register-page,
+.about-page,
+.cart-page,
+.contact-page {
+	font-family: Helvetica;
+}

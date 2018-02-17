@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<v-container class="register-page">
 		<register-component/>
-	</div>
+	</v-container>
 </template>
 
 <script>

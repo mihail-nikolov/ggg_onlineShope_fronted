@@ -16,8 +16,9 @@ module.exports = {
 		}],
 		link: [
 			{ rel: 'icon', type: 'image/x-icon', href: '/favicon-gold.ico' },
-			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
-
+			{ rel: 'stylesheet', href: '/css/material-icons.css' },
+			{ rel: 'stylesheet', href: 'css/materialdesignicons.min.css' },
+			{ rel: 'stylesheet', href: 'css/font-awesome.min.css' }
 		]
 	},
 	/* custom plugins */

@@ -1,8 +1,7 @@
 <template>
 	<v-app id="inspire">
-		<v-navigation-drawer fixed v-model="drawerRight" temporary right clipped app>
-			<v-list dense>
-			</v-list>
+		<v-navigation-drawer fixed v-model="drawerRight" temporary right clipped app width="700" style="background-color:#2D353A">
+			<cart-panel></cart-panel>
 		</v-navigation-drawer>
 		<v-toolbar color="blue-grey darken-3" dark fixed app clipped-right>
 			<a v-bind:href="homeLink" class="logo-img" title="Glass Gold Group: Homepage"></a>
@@ -29,13 +28,18 @@
 			<span>&copy; 2018</span>
 		</v-footer>
 		<snack-bar></snack-bar>
+		<loading v-if="isLoadingActive"></loading>
 	</v-app>
 </template>
 
 <script>
+	import CartPanel from '~/components/CartPanel.vue';
 	import Snackbar from '~/components/Snackbar';
+	import Loading from '~/components/Loading.vue';
 	export default {
 		components: {
+			'cart-panel': CartPanel,
+			'loading': Loading,
 			'snack-bar': Snackbar
 		},
 		mounted() {
@@ -53,6 +57,9 @@
 		computed: {
 			isLoggedIn () {
 				return this.$store.getters["modules/auth/isLoggedIn"];
+			},
+			isLoadingActive() {
+				return this.$store.getters["modules/general/isLoadingActive"];
 			}
 		},
 		watch: {
