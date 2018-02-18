@@ -1,17 +1,152 @@
 <template>
+	<v-container class="cart-panel-container">
+		<v-container>
+			<v-layout row>
+				<v-flex sm2 align-content-center>
+					<v-btn color="primary" icon flat @click="slideDrawerOut">
+						<v-icon large>mdi-arrow-right</v-icon>
+					</v-btn>
+				</v-flex>
+				<v-flex sm8 align-content-center>
+					<h2 class="cart-panel-title" v-if="addedItemsToCartCount">Items in your cart</h2>
+					<h2 class="cart-panel-title" v-else>Cart is empty</h2>
+				</v-flex>
+			</v-layout>
+		</v-container>
 
+		<v-container class="cart-panel-card" v-for="(product, index) in addedItemsToCart" :key="index">
+			<v-layout row wrap>
+				<v-flex xs12>
+					<v-card class="panel-card" color="blue-grey lighten-5">
+						<v-container fluid>
+							<v-layout row>
+								<v-flex xs4 column>
+									<v-card-media height="130px" contain left>
+										<v-carousel class="panel-card-carousel" hide-controls hide-delimiters interval="3500">
+											<v-carousel-item v-for="(image,i) in product.item.Images" :src="image" :key="i" contain></v-carousel-item>
+										</v-carousel>
+									</v-card-media>
+									<v-btn color="primary" flat @click="onProductDetails(product)">
+										<v-icon left>mdi-information-outline</v-icon>
+										Details
+									</v-btn>
+								</v-flex>
+								<v-flex xs8>
+
+									<v-flex column>
+										<v-card-title>
+											<h3 style="width:100%">Eurocode: {{product.item.EuroCode}}</h3>
+											<div style="width:100%">{{product.item.Description}}</div>
+											<div style="font-weight:bold;margin-top:10px;width:100%">Price: 100lv</div>
+										</v-card-title>
+									</v-flex>
+
+									<v-flex column>
+										<v-card-actions>
+											<v-flex xs5 align-center>
+												<div class="action-title">Quantity</div>
+												<v-btn color="primary" icon flat @click="decreaseProductQuantity(product, index)">
+													<v-icon>mdi-minus</v-icon>
+												</v-btn>
+												<span class="product-quantity">{{product.cartCount}}</span>
+												<v-btn color="primary" icon flat @click="increaseProductQuantity(product, index)">
+													<v-icon>mdi-plus</v-icon>
+												</v-btn>
+											</v-flex>
+											<v-flex xs4 align-center>
+												<div class="action-title">Sum</div>
+												<div class="total-product-sum">{{product.cartCount * 100}}lv</div>
+											</v-flex>
+											<v-flex xs2 align-end>
+												<v-btn color="primary" icon flat @click="removeProductFromCart(index)">
+													<v-icon>mdi-delete</v-icon>
+												</v-btn>
+											</v-flex>
+										</v-card-actions>
+									</v-flex>
+								</v-flex>
+							</v-layout>
+						</v-container>
+					</v-card>
+				</v-flex>
+			</v-layout>
+		</v-container>
+
+		<v-container>
+			<v-layout row>
+				<v-flex xs3 offset-xs9>
+					<h3 class="total-sum-text">Cart total: {{totalSum}}lv</h3>
+					<h3 class="total-sum-text">Shipping: 0lv</h3>
+					<br>
+					<h2 class="total-sum-text">Total: {{totalSum}}lv</h2>
+					<v-btn color="primary" @click="onCheckout">
+						<v-icon left>mdi-credit-card-multiple</v-icon>
+						Checkout
+					</v-btn>
+				</v-flex>
+			</v-layout>
+		</v-container>
+	</v-container>
 </template>
 
 <script>
 	export default {
 		name: 'CartPanel',
 		data() {
-			return {
-			};
+			return {};
 		},
 		computed: {
 			addedItemsToCart() {
 				return this.$store.getters["modules/cart/getCartItems"];
+			},
+			addedItemsToCartCount() {
+				let count = 0;
+				this.$store.getters["modules/cart/getCartItems"].forEach(function(product) {
+					count += product.cartCount;
+				});
+				return count;
+			},
+			totalSum() {
+				let sum = 0;
+				this.$store.getters["modules/cart/getCartItems"].forEach(function(product) {
+					sum += product.cartCount;
+				});
+				return sum * 100;
+			}
+		},
+		methods: {
+			decreaseProductQuantity(product, index) {
+				console.log("decrease product -> ", product, "index -> ", index);
+				if (product.cartCount > 1) {
+					console.log("decrease cartCount ", product.cartCount);
+					let count = parseInt(product.cartCount) - 1;
+					console.log("decrease count ", count);
+					this.$store.dispatch('modules/cart/changeCountOfItemInCart', {
+						index: index,
+						count: count
+					});
+				}
+			},
+			increaseProductQuantity(product, index) {
+				console.log("increase product -> ", product, "index -> ", index);
+				let count = parseInt(product.cartCount) + 1;
+				console.log("increase count ", count);
+				this.$store.dispatch('modules/cart/changeCountOfItemInCart', {
+					index: index,
+					count: count
+				});
+			},
+			removeProductFromCart(index) {
+				this.$store.dispatch('modules/cart/removeProductFromCart', index);
+			},
+			onCheckout() {
+				console.log("CHECKOUT");
+			},
+			slideDrawerOut() {
+				this.$emit('slideDrawerOut');
+			},
+			onProductDetails(product) {
+				this.$emit('cartPanelDetailsButtonClicked', product);
 			}
 		},
 		watch: {
@@ -25,5 +160,38 @@
 </script>
 
 <style lang="css" scoped>
-
+	.product-quantity {
+		font-size: 20px;
+		width: 70px;
+		display: inline-block;
+		text-align: center;
+	}
+	
+	.action-title {
+		text-align: center;
+		font-weight: bold;
+	}
+	
+	.total-product-sum {
+		text-align: center;
+		font-size: 20px;
+	}
+	
+	.total-sum-text {
+		padding-left: 10px;
+	}
+	
+	.cart-panel-container {}
+	
+	.cart-panel-card {}
+	
+	.panel-card {}
+	
+	.panel-card-carousel {
+		height: 130px;
+	}
+	
+	.cart-panel-title {
+		text-align: center;
+	}
 </style>

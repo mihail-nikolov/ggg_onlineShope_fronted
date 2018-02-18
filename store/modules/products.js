@@ -5,7 +5,8 @@ const state = () => ({
 	models: [],
 	bodyTypes: [],
 	productTypes: [],
-	allProducts: []
+	allProducts: [],
+	currentlyObservedProductAvailability: []
 });
 
 const mutations = {
@@ -22,8 +23,10 @@ const mutations = {
 		state.productTypes = productTypes;
 	},
 	SET_ALL_PRODUCTS(state, allProducts) {
-		// console.log("allProducts ", allProducts);
 		state.allProducts = allProducts;
+	},
+	SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY(state, availability) {
+		state.currentlyObservedProductAvailability = availability;
 	}
 };
 
@@ -42,6 +45,9 @@ const getters = {
 	},
 	getAllProducts(state) {
 		return state.allProducts;
+	},
+	getCurrentObservedProductAvailability(state) {
+		return state.currentlyObservedProductAvailability;
 	}
 };
 
@@ -175,6 +181,47 @@ const actions = {
 			.catch(e => {
 				store.dispatch('modules/general/deactivateLoading');
 				console.log("error serchForProducts -> ", e);
+			});
+	},
+	async getProductAvailability({commit}, productId) {
+		let store = this;
+		store.dispatch('modules/general/activateLoading');
+		axios.get('http://localhost:60918/api/Products/GetPriceAndQuantities/' + productId)
+			.then(response => {
+				console.log("Product availability -> ", response.data);
+				commit('SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY', response.data);
+				store.dispatch('modules/general/deactivateLoading');
+			})
+			.catch(e => {
+				store.dispatch('modules/general/deactivateLoading');
+				console.log("error getProductAvailability -> ", e);
+			});
+	},
+	async searchForCode({commit}, code) {
+		let store = this;
+		store.dispatch('modules/general/activateLoading');
+		axios.get('http://localhost:60918/api/Products/Get?code=' + code)
+			.then(response => {
+				console.log("searchForCode -> ", response.data);
+				response.data.forEach(function(product) {
+					if (product.Images.length > 0) {
+						product.Images.forEach(function(image, index, object) {
+							let tempPath = "/Images/" + image + ".jpg";
+							object[index] = tempPath;
+						});
+						if (product.Images.length === 0) {
+							product.Images.push("/Images/no-image.png");
+						}
+					} else {
+						product.Images.push("/Images/no-image.png");
+					}
+				});
+				store.dispatch('modules/general/deactivateLoading');
+				commit('SET_ALL_PRODUCTS', response.data);
+			})
+			.catch(e => {
+				store.dispatch('modules/general/deactivateLoading');
+				console.log("error searchForCode -> ", e);
 			});
 	}
 };

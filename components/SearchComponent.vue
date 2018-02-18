@@ -2,17 +2,29 @@
 	<v-container align-center class="search-component-container">
 
 		<h2 class="advanced-search">Advanced Search</h2>
+
+		<v-container align-center fluid>
+			<v-layout row justify-center>
+				<v-flex xs4 offset-xs1>
+					<v-text-field name="searchByCode" v-model="codeForSearch" label="Search by Eurocode / Material number / Oes code / Industry code"></v-text-field>
+				</v-flex>
+				<v-flex xs1>
+					<v-btn flat color="primary" @click="onCodeSearchClicked">
+						<v-icon left>fa-search</v-icon>
+						Search code
+					</v-btn>
+				</v-flex>
+			</v-layout>
+			<h2>OR</h2>
+		</v-container>
 		<v-container align-center class="search-selectors-container">
-
-				<multiselect class="search-multiselect" v-model="makeValue" :options="makeOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Make"></multiselect>
-			
-				<multiselect class="search-multiselect" v-model="modelValue" :options="modelOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Model"></multiselect>
-
-				<multiselect class="search-multiselect" v-model="bodyTypeValue" :options="bodyTypeOptions" track-by="Id" label="Description" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select body type"></multiselect>
+			<multiselect class="search-multiselect" v-model="makeValue" :options="makeOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Make"></multiselect>
+			<multiselect class="search-multiselect" v-model="modelValue" :options="modelOptions" track-by="Id" label="Name" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select Model"></multiselect>
+			<multiselect class="search-multiselect" v-model="bodyTypeValue" :options="bodyTypeOptions" track-by="Id" label="Description" deselect-label="Click to remove" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select body type"></multiselect>
 		</v-container>
 		<v-btn flat color="primary" @click="onSearchClicked">
 			<v-icon left>fa-search</v-icon>
-			Search
+			Search model
 		</v-btn>
 	</v-container>
 </template>
@@ -21,14 +33,15 @@
 	import Multiselect from 'vue-multiselect';
 	export default {
 		components: {
-			Multiselect
+			'multiselect': Multiselect
 		},
 		data: function() {
 			return {
 				makeValue: null,
 				modelValue: null,
 				bodyTypeValue: null,
-				productTypeValue: null
+				productTypeValue: null,
+				codeForSearch: ''
 			};
 		},
 		computed: {
@@ -54,6 +67,10 @@
 					"ProductType": this.productTypeValue && this.productTypeValue.Id || null
 				};
 				this.$store.dispatch("modules/products/searchForProducts", reqBody);
+			},
+			onCodeSearchClicked() {
+				this.$store.dispatch("modules/products/searchForCode", this.codeForSearch);
+				this.codeForSearch = '';
 			}
 		},
 		watch: {
@@ -74,7 +91,10 @@
 						MakeId: this.makeValue.Id,
 						ModelId: this.modelValue.Id
 					};
-					this.$store.dispatch("modules/products/fetchBodyTypes", {reqBody:reqBody, makeModelName: this.makeValue.Name + " " + this.modelValue.Name});
+					this.$store.dispatch("modules/products/fetchBodyTypes", {
+						reqBody: reqBody,
+						makeModelName: this.makeValue.Name + " " + this.modelValue.Name
+					});
 					this.bodyTypeValue = null;
 				}
 				if (this.modelValue === null) {
@@ -90,7 +110,10 @@
 						ModelId: this.modelValue.Id,
 						BodyTypeId: this.bodyTypeValue.Id
 					};
-					this.$store.dispatch("modules/products/fetchProductTypes", {reqBody:reqBody, makeModelName: this.makeValue.Name + " " + this.modelValue.Name + " " + this.bodyTypeValue.Description});
+					this.$store.dispatch("modules/products/fetchProductTypes", {
+						reqBody: reqBody,
+						makeModelName: this.makeValue.Name + " " + this.modelValue.Name + " " + this.bodyTypeValue.Description
+					});
 					this.productTypeValue = null;
 				}
 				if (this.bodyTypeValue === null) {

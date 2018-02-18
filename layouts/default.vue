@@ -1,7 +1,7 @@
 <template>
 	<v-app id="inspire">
-		<v-navigation-drawer fixed v-model="drawerRight" temporary right clipped app width="700" style="background-color:#2D353A">
-			<cart-panel></cart-panel>
+		<v-navigation-drawer stateless fixed v-model="drawerRight" temporary right clipped app width="700" style="background-color:#FAFAFA">
+			<cart-panel @slideDrawerOut="slideDrawerOut" @cartPanelDetailsButtonClicked="cartPanelDetailsButtonClicked"></cart-panel>
 		</v-navigation-drawer>
 		<v-toolbar color="blue-grey darken-3" dark fixed app clipped-right>
 			<a v-bind:href="homeLink" class="logo-img" title="Glass Gold Group: Homepage"></a>
@@ -11,14 +11,18 @@
 			<nuxt-link to="/"><v-btn v-if="isLoggedIn" flat dark @click="onLogoutClick">Logout</v-btn></nuxt-link>
 			<nuxt-link to="/login"><v-btn v-if="!isLoggedIn" flat dark>Login</v-btn></nuxt-link>
 			<v-spacer></v-spacer>
-			<v-btn flat icon @click="onCartClick">
-				<v-icon>shopping_cart</v-icon>
+			<v-btn flat icon @click="onCartClick" :disabled="!addedItemsToCartCount">
+				<v-badge left bottom origin>
+					<span slot="badge">{{addedItemsToCartCount}}</span>
+					<v-icon>shopping_cart</v-icon>
+				</v-badge>
 			</v-btn>
 		</v-toolbar>
 		<v-content id="main-content">
 			<v-container fluid fill-height>
 				<v-layout justify-center align-center>
 					<nuxt/>
+					<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick"></product-details-dialog>
 				</v-layout>
 			</v-container>
 		</v-content>
@@ -36,11 +40,13 @@
 	import CartPanel from '~/components/CartPanel.vue';
 	import Snackbar from '~/components/Snackbar';
 	import Loading from '~/components/Loading.vue';
+	import ProductDetailsDialog from '~/components/ProductDetailsDialog';
 	export default {
 		components: {
 			'cart-panel': CartPanel,
 			'loading': Loading,
-			'snack-bar': Snackbar
+			'snack-bar': Snackbar,
+			'product-details-dialog': ProductDetailsDialog
 		},
 		mounted() {
 			this.$store.dispatch('modules/auth/autoLogin');
@@ -48,7 +54,9 @@
 		data() {
 			return {
 				drawerRight: false,
-				homeLink: "http://www.glassgoldgroup.eu/"
+				homeLink: "http://www.glassgoldgroup.eu/",
+				dialogDetailsOpen: false,
+				curProductDetails: []
 			};
 		},
 		props: {
@@ -60,16 +68,41 @@
 			},
 			isLoadingActive() {
 				return this.$store.getters["modules/general/isLoadingActive"];
+			},
+			addedItemsToCartCount() {
+				let count = 0;
+				this.$store.getters["modules/cart/getCartItems"].forEach(function(product) {
+					count += product.cartCount;
+				});
+				return count;
 			}
 		},
 		watch: {
+			addedItemsToCartCount(value) {
+				if (value === 0) {
+					this.drawerRight = false;
+				}
+			}
 		},
 		methods: {
 			onCartClick() {
-				this.drawerRight = !this.drawerRight;
+				if (this.addedItemsToCartCount) {
+					this.drawerRight = !this.drawerRight;
+				}
 			},
 			onLogoutClick(e) {
 				this.$store.dispatch("modules/auth/logout");
+			},
+			slideDrawerOut() {
+				this.drawerRight = false;
+			},
+			cartPanelDetailsButtonClicked(product) {
+				this.curProductDetails = product.item;
+				this.dialogDetailsOpen = true;
+			},
+			onCloseDetailsDialogClick(value) {
+				this.dialogDetailsOpen = value;
+				this.curProductDetails = [];
 			}
 		}
 	};

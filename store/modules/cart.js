@@ -6,14 +6,20 @@ const mutations = {
 	ADD_ITEM_TO_CART(state, item) {
 		state.addedItems.push(item);
 	},
-	CHANGE_COUNT_OF_ITEM_IN_CART(state, data) {
+	ADD_TO_COUNT_OF_ITEM(state, data) {
 		let totalCount = state.addedItems[data.index].cartCount + data.count,
 			item = state.addedItems[data.index].item,
 			product = {item: item, cartCount: totalCount};
 		state.addedItems.splice(data.index, 1, product);
 	},
+	CHANGE_COUNT_OF_ITEM_IN_CART(state, data) {
+		state.addedItems[data.index].cartCount = data.count;
+	},
 	AUTO_LOAD_ITEMS(state, data) {
 		state.addedItems = data.savedCartItems;
+	},
+	REMOVE_PRODUCT_FROM_CART(state, index) {
+		state.addedItems.splice(index, 1);
 	}
 };
 
@@ -41,7 +47,7 @@ const actions = {
 		if (!productIsInCart) {
 			commit('ADD_ITEM_TO_CART', productToBeAdded);
 		} else {
-			commit('CHANGE_COUNT_OF_ITEM_IN_CART', {
+			this.dispatch('modules/cart/addToCountOfItem', {
 				index: indexOfProduct,
 				count: productToBeAdded.cartCount
 			});
@@ -49,6 +55,15 @@ const actions = {
 	},
 	autoLoadItems({commit}, data) {
 		commit('AUTO_LOAD_ITEMS', data);
+	},
+	addToCountOfItem({commit}, data) {
+		commit('ADD_TO_COUNT_OF_ITEM', data);
+	},
+	changeCountOfItemInCart({commit}, data) {
+		commit('CHANGE_COUNT_OF_ITEM_IN_CART', data);
+	},
+	removeProductFromCart({commit}, index) {
+		commit('REMOVE_PRODUCT_FROM_CART', index);
 	}
 };
 

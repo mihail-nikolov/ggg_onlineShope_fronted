@@ -27,76 +27,7 @@
 		</v-container>
 
 		<!-- Details Dialog -->
-		<v-content v-if="dialogDetailsOpen" class="details-dialog">
-			<v-container fluid style="width: 100%;height: 100px;">
-				<no-ssr>
-					<v-dialog v-model="dialogDetailsOpen" persistent max-width="1200">
-						<v-card>
-							<v-container fluid>
-								<v-layout row>
-									<v-flex xs12>
-										<v-carousel class="details-dialog-carousel">
-											<v-carousel-item v-for="(image,i) in curProductDetails.Images" :src="image" :key="i" contain></v-carousel-item>
-										</v-carousel>
-									</v-flex>
-									<v-flex xs10>
-										<v-card-text>
-											<div v-if="curProductDetails.Description">
-												<h4>Description</h4>
-												<div>{{curProductDetails.Description}}</div>
-												<br>
-											</div>
-											<div v-if="curProductDetails.EuroCode" class="floating-product-detail">
-												<h4>Eurocode</h4>
-												<div>{{curProductDetails.EuroCode}}</div>
-												<br>
-											</div>
-											<div v-if="curProductDetails.MaterialNumber" class="floating-product-detail">
-												<h4>Material Number</h4>
-												<div>{{curProductDetails.MaterialNumber}}</div>
-												<br>
-											</div>
-											<div v-if="curProductDetails.IndustryCode" class="floating-product-detail">
-												<h4>Industry Code</h4>
-												<div>{{curProductDetails.IndustryCode}}</div>
-												<br>
-											</div>
-											<div v-if="curProductDetails.OesCode" class="floating-product-detail">
-												<h4>Oes Code</h4>
-												<div>{{curProductDetails.OesCode}}</div>
-												<br>
-											</div>
-											<div style="clear:both">
-												<h4>Price</h4>
-												<div></div>
-												<br>
-											</div>
-											<div>
-												<h4>Availability</h4>
-												<div></div>
-												<br>
-											</div>
-											<div>
-												<h4>Type</h4>
-												<div>{{curProductDetails.ProductType}}</div>
-											</div>
-										</v-card-text>
-									</v-flex>
-									<v-flex xs2>
-										<v-card-actions>
-											<v-btn color="primary" flat @click="onCloseDetailsDialogClick">
-												<v-icon left>mdi-close</v-icon>
-												Close
-											</v-btn>
-										</v-card-actions>
-									</v-flex>
-								</v-layout>
-							</v-container>
-						</v-card>
-					</v-dialog>
-				</no-ssr>
-			</v-container>
-		</v-content>
+		<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick"></product-details-dialog>
 
 		<!-- Cart count Dialog -->
 		<v-content v-if="dialogCartCountOpen" class="cart-count-container">
@@ -137,9 +68,11 @@
 
 <script>
 	import ProductCard from '~/components/ProductCard';
+	import ProductDetailsDialog from '~/components/ProductDetailsDialog';
 	export default {
 		components: {
-			ProductCard
+			'product-card': ProductCard,
+			'product-details-dialog': ProductDetailsDialog
 		},
 		data() {
 			return {
@@ -209,6 +142,7 @@
 			onProductDetails(product) {
 				this.curProductDetails = product;
 				this.dialogDetailsOpen = true;
+				this.$store.dispatch("modules/products/getProductAvailability", product.Id);
 				console.log("onProductDetails", product);
 			},
 			isExisting(image) {
@@ -217,9 +151,6 @@
 				} else {
 					return false;
 				}
-			},
-			onCloseDetailsDialogClick() {
-				this.dialogDetailsOpen = false;
 			},
 			onCloseCartCountDialogClick() {
 				this.cartCount = 1;
@@ -244,6 +175,9 @@
 				});
 				comp.cartCount = 1;
 				comp.dialogCartCountOpen = false;
+			},
+			onCloseDetailsDialogClick(value) {
+				this.dialogDetailsOpen = value;
 			}
 		},
 		watch: {
@@ -275,20 +209,6 @@
 <style lang="css" scoped>
 	.cart-count-container {
 		background-color: #F1F1F1;
-	}
-	
-	.floating-product-detail {
-		float: left;
-		margin-right: 25px;
-	}
-	
-	.details-dialog-carousel {
-		height: 400px;
-	}
-	
-	.details-dialog {
-		clear: both;
-		position: absolute;
 	}
 	
 	.filter-image-button {

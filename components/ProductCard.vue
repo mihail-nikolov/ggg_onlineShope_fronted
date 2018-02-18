@@ -9,11 +9,11 @@
 				</v-card-title>
 				<v-card-actions>
 					<v-btn :color="color" @click="onAddProductToCart(product)" style="width:50%">
-						<v-icon left>fa-cart-plus</v-icon>
+						<v-icon left>mdi-cart-outline</v-icon>
 						Add to cart
 					</v-btn>
 					<v-btn :color="color" @click="onProductDetails(product)" style="width:50%">
-						<v-icon left>fa-info-circle</v-icon>
+						<v-icon left>mdi-information-outline</v-icon>
 						Details
 					</v-btn>
 				</v-card-actions>

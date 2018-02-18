@@ -19,5 +19,6 @@
 		top:50%;
 		margin-left:-25px;
 		margin-top:-25px;
+		z-index: 99999;
 	}
 </style>
