@@ -1,7 +1,6 @@
 module.exports = {
-	/*
-	 ** Headers of the page
-	 */
+
+	/* Headers of the page */
 	head: {
 		title: 'Glass Gold Group - Online Shop',
 		meta: [{
@@ -21,6 +20,7 @@ module.exports = {
 			{ rel: 'stylesheet', href: 'css/font-awesome.min.css' }
 		]
 	},
+
 	/* custom plugins */
 	plugins: [{
 		src: '~/plugins/vuetify',
@@ -29,22 +29,19 @@ module.exports = {
 		src: '~/plugins/simple-vue-validator',
 		ssr: true
 	}],
+
 	/* stylus */
 	css: ['~/assets/app.styl', '~/assets/main.css'],
-	/*
-	 ** Customize the progress bar color
-	 */
+
+	/* Customize the progress bar color */
 	loading: {
 		color: '#3B8070'
 	},
-	/*
-	 ** Build configuration
-	 */
+
+	/* Build configuration */
 	build: {
-		vendor: ['axios', 'vuetify', 'simple-vue-validator', 'babel-polyfill'],
-		/*
-		 ** Run ESLint on save
-		 */
+		vendor: ['axios', 'vuetify', 'simple-vue-validator'],
+		/* Run ESLint on save */
 		extend(config, ctx) {
 			config.node = { fs: 'empty' };
 			if (ctx.isDev && ctx.isClient) {
