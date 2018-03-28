@@ -158,6 +158,7 @@
 	
 	.search-component-container {
 		text-align: center;
+		color: #37474F;
 	}
 	
 	.search-multiselect {
