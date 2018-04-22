@@ -68,7 +68,7 @@ const actions = {
 		commit('SET_ALL_PRODUCTS', []);
 	},
 	async fetchMakes({commit}) {
-		axios.get(`http://localhost:60918/api/Makes`)
+		axios.get(`http://5.53.134.70/api/Makes`)
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
 					this.dispatch("modules/general/setSnackbarNotification", {
@@ -89,7 +89,7 @@ const actions = {
 	async fetchModels({commit}, make) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.get('http://localhost:60918/api/Models/GetByMakeId/' + make.Id)
+		axios.get('http://5.53.134.70/api/Models/GetByMakeId/' + make.Id)
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
 					this.dispatch("modules/general/setSnackbarNotification", {
@@ -112,7 +112,7 @@ const actions = {
 	async fetchBodyTypes({commit}, data) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.post('http://localhost:60918/api/BodyTypes/GetByMakeAndModelIds', data.reqBody)
+		axios.post('http://5.53.134.70/api/BodyTypes/GetByMakeAndModelIds', data.reqBody)
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
 					this.dispatch("modules/general/setSnackbarNotification", {
@@ -135,7 +135,7 @@ const actions = {
 	async fetchProductTypes({commit}, data) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.post('http://localhost:60918/api/Products/GetProductTypes', data.reqBody)
+		axios.post('http://5.53.134.70/api/Products/GetProductTypes', data.reqBody)
 			.then(response => {
 				console.log("fetchProductTypes res ", response.data);
 				if (response && response.data && response.data.length > 0) {
@@ -160,7 +160,7 @@ const actions = {
 		let store = this;
 		console.log("reqBody -> ", reqBody);
 		store.dispatch('modules/general/activateLoading');
-		axios.post('http://localhost:60918/api/Products/FindByVehicleInfo', reqBody)
+		axios.post('http://5.53.134.70/api/Products/FindByVehicleInfo', reqBody)
 			.then(response => {
 				response.data.forEach(function(product) {
 					if (product.Images.length > 0) {
@@ -186,7 +186,7 @@ const actions = {
 	async getProductAvailability({commit}, productId) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.get('http://localhost:60918/api/Products/GetPriceAndQuantities/' + productId)
+		axios.get('http://5.53.134.70/api/Products/GetPriceAndQuantities/' + productId)
 			.then(response => {
 				console.log("Product availability -> ", response.data);
 				commit('SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY', response.data);
@@ -200,7 +200,7 @@ const actions = {
 	async searchForCode({commit}, code) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.get('http://localhost:60918/api/Products/Get?code=' + code)
+		axios.get('http://5.53.134.70/api/Products/Get?code=' + code)
 			.then(response => {
 				console.log("searchForCode -> ", response.data);
 				response.data.forEach(function(product) {
