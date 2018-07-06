@@ -72,6 +72,8 @@
 <script>
 	import ProductCard from '~/components/ProductCard';
 	import ProductDetailsDialog from '~/components/ProductDetailsDialog';
+	import scrollTo from "~/utils/scrollTo";
+
 	export default {
 		components: {
 			'product-card': ProductCard,
@@ -105,6 +107,9 @@
 			},
 			listComponentItems() {
 				let startElem = (this.pageNumProducts - 1) * this.maxElementsToShow;
+
+				this.scrollToResults();
+
 				if (this.filteredProducts.length > 0) {
 					return this.filteredProducts.slice(startElem, this.maxElementsToShow * this.pageNumProducts);
 				} else {
@@ -134,6 +139,11 @@
 			}
 		},
 		methods: {
+			scrollToResults() {
+				const productsContainer = document.body.querySelector("main.content .products-container");
+
+				scrollTo(productsContainer.offsetTop - 120, 300);
+			},
 			picker(index) {
 				return index % 2 == 0 ? 'grey lighten-5' : 'grey lighten-3';
 			},
