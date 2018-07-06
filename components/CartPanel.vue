@@ -8,8 +8,8 @@
 					</v-btn>
 				</v-flex>
 				<v-flex sm8 align-content-center>
-					<h2 class="cart-panel-title" v-if="addedItemsToCartCount">Items in your cart</h2>
-					<h2 class="cart-panel-title" v-else>Cart is empty</h2>
+					<h2 class="cart-panel-title" v-if="addedItemsToCartCount">Количка</h2>
+					<h2 class="cart-panel-title" v-else>Количката е празна</h2>
 				</v-flex>
 			</v-layout>
 		</v-container>
@@ -28,7 +28,7 @@
 									</v-card-media>
 									<v-btn color="primary" flat @click="onProductDetails(product)">
 										<v-icon left>mdi-information-outline</v-icon>
-										Details
+										Детайли
 									</v-btn>
 								</v-flex>
 								<v-flex xs8>
@@ -37,14 +37,14 @@
 										<v-card-title>
 											<h3 style="width:100%">Eurocode: {{product.item.EuroCode}}</h3>
 											<div style="width:100%">{{product.item.Description}}</div>
-											<div style="font-weight:bold;margin-top:10px;width:100%">Price: 100lv</div>
+											<div style="font-weight:bold;margin-top:10px;width:100%">Цена: 100lv</div>
 										</v-card-title>
 									</v-flex>
 
 									<v-flex column>
 										<v-card-actions>
 											<v-flex xs5 align-center>
-												<div class="action-title">Quantity</div>
+												<div class="action-title">Количество</div>
 												<v-btn color="primary" icon flat @click="decreaseProductQuantity(product, index)">
 													<v-icon>mdi-minus</v-icon>
 												</v-btn>
@@ -54,7 +54,7 @@
 												</v-btn>
 											</v-flex>
 											<v-flex xs4 align-center>
-												<div class="action-title">Sum</div>
+												<div class="action-title">Общо</div>
 												<div class="total-product-sum">{{product.cartCount * 100}}lv</div>
 											</v-flex>
 											<v-flex xs2 align-end>
@@ -74,15 +74,17 @@
 
 		<v-container>
 			<v-layout row>
-				<v-flex xs3 offset-xs9>
-					<h3 class="total-sum-text">Cart total: {{totalSum}}lv</h3>
-					<h3 class="total-sum-text">Shipping: 0lv</h3>
+				<v-flex xs5 offset-xs7>
+					<h3 class="total-sum-text">Общо: {{totalSum}}lv</h3>
+					<h3 class="total-sum-text">Доставка: 0lv</h3>
 					<br>
-					<h2 class="total-sum-text">Total: {{totalSum}}lv</h2>
-					<v-btn color="primary" @click="onCheckout">
-						<v-icon left>mdi-credit-card-multiple</v-icon>
-						Checkout
-					</v-btn>
+					<h2 class="total-sum-text">Крайна сума: {{totalSum}}lv</h2>
+					<v-flex right>
+						<v-btn color="primary" @click="onCheckout">
+							<v-icon left>mdi-credit-card-multiple</v-icon>
+							Плати
+						</v-btn>
+					</v-flex>
 				</v-flex>
 			</v-layout>
 		</v-container>

@@ -1,30 +1,32 @@
 <template>
-	<v-container>
-
-		<div class="count">Found products: <span v-if="foundProducts.length == 0" style="color:#ce1414">{{foundProducts.length}}</span><span v-if="foundProducts.length" style="color:#089148">{{foundProducts.length}}</span></div>
-
-		<v-container class="filters" v-if="foundProducts.length" align-center>
-			<h2 style="text-align:center;">Filter by image</h2>
-			<div class="filter-container">
-				<v-flex class="filter-by-images" v-for="image in listFilteredImages" :key="image" v-if="isExisting(image)">
-					<v-btn-toggle v-model="filterImageId" style="border-radius:5px">
-						<v-btn active-class class="filter-image-button" :value="image"><img class="filter-image" :src="image"></v-btn>
-					</v-btn-toggle>
-				</v-flex>
-			</div>
-			<v-container fluid class="text-xs-center">
-				<v-pagination class="pagination" :length.number="paginationLengthFilterImages" v-model="pageNumFilterImages" :total-visible="7"></v-pagination>
+	<v-content>
+		<div class="products-container">
+			<v-container class="filters" v-if="foundProducts.length">
+				<div class="filters-card">
+					<h2 class="filters-title">Филтър</h2>
+					<div class="filter-container">
+						<v-flex class="filter-by-images" v-for="image in listFilteredImages" :key="image">
+							<v-btn-toggle v-model="filterImageId" style="border-radius:5px">
+								<v-btn active-class class="filter-image-button" :value="image"><img class="filter-image" :src="image"></v-btn>
+							</v-btn-toggle>
+						</v-flex>
+					</div>
+					<v-container fluid class="text-xs-center" v-if="allImages.length > maxFiltersToShow">
+						<v-pagination class="pagination" :length.number="paginationLengthFilterImages" v-model="pageNumFilterImages" :total-visible="7"></v-pagination>
+					</v-container>
+				</div>
 			</v-container>
-		</v-container>
 
-		<v-container class="all-products" align-center v-if="foundProducts.length">
-			<v-container class="product" v-for="(product, index) in listComponentItems" :key="product.Id">
-				<product-card class="product-card" :product="product" :color="picker(index)" @onAddProductToCart="onAddProductToCart" @onProductDetails="onProductDetails" />
+			<v-container class="products" v-if="foundProducts.length">
+				<div class="all-products">
+					<product-card class="product product-card" v-for="(product, index) in listComponentItems" :key="product.Id" :product="product" :color="picker(index)" @onAddProductToCart="onAddProductToCart" @onProductDetails="onProductDetails" />					
+				</div>
+				<v-container fluid class="text-xs-center" v-if="(filteredProducts.length !== 0 && filteredProducts.length > maxElementsToShow) || (foundProducts.length > maxElementsToShow && filteredProducts.length === 0)">
+					<v-pagination class="pagination" :length.number="paginationLengthProducts" v-model="pageNumProducts" :total-visible="7"></v-pagination>
+				</v-container>
 			</v-container>
-			<v-container fluid class="text-xs-center">
-				<v-pagination class="pagination" :length.number="paginationLengthProducts" v-model="pageNumProducts" :total-visible="7"></v-pagination>
-			</v-container>
-		</v-container>
+		</div>
+
 
 		<!-- Details Dialog -->
 		<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick"></product-details-dialog>
@@ -33,37 +35,38 @@
 		<v-content v-if="dialogCartCountOpen" class="cart-count-container">
 			<v-container fluid style="width:100%;height:100px;background-color:white;">
 				<no-ssr>
-					<v-dialog v-model="dialogCartCountOpen" persistent max-width="250">
+					<v-dialog v-model="dialogCartCountOpen" persistent max-width="300">
 						<v-layout row wrap align-center style="background-color:white;">
 							<v-flex row xs6 offset-xs3 style="margin-bottom:20px">
-								<h2 style="text-align:center">Count</h2>
+								<h2 style="text-align:center; padding: 15px;">Количество</h2>
 							</v-flex>
 							<v-flex row xs8 offset-xs3 style="margin-bottom:10px">
 								<v-btn color="primary" icon flat @click="decreaseCartCount">
 									<v-icon>mdi-minus</v-icon>
 								</v-btn>
-								<span style="font-size:20px;margin-left:10px;margin-right:10px">{{cartCount}}</span>
+								<input type="number" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>
 								<v-btn color="primary" icon flat @click="increaseCartCount">
 									<v-icon>mdi-plus</v-icon>
 								</v-btn>
 							</v-flex>
-							<v-flex row xs12>
-								<v-btn color="primary" flat @click="onAddCartCountDialogClick">
+
+							<v-container style="display: flex;">
+								<v-btn class="flex" color="primary" flat @click="onAddCartCountDialogClick">
 									<v-icon left>fa-cart-plus</v-icon>
-									Add
+									Добави
 								</v-btn>
-								<v-btn color="primary" flat @click="onCloseCartCountDialogClick">
+								<v-btn class="flex" color="primary" flat @click="onCloseCartCountDialogClick">
 									<v-icon left>mdi-close</v-icon>
-									Close
+									Затвори
 								</v-btn>
-							</v-flex>
+							</v-container>
 						</v-layout>
 					</v-dialog>
 				</no-ssr>
 			</v-container>
 		</v-content>
 
-	</v-container>
+	</v-content>
 </template>
 
 <script>
@@ -78,8 +81,8 @@
 			return {
 				pageNumProducts: 1,
 				pageNumFilterImages: 1,
-				maxElementsToShow: 3,
-				maxFiltersToShow: 6,
+				maxElementsToShow: 6,
+				maxFiltersToShow: 8,
 				filterImageId: 0,
 				filteredProducts: [],
 				dialogDetailsOpen: false,
@@ -114,7 +117,7 @@
 				if (comp.foundProducts.length > 0) {
 					comp.foundProducts.forEach(function(product) {
 						product.Images.forEach(function(image) {
-							if (images.indexOf(image) === -1 && comp.isExisting(image)) {
+							if (images.indexOf(image) === -1) {
 								images.push(image);
 							}
 						});
@@ -132,7 +135,7 @@
 		},
 		methods: {
 			picker(index) {
-				return index % 2 == 0 ? 'blue-grey lighten-5' : 'blue-grey lighten-3';
+				return index % 2 == 0 ? 'grey lighten-5' : 'grey lighten-3';
 			},
 			onAddProductToCart(product) {
 				this.dialogCartCountOpen = true;
@@ -144,13 +147,6 @@
 				this.dialogDetailsOpen = true;
 				this.$store.dispatch("modules/products/getProductAvailability", product.Id);
 				console.log("onProductDetails", product);
-			},
-			isExisting(image) {
-				if (image !== "/Images/no-image.png") {
-					return true;
-				} else {
-					return false;
-				}
 			},
 			onCloseCartCountDialogClick() {
 				this.cartCount = 1;
@@ -168,7 +164,7 @@
 				let comp = this,
 					product = {};
 				product.item = JSON.parse(JSON.stringify(comp.currentCartProductToAdd));
-				product.cartCount = comp.cartCount;
+				product.cartCount = ~~comp.cartCount;
 				comp.$store.dispatch("modules/cart/addItemToCart", {
 					productToBeAdded: product,
 					originalProduct: comp.currentCartProductToAdd
@@ -187,14 +183,14 @@
 				this.pageNumProducts = 1;
 				this.pageNumFilterImages = 1;
 			},
-			filterImageId(value) {
+			filterImageId(imageId) {
 				let comp = this;
 				comp.pageNumProducts = 1;
 				// comp.pageNumFilterImages = 1;
 				comp.filteredProducts = [];
-				if (value) {
+				if (imageId) {
 					comp.foundProducts.forEach(function(product) {
-						if (product.Images.indexOf(value) !== -1) {
+						if (product.Images.indexOf(imageId) !== -1) {
 							comp.filteredProducts.push(product);
 						}
 					});
@@ -207,89 +203,111 @@
 </script>
 
 <style lang="css" scoped>
+	.products-container {
+		display: grid;
+		grid-template-areas: 
+			"filter filter products products products"
+			"filter filter products products products"
+		;
+		grid-column-gap: 40px;
+		grid-row-gap: 40px;
+		grid-template-columns: 160px 160px 1fr 1fr 1fr;
+		padding: 0 60px;
+	}
+
+	.products-container .filters {
+		grid-area: filter;
+		margin: 0;
+		padding: 0;
+	}
+
+	.products-container .products {
+		grid-area: products;
+		display: grid;
+		margin: 0;
+		padding: 0;
+	}
+
+	.products-container .filters .filters-card {
+		box-shadow: 0 2px 20px 0 rgba(0,0,0,0.05);
+	}
+
+	.products-container .filters .filters-title {
+		padding: 15px 20px;
+	}
+
+	.products-container .filters .filter-by-images {
+		display: flex;
+		justify-content: center;
+	}
+
+	.products-container .all-products {
+		display: grid;
+		grid-template-columns: repeat( auto-fill, minmax(350px, 1fr) );
+		grid-column-gap: 40px;
+		grid-row-gap: 40px;
+		margin: 0;
+		padding: 0;
+	}
+
+	.filter-container {
+		width: 100%;
+		display: grid;
+		grid-template-columns: repeat( auto-fill, minmax(150px, 1fr) );
+		grid-column-gap: 20px;
+		grid-row-gap: 30px;
+		padding: 0 20px;
+		padding-bottom: 20px;
+	}
+
 	.cart-count-container {
 		background-color: #F1F1F1;
 	}
 	
 	.filter-image-button {
-		width: 150px;
-		height: 150px;
+		width: 140px;
+		height: 140px;
 	}
 	
 	.filter-image {
 		display: block;
-		max-width: 150px;
-		max-height: 150px;
+		max-width: 130px;
+		max-height: 130px;
 		object-fit: cover;
 		background-size: cover;
 		/*box-shadow: 0 0 8px 8px white inset;*/
-	}
-	
-	.filter-by-images {
-		margin-top: 10px;
-		margin-right: 5px;
-		width: 150px;
-		height: 150px;
-		float: left;
-	}
-	
-	.filter-container {
-		height: 330px;
-		width: 100%;
-	}
-	
-	.filters {
-		width: 29.5%;
-		float: left;
-		margin-right: 0.5%;
-		height: 505px;
-		box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
-		border-radius: 10px;
-	}
+	}	
 	
 	.text-xs-center {
 		clear: both;
 	}
 	
 	.pagination {
-		margin-top: 50px;
-	}
-	
-	.count {
-		box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
-		border-radius: 10px;
-		width: 100%;
-		margin-bottom: 5px;
-		height: 42px;
-		color: #37474F;
-		font-weight: 700;
-		text-align: center;
-		font-size: 26px;
-	}
-	
-	.all-products {
-		box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
-		border-radius: 10px;
-		float: left;
-		width: 70%;
+		margin-top: 10px;
 	}
 	
 	.product {
-		height: 350px;
-		width: 33%;
-		float: left;
 		font-size: 20px;
-		position: relative;
-		overflow: hidden;
 	}
 	
 	.results {
 		position: relative;
 		overflow: hidden;
 		margin-top: 20px;
-	}
-	
-	.product-card {
-		height: 350px;
+	}	
+
+	@media all and (max-width: 992px) {
+		.products-container {
+			grid-template-areas: 
+				"filter filter filter filter filter"
+				"products products products products products"
+			;
+			grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+			padding: 0 20px;
+		}
+
+		.filter-container {
+			/*grid-template-columns: repeat( 12, minmax(150px, 1fr) );*/
+		}
 	}
 </style>

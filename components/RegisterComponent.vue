@@ -1,18 +1,18 @@
 <template>
 	<v-container>
 		<v-form>
-			<form-component elemType="email" v-model="email" fieldName="Email" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
-			<form-component elemType="password" v-model="password" fieldName="Password" :hasError="validation.hasError('password')" :firstError="validation.firstError('password')"></form-component>
-			<form-component elemType="password" v-model="confirmedPassword" fieldName="Confirm password" :hasError="validation.hasError('confirmedPassword')" :firstError="validation.firstError('confirmedPassword')"></form-component>
-			<form-component elemType="text" v-model="fullName" fieldName="Full name" :hasError="validation.hasError('fullName')" :firstError="validation.firstError('fullName')"></form-component>
-			<form-component elemType="text" v-model="country" fieldName="Country" :hasError="validation.hasError('country')" :firstError="validation.firstError('country')"></form-component>
-			<form-component elemType="text" v-model="city" fieldName="City" :hasError="validation.hasError('city')" :firstError="validation.firstError('city')"></form-component>
-			<form-component elemType="text" v-model="address" fieldName="Address" :hasError="validation.hasError('address')" :firstError="validation.firstError('address')"></form-component>
-			<form-component elemType="text" v-model="phone" fieldName="Phone" :hasError="validation.hasError('phone')" :firstError="validation.firstError('phone')"></form-component>
+			<form-component elemType="email" v-model="email" fieldName="Имейл" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
+			<form-component elemType="password" v-model="password" fieldName="Парола" :hasError="validation.hasError('password')" :firstError="validation.firstError('password')"></form-component>
+			<form-component elemType="password" v-model="confirmedPassword" fieldName="Потвтори парола" :hasError="validation.hasError('confirmedPassword')" :firstError="validation.firstError('confirmedPassword')"></form-component>
+			<form-component elemType="text" v-model="fullName" fieldName="Име" :hasError="validation.hasError('fullName')" :firstError="validation.firstError('fullName')"></form-component>
+			<form-component elemType="text" v-model="country" fieldName="Държава" :hasError="validation.hasError('country')" :firstError="validation.firstError('country')"></form-component>
+			<form-component elemType="text" v-model="city" fieldName="Град" :hasError="validation.hasError('city')" :firstError="validation.firstError('city')"></form-component>
+			<form-component elemType="text" v-model="address" fieldName="Адрес" :hasError="validation.hasError('address')" :firstError="validation.firstError('address')"></form-component>
+			<form-component elemType="text" v-model="phone" fieldName="Телефон" :hasError="validation.hasError('phone')" :firstError="validation.firstError('phone')"></form-component>
 			<v-flex xs6>
 				<v-select label="Legal entity" v-bind:items="entities" v-model="legalEntity" single-line bottom item-value="text"></v-select>
 			</v-flex>
-			<button type="button" class="button buttonBlue" @click="onSubmit">Register
+			<button type="button" class="button buttonBlue" @click="onSubmit">Регистрация
 				<div class="ripples buttonRipples" v-bind:class="{ 'is-active': isButtonClicked }">
 					<span class="ripplesCircle" v-bind:style="{ top: circleY, left: circleX }"></span>
 				</div>
@@ -41,7 +41,7 @@
 				address: '',
 				phone: '',
 				legalEntity: '',
-				entities: ['Individual', 'Organization'],
+				entities: ['Юридическо лице', 'Организация'],
 				isButtonClicked: false,
 				circleX: '0px',
 				circleY: '0px'

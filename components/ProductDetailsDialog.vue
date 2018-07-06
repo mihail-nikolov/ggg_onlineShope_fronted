@@ -15,7 +15,7 @@
 									<v-flex xs12 column style="height:93%">
 										<v-card-text>
 											<div v-if="curProductDetails.Description">
-												<h4>Description</h4>
+												<h4>Описание</h4>
 												<div>{{curProductDetails.Description}}</div>
 												<br>
 											</div>
@@ -40,22 +40,24 @@
 												<br>
 											</div>
 											<div style="clear:both">
-												<h4>Type</h4>
+												<h4>Тип</h4>
 												<div>{{curProductDetails.ProductType}}</div>
 											</div>
 											<br>
 											<div>
-												<h4>Availability</h4>
-												<div></div>
+												<h4>Наличност</h4>
+												<div>-</div>
 											</div>
 										</v-card-text>
 									</v-flex>
 									<v-flex xs2 offset-xs9 column>
 										<v-card-actions>
-											<v-btn color="primary" flat @click="onCloseDetailsDialogClick" style="padding-right:5px">
-												<v-icon>mdi-close</v-icon>
-												Close
-											</v-btn>
+											<v-flex right>
+												<v-btn color="primary" flat @click="onCloseDetailsDialogClick" style="padding-right:5px">
+													<v-icon>mdi-close</v-icon>
+													Затвори
+												</v-btn>
+											</v-flex>
 										</v-card-actions>
 									</v-flex>
 								</v-flex>

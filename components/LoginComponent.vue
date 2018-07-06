@@ -1,16 +1,22 @@
 <template>
 	<v-container>
 		<v-form>
-			<form-component @onKeyUp="onKeyUp" elemType="email" v-model="email" fieldName="Email" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
-			<form-component @onKeyUp="onKeyUp" elemType="password" v-model="password" fieldName="Password" :hasError="validation.hasError('password')" :firstError="validation.firstError('password')"></form-component>
-			<button type="button" class="button buttonBlue" @click="onSubmit">Login
-				<div class="ripples buttonRipples" v-bind:class="{ 'is-active': isButtonClicked }">
-					<span class="ripplesCircle" v-bind:style="{ top: circleY, left: circleX }"></span>
-				</div>
-			</button>
-			<nuxt-link to="/register">
-				<v-btn flat light>Sign up</v-btn>
-			</nuxt-link>
+			<form-component @onKeyUp="onKeyUp" elemType="email" v-model="email" fieldName="Имейл" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
+			<form-component @onKeyUp="onKeyUp" elemType="password" v-model="password" fieldName="Парола" :hasError="validation.hasError('password')" :firstError="validation.firstError('password')"></form-component>
+			<v-layout row wrap>
+				<v-flex xs6 row wrap>
+					<nuxt-link xs12 to="/register" style="text-decoration: none">
+						<v-btn flat class="btn-fat">Регистрация</v-btn>
+					</nuxt-link>
+				</v-flex>
+				<v-flex xs6>
+					<button type="button" class="button buttonBlue" @click="onSubmit">Вход
+						<div class="ripples buttonRipples" v-bind:class="{ 'is-active': isButtonClicked }">
+							<span class="ripplesCircle" v-bind:style="{ top: circleY, left: circleX }"></span>
+						</div>
+					</button>
+				</v-flex>
+			</v-layout>
 		</v-form>
 	</v-container>
 </template>
@@ -110,7 +116,7 @@
 		padding: 3em 2em 2em 2em;
 		background: #fafafa;
 		border: 1px solid #ebebeb;
-		box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
+		box-shadow: 0 7px 8px -4px rgba(0, 0, 0, .14), 0 12px 17px 2px rgba(0, 0, 0, .08), 0 5px 22px 4px rgba(0, 0, 0, .06);
 	}
 	
 	.group {
@@ -221,7 +227,6 @@
 		position: relative;
 		display: inline-block;
 		padding: 12px 24px;
-		margin: .3em 0 1em 0;
 		width: 100%;
 		vertical-align: middle;
 		color: #fff;
@@ -241,7 +246,11 @@
 		outline: 0;
 	}
 	/* Button modifiers */
-	
+
+	.btn-fat {
+		margin: 5px 0;
+	}
+
 	.buttonBlue {
 		background: #37474F;
 		text-shadow: 1px 1px 0 rgba(39, 110, 204, .5);
