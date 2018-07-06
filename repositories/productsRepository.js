@@ -1,15 +1,15 @@
-import baseRepository from "./baseRepository"
+import baseRepository from "./baseRepository";
 
 
 class ProductsRepository {
 	constructor() {
-		this.http = baseRepository
+		this.http = baseRepository;
 		this.URL = {
 			productsByCode: "Products/Get",
 			productsByDetails: "Products/FindByVehicleInfo",
 			product: "Products/GetItemByFullCode",
 			productTypes: "Products/GetProductTypes"
-		}
+		};
 	}
 
 
@@ -39,20 +39,20 @@ class ProductsRepository {
 	*/
 	getProducts(data) {
 		if (data.MakeId === void 0 && data.code === void 0) {
-			return Promise.reject("invalid params")
+			return Promise.reject("invalid params");
 		}
 
 		if (data.code !== void 0) {
-			const { code } = data
-			const requestParams = { code }
+			const { code } = data;
+			const requestParams = { code };
 
-			return this.http.get(this.URL.productsByCode, requestParams)
+			return this.http.get(this.URL.productsByCode, requestParams);
 		}
 		else {
-			const { MakeId, ModelId, BodyTypeId, ProductType } = data
-			const requestData = { MakeId, ModelId, BodyTypeId, ProductType }
+			const { MakeId, ModelId, BodyTypeId, ProductType } = data;
+			const requestData = { MakeId, ModelId, BodyTypeId, ProductType };
 
-			return this.http.post(this.URL.productsByDetails, requestData)
+			return this.http.post(this.URL.productsByDetails, requestData);
 		}
 	}
 
@@ -66,19 +66,19 @@ class ProductsRepository {
 	*/
 	getProduct(data) {
 		if (data.EuroCode !== void 0) {
-			return this.http.get(this.URL.product, { EuroCode: data.EuroCode })
+			return this.http.get(this.URL.product, { EuroCode: data.EuroCode });
 		}
 		else if (data.OesCode !== void 0) {
-			return this.http.get(this.URL.product, { OesCode: data.OesCode })
+			return this.http.get(this.URL.product, { OesCode: data.OesCode });
 		}
 		else if (data.MaterialNumber !== void 0) {
-			return this.http.get(this.URL.product, { MaterialNumber: data.MaterialNumber })
+			return this.http.get(this.URL.product, { MaterialNumber: data.MaterialNumber });
 		}
 		else if (data.IndustryCode !== void 0) {
-			return this.http.get(this.URL.product, { IndustryCode: data.IndustryCode })
+			return this.http.get(this.URL.product, { IndustryCode: data.IndustryCode });
 		}
 		else {
-			return Promise.reject("invalid code", data)
+			return Promise.reject("invalid code", data);
 		}
 	}
 
@@ -93,7 +93,7 @@ class ProductsRepository {
 	@return Array<string>
 	*/
 	getProductTypes(data) {
-		return this.http.post(this.URL.productTypes, data)
+		return this.http.post(this.URL.productTypes, data);
 	}
 
 	/**
@@ -132,10 +132,10 @@ class ProductsRepository {
 	*/
 	getProductTypeById(data) {
 		if (data.id === void 0) {
-			return Promise.reject("no id")
+			return Promise.reject("no id");
 		}
 
-		return this.http.post(this.URL.productTypes, data)
+		return this.http.post(this.URL.productTypes, data);
 	}
 	/**
 	@param data: {
@@ -147,8 +147,8 @@ class ProductsRepository {
 	}
 }
 
-const productsRepository = new ProductsRepository
+const productsRepository = new ProductsRepository;
 
-global.products = productsRepository
+global.products = productsRepository;
 
-export default productsRepository
+export default productsRepository;
