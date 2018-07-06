@@ -3,7 +3,8 @@ module.exports = {
 	parser: 'babel-eslint',
 	env: {
 		browser: true,
-		node: true
+		node: true,
+		es6: true
 	},
 	"extends": "eslint:recommended",
 	// required to lint *.vue files
@@ -15,7 +16,7 @@ module.exports = {
 		"no-useless-escape": 0,
 		"no-unused-vars": 0,
 		"indent": ["error", "tab"],
-		"semi": ["error", "always"],
+		"semi": ["error", "never"],
 		"comma-dangle": 1, // disallow trailing commas in object literals
 		"no-cond-assign": 1, // disallow assignment in conditional expressions
 		"no-dupe-keys": 1, // disallow duplicate keys when creating object literals
