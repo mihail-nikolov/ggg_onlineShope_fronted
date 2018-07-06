@@ -1,4 +1,5 @@
 import axios from 'axios';
+import productsRepository from "../../repositories/productsRepository"
 
 const state = () => ({
 	makes: [],
@@ -135,17 +136,20 @@ const actions = {
 	async fetchProductTypes({commit}, data) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.post('http://5.53.134.70/api/Products/GetProductTypes', data.reqBody)
-			.then(response => {
-				console.log("fetchProductTypes res ", response.data);
-				if (response && response.data && response.data.length > 0) {
+
+		console.warn(data)
+
+		return productsRepository.getProductTypes(data.reqBody)
+			.then(data => {
+				console.log("fetchProductTypes res ", data);
+				if (data && data.length > 0) {
 					this.dispatch("modules/general/setSnackbarNotification", {
 						message: "Product types  for " + data.makeModelName + " are successfully fetched.",
 						status: "success"
 					});
 				}
 				store.dispatch('modules/general/deactivateLoading');
-				commit('SET_PRODUCT_TYPES', response.data);
+				commit('SET_PRODUCT_TYPES', data);
 			})
 			.catch(e => {
 				store.dispatch('modules/general/deactivateLoading');
@@ -160,9 +164,10 @@ const actions = {
 		let store = this;
 		console.log("reqBody -> ", reqBody);
 		store.dispatch('modules/general/activateLoading');
-		axios.post('http://5.53.134.70/api/Products/FindByVehicleInfo', reqBody)
-			.then(response => {
-				response.data.forEach(function(product) {
+
+		productsRepository.getProducts(reqBody)
+			.then(products => {
+				products.forEach(function(product) {
 					if (product.Images.length > 0) {
 						product.Images.forEach(function(image, index, object) {
 							let tempPath = "/Images/" + image + ".jpg";
@@ -176,7 +181,7 @@ const actions = {
 					}
 				});
 				store.dispatch('modules/general/deactivateLoading');
-				commit('SET_ALL_PRODUCTS', response.data);
+				commit('SET_ALL_PRODUCTS', products);
 			})
 			.catch(e => {
 				store.dispatch('modules/general/deactivateLoading');

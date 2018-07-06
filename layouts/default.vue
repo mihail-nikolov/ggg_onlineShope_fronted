@@ -5,11 +5,11 @@
 		</v-navigation-drawer>
 		<v-toolbar color="blue-grey darken-3" dark fixed app clipped-right>
 			<a v-bind:href="homeLink" class="logo-img" title="Glass Gold Group: Homepage"></a>
-			<nuxt-link to="/"><v-btn flat dark>Search</v-btn></nuxt-link>
-			<nuxt-link to="/about"><v-btn flat dark>About</v-btn></nuxt-link>
-			<nuxt-link to="/contact"><v-btn flat dark>Contact</v-btn></nuxt-link>
-			<nuxt-link to="/"><v-btn v-if="isLoggedIn" flat dark @click="onLogoutClick">Logout</v-btn></nuxt-link>
-			<nuxt-link to="/login"><v-btn v-if="!isLoggedIn" flat dark>Login</v-btn></nuxt-link>
+			<nuxt-link to="/"><v-btn flat dark>Търсене</v-btn></nuxt-link>
+			<nuxt-link to="/about"><v-btn flat dark>За нас</v-btn></nuxt-link>
+			<nuxt-link to="/contact"><v-btn flat dark>Контакти</v-btn></nuxt-link>
+			<nuxt-link to="/"><v-btn v-if="isLoggedIn" flat dark @click="onLogoutClick">Изход</v-btn></nuxt-link>
+			<nuxt-link to="/login"><v-btn v-if="!isLoggedIn" flat dark>Вход</v-btn></nuxt-link>
 			<v-spacer></v-spacer>
 			<v-btn flat icon @click="onCartClick" :disabled="!addedItemsToCartCount">
 				<v-badge left bottom origin>
@@ -19,12 +19,10 @@
 			</v-btn>
 		</v-toolbar>
 		<v-content id="main-content">
-			<v-container fluid fill-height>
-				<v-layout justify-center align-center>
-					<nuxt/>
-					<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick"></product-details-dialog>
-				</v-layout>
-			</v-container>
+			<v-layout justify-center align-center>
+				<nuxt/>
+				<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick"></product-details-dialog>
+			</v-layout>
 		</v-content>
 		<v-footer color="blue-grey darken-3" class="white--text" fixed app>
 			<span>Gold Glass Group&reg;</span>

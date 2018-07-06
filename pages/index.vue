@@ -1,8 +1,8 @@
 <template>
-	<v-container class="index-page">
+	<v-content class="index-page">
 		<search-component/>
 		<products-component/>
-	</v-container>
+	</v-content>
 </template>
 
 <script>
@@ -19,6 +19,6 @@
 
 <style scoped>
 	.search-results {
-		width: 90vw;
+		width: calc(100% - 60px);
 	}
 </style>
