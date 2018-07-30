@@ -1,17 +1,15 @@
 export default function scrollTo(to, duration) {
-	var doc = document.documentElement;
-	var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
-	var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-	var start = top,
+	const doc = document.documentElement;
+	const left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+	const top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+	let start = top,
 		change = to - start,
 		currentTime = 0,
 		increment = 20;
 
-	console.warn(top, to);
-
-	var animateScroll = function(){
+	const animateScroll = function(){
 		currentTime += increment;
-		var val = Math.easeInOutQuad(currentTime, start, change, duration);
+		const val = Math.easeInOutQuad(currentTime, start, change, duration);
 		window.scrollTo(0, val);
 
 		if(currentTime < duration) {

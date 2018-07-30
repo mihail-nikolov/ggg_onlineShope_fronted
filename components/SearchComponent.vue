@@ -20,14 +20,14 @@
 			<multiselect class="search-multiselect" v-model="modelValue" :options="modelOptions" track-by="Id" label="Name" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери модел"></multiselect>
 			<multiselect class="search-multiselect" v-model="bodyTypeValue" :options="bodyTypeOptions" track-by="Id" label="Description" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери част"></multiselect>
 		</v-container>
+
 		<v-flex class="car-container" align-center>
-			<glasses-svg class="glasses-svg"></glasses-svg>
+			<glasses-svg class="glasses-svg" :selected-windows="selectedWindows" :available-windows="availableWindows" v-on:selectElement="onSelectWindowType"></glasses-svg>
 		</v-flex>
 
 		<div v-if="foundProducts.length > 0">
-			<div class="count">Намерени резултати: <span v-if="foundProducts.length == 0" style="color:#ce1414">{{foundProducts.length}}</span><span v-if="foundProducts.length" style="color:#089148">{{foundProducts.length}}</span></div>
-
-			<v-btn flat class="circle-btn" color="primary" @click="scrollToResults()">
+			<div class="count">Намерени резултати: <span style="color:#089148">{{ filteredProducts.length }}</span></div>
+			<v-btn v-if="filteredProducts.length > 0" flat class="circle-btn" color="primary" @click="scrollToResults()">
 				<v-icon center>fa-angle-down</v-icon>
 			</v-btn>
 		</div>
@@ -50,7 +50,8 @@
 				modelValue: null,
 				bodyTypeValue: null,
 				productTypeValue: null,
-				codeForSearch: ''
+				codeForSearch: '',
+				selectedWindows: []
 			};
 		},
 		computed: {
@@ -68,6 +69,12 @@
 			},
 			foundProducts() {
 				return this.$store.getters["modules/products/getAllProducts"];
+			},
+			availableWindows() {
+				return this.$store.getters["modules/products/getWindowTypes"];
+			},
+			filteredProducts() {
+				return this.$store.getters["modules/products/getFilteredProducts"];
 			}
 		},
 		methods: {
@@ -78,10 +85,14 @@
 			},
 			onCodeSearchClicked() {
 				this.$store.dispatch("modules/products/searchForCode", this.codeForSearch);
-				this.codeForSearch = '';
+				this.makeValue = null;
+				this.modelValue = null;
+				this.bodyTypeValue = null;
+				this.productTypeValue = null;
 			},
-			onSvgReady() {
-				console.log("SVG READY");
+			onSelectWindowType(windowTypes) {
+				this.$store.dispatch("modules/products/setSelectedWindowTypes", [...windowTypes]);
+				this.$store.dispatch("modules/products/filterProducts");
 			},
 			search() {
 				let reqBody = {
@@ -104,6 +115,8 @@
 					this.$store.dispatch("modules/products/setModels", []);
 					this.$store.dispatch("modules/products/clearProducts");
 				}
+
+				this.codeForSearch = '';
 			},
 			modelValue() {
 				if (this.modelValue && this.modelValue.Id) {
@@ -123,6 +136,8 @@
 					this.$store.dispatch("modules/products/setBodyTypes", []);
 					this.$store.dispatch("modules/products/clearProducts");
 				}
+
+				this.codeForSearch = '';
 			},
 			bodyTypeValue() {
 				if (this.bodyTypeValue && this.bodyTypeValue.Id) {
@@ -143,6 +158,8 @@
 					this.$store.dispatch("modules/products/setProductTypes", []);
 					this.$store.dispatch("modules/products/clearProducts");
 				}
+
+				this.codeForSearch = '';
 			},
 			productTypeValue() {
 				if (this.productTypeValue) {
@@ -154,6 +171,8 @@
 					};
 					this.$store.dispatch("modules/products/searchForProducts", reqBody);
 				}
+
+				this.codeForSearch = '';
 			}
 		},
 		async created() {

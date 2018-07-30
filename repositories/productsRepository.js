@@ -6,6 +6,7 @@ class ProductsRepository {
 		this.http = baseRepository;
 		this.URL = {
 			productsByCode: "Products/Get",
+			position: "Products/GetPositions",
 			productsByDetails: "Products/FindByVehicleInfo",
 			product: "Products/GetItemByFullCode",
 			productTypes: "Products/GetProductTypes"
@@ -54,6 +55,12 @@ class ProductsRepository {
 
 			return this.http.post(this.URL.productsByDetails, requestData);
 		}
+	}
+
+	getPosition({ Id }) {
+		console.warn(!!Id);
+
+		return this.http.post(this.URL.position, { makeId: Id });
 	}
 
 	/**

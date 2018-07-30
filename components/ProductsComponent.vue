@@ -1,25 +1,10 @@
 <template>
 	<v-content>
-		<div class="products-container">
-			<v-container class="filters" v-if="foundProducts.length">
-				<div class="filters-card">
-					<h2 class="filters-title">Филтър</h2>
-					<div class="filter-container">
-						<v-flex class="filter-by-images" v-for="image in listFilteredImages" :key="image">
-							<v-btn-toggle v-model="filterImageId" style="border-radius:5px">
-								<v-btn active-class class="filter-image-button" :value="image"><img class="filter-image" :src="image"></v-btn>
-							</v-btn-toggle>
-						</v-flex>
-					</div>
-					<v-container fluid class="text-xs-center" v-if="allImages.length > maxFiltersToShow">
-						<v-pagination class="pagination" :length.number="paginationLengthFilterImages" v-model="pageNumFilterImages" :total-visible="7"></v-pagination>
-					</v-container>
-				</div>
-			</v-container>
 
+		<div class="products-container">
 			<v-container class="products" v-if="foundProducts.length">
 				<div class="all-products">
-					<product-card class="product product-card" v-for="(product, index) in listComponentItems" :key="product.Id" :product="product" :color="picker(index)" @onAddProductToCart="onAddProductToCart" @onProductDetails="onProductDetails" />					
+					<product-card class="product product-card" v-for="(product, index) in listComponentItems" :key="product.Id" :product="product" :color="picker(index)" @onAddProductToCart="onAddProductToCart" @onProductDetails="onProductDetails" />
 				</div>
 				<v-container fluid class="text-xs-center" v-if="(filteredProducts.length !== 0 && filteredProducts.length > maxElementsToShow) || (foundProducts.length > maxElementsToShow && filteredProducts.length === 0)">
 					<v-pagination class="pagination" :length.number="paginationLengthProducts" v-model="pageNumProducts" :total-visible="7"></v-pagination>
@@ -82,11 +67,8 @@
 		data() {
 			return {
 				pageNumProducts: 1,
-				pageNumFilterImages: 1,
 				maxElementsToShow: 6,
 				maxFiltersToShow: 8,
-				filterImageId: 0,
-				filteredProducts: [],
 				dialogDetailsOpen: false,
 				dialogCartCountOpen: false,
 				curProductDetails: null,
@@ -108,34 +90,14 @@
 			listComponentItems() {
 				let startElem = (this.pageNumProducts - 1) * this.maxElementsToShow;
 
-				this.scrollToResults();
-
 				if (this.filteredProducts.length > 0) {
 					return this.filteredProducts.slice(startElem, this.maxElementsToShow * this.pageNumProducts);
 				} else {
 					return this.foundProducts.slice(startElem, this.maxElementsToShow * this.pageNumProducts);
 				}
 			},
-			allImages() {
-				let comp = this,
-					images = [];
-				if (comp.foundProducts.length > 0) {
-					comp.foundProducts.forEach(function(product) {
-						product.Images.forEach(function(image) {
-							if (images.indexOf(image) === -1) {
-								images.push(image);
-							}
-						});
-					});
-				}
-				return images;
-			},
-			listFilteredImages() {
-				let startElem = (this.pageNumFilterImages - 1) * this.maxFiltersToShow;
-				return this.allImages.slice(startElem, this.maxFiltersToShow * this.pageNumFilterImages);
-			},
-			paginationLengthFilterImages() {
-				return Math.ceil(this.allImages.length / this.maxFiltersToShow);
+			filteredProducts() {
+				return this.$store.getters["modules/products/getFilteredProducts"];
 			}
 		},
 		methods: {
@@ -187,26 +149,11 @@
 			}
 		},
 		watch: {
-			foundProducts() {
-				this.filterImageId = 0;
-				this.filteredProducts = [];
+			filteredProducts() {
 				this.pageNumProducts = 1;
-				this.pageNumFilterImages = 1;
 			},
-			filterImageId(imageId) {
-				let comp = this;
-				comp.pageNumProducts = 1;
-				// comp.pageNumFilterImages = 1;
-				comp.filteredProducts = [];
-				if (imageId) {
-					comp.foundProducts.forEach(function(product) {
-						if (product.Images.indexOf(imageId) !== -1) {
-							comp.filteredProducts.push(product);
-						}
-					});
-				} else {
-					comp.filteredProducts = [];
-				}
+			pageNumProducts() {
+				this.scrollToResults();
 			}
 		}
 	};
@@ -215,13 +162,10 @@
 <style lang="css" scoped>
 	.products-container {
 		display: grid;
-		grid-template-areas: 
-			"filter filter products products products"
-			"filter filter products products products"
-		;
+		grid-template-areas: "products products products products products";
 		grid-column-gap: 40px;
 		grid-row-gap: 40px;
-		grid-template-columns: 160px 160px 1fr 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 		padding: 0 60px;
 	}
 
@@ -234,7 +178,7 @@
 	.products-container .products {
 		grid-area: products;
 		display: grid;
-		margin: 0;
+		margin: 0 auto;
 		padding: 0;
 	}
 
@@ -308,16 +252,30 @@
 
 	@media all and (max-width: 992px) {
 		.products-container {
-			grid-template-areas: 
-				"filter filter filter filter filter"
-				"products products products products products"
-			;
-			grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-			padding: 0 20px;
+            padding: 0 200px;
 		}
 
 		.filter-container {
 			/*grid-template-columns: repeat( 12, minmax(150px, 1fr) );*/
 		}
 	}
+    /*@media all and (max-width: 780px) {*/
+        /*.products-container {*/
+        /*}*/
+    /*}*/
+    @media all and (max-width: 820px) {
+        .products-container {
+            padding: 0 120px;
+        }
+    }
+    @media all and (max-width: 680px) {
+        .products-container {
+            padding: 0 80px;
+        }
+    }
+    @media all and (max-width: 580px) {
+        .products-container {
+            padding: 0 20px;
+        }
+    }
 </style>
