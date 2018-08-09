@@ -131,7 +131,7 @@ const actions = {
 		commit("SET_FILTERED_PRODUCTS", filteredProducts);
 	},
 	async fetchMakes({commit}) {
-		axios.get(`http://5.53.134.70/api/Makes`)
+		axios.get(`http://﻿130.204.36.213/api/Makes`)
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
 					this.dispatch("modules/general/setSnackbarNotification", {
@@ -152,7 +152,7 @@ const actions = {
 	async fetchModels({commit}, make) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.get('http://5.53.134.70/api/Models/GetByMakeId/' + make.Id)
+		axios.get('http://﻿130.204.36.213/api/Models/GetByMakeId/' + make.Id)
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
 					this.dispatch("modules/general/setSnackbarNotification", {
@@ -175,7 +175,7 @@ const actions = {
 	async fetchBodyTypes({commit}, data) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.post('http://5.53.134.70/api/BodyTypes/GetByMakeAndModelIds', data.reqBody)
+		axios.post('http://﻿130.204.36.213/api/BodyTypes/GetByMakeAndModelIds', data.reqBody)
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
 					this.dispatch("modules/general/setSnackbarNotification", {
@@ -263,7 +263,7 @@ const actions = {
 	async getProductAvailability({commit}, productId) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.get('http://5.53.134.70/api/Products/GetPriceAndQuantities/' + productId)
+		axios.get('http://﻿130.204.36.213/api/Products/GetPriceAndQuantities/' + productId)
 			.then(response => {
 				console.log("Product availability -> ", response.data);
 				commit('SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY', response.data);
@@ -277,7 +277,7 @@ const actions = {
 	async searchForCode({commit}, code) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.get('http://5.53.134.70/api/Products/Get?code=' + code)
+		axios.get('http://﻿130.204.36.213/api/Products/Get?code=' + code)
 			.then(response => {
 				const products = response.data;
 				console.log("searchForCode -> ", products);
