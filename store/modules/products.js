@@ -96,6 +96,7 @@ const actions = {
 	clearProducts({commit}) {
 		commit('SET_ALL_PRODUCTS', []);
 		commit('SET_WINDOW_TYPES', []);
+		commit('SET_SELECTED_WINDOW_TYPES', []);
 	},
 	setSelectedWindowTypes({commit}, types) {
 		commit('SET_SELECTED_WINDOW_TYPES', types);
@@ -251,6 +252,7 @@ const actions = {
 				});
 				store.dispatch('modules/general/deactivateLoading');
 				commit('SET_WINDOW_TYPES', [...productTypes]);
+				commit('SET_SELECTED_WINDOW_TYPES', []);
 				commit('SET_SELECTED_IMAGES', []);
 				commit('SET_ALL_PRODUCTS', products);
 				commit('SET_FILTERED_PRODUCTS', products);
@@ -302,6 +304,7 @@ const actions = {
 				store.dispatch('modules/general/deactivateLoading');
 
 				commit('SET_WINDOW_TYPES', [...productTypes]);
+				commit('SET_SELECTED_WINDOW_TYPES', []);
 				commit('SET_SELECTED_IMAGES', []);
 				commit('SET_ALL_PRODUCTS', products);
 				commit('SET_FILTERED_PRODUCTS', products);

@@ -36,13 +36,14 @@
 	export default {
 		name: 'GlassesSVG',
 		props: {
-			selectedWindows: {
-				default: () => [],
-				type: Array
-			},
 			availableWindows: {
 				default: () => [],
 				type: Array
+			}
+		},
+		computed: {
+			selectedWindows() {
+				return this.$store.getters["modules/products/getSelectedWindowTypes"];
 			}
 		},
 		methods: {
@@ -51,14 +52,17 @@
 				const index = this.selectedWindows.indexOf(event.target.id);
 
 				if (available) {
+					let selectedElements = [];
+
 					if (index >= 0) {
-						this.selectedWindows.splice(index, 1);
+						selectedElements = this.selectedWindows.slice();
+						selectedElements.splice(index, 1);
 					}
 					else {
-						this.selectedWindows.push(event.target.id);
+						selectedElements = [...this.selectedWindows, event.target.id];
 					}
 
-					this.$emit("selectElement", this.selectedWindows);
+					this.$emit("selectElement", selectedElements);
 				}
 			},
 			selected(part) {
@@ -66,11 +70,6 @@
 			},
 			available(part) {
 				return this.availableWindows.includes(part);
-			}
-		},
-		watch: {
-			selectedWindows(value) {
-				console.log("selectedWindows values ", value);
 			}
 		}
 	};
