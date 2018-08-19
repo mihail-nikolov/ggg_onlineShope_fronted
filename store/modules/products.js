@@ -11,6 +11,8 @@ const state = () => ({
 	currentlyObservedProductAvailability: [],
 	windowTypes: [],
 	selectedWindowTypes: [],
+	allImages: [],
+	filteredImages: [],
 	selectedImages: []
 });
 
@@ -39,8 +41,17 @@ const mutations = {
 	SET_SELECTED_WINDOW_TYPES(state, types) {
 		state.selectedWindowTypes = types;
 	},
+	SET_ALL_IMAGES(state, images) {
+		state.allImages = images;
+		console.warn("all", images);
+	},
+	SET_FILTERED_IMAGES(state, images) {
+		state.filteredImages = images;
+		console.warn("filtered", images);
+	},
 	SET_SELECTED_IMAGES(state, images) {
 		state.selectedImages = images;
+		console.warn("selected", images);
 	},
 	SET_FILTERED_PRODUCTS(state, filteredProducts) {
 		state.filteredProducts = filteredProducts;
@@ -72,6 +83,12 @@ const getters = {
 	getWindowTypes(state) {
 		return state.windowTypes;
 	},
+	getAllImages(state) {
+		return state.allImages;
+	},
+	getFilteredImages(state) {
+		return state.filteredImages;
+	},
 	getSelectedImages(state) {
 		return state.selectedImages;
 	},
@@ -97,9 +114,21 @@ const actions = {
 		commit('SET_ALL_PRODUCTS', []);
 		commit('SET_WINDOW_TYPES', []);
 		commit('SET_SELECTED_WINDOW_TYPES', []);
+		commit('SET_ALL_IMAGES', []);
+		commit('SET_FILTERED_IMAGES', []);
+		commit('SET_SELECTED_IMAGES', []);
 	},
 	setSelectedWindowTypes({commit}, types) {
 		commit('SET_SELECTED_WINDOW_TYPES', types);
+	},
+	setAllImages({commit}, images) {
+		commit('SET_ALL_IMAGES', images);
+	},
+	setFilteredImages({commit}, images) {
+		commit('SET_FILTERED_IMAGES', images);
+	},
+	setSelectedImages({commit}, images) {
+		commit('SET_SELECTED_IMAGES', images);
 	},
 	setFilteredProducts({ commit }, products) {
 		commit('SET_FILTERED_PRODUCTS', products);
@@ -107,22 +136,32 @@ const actions = {
 	filterProducts({ commit, getters }) {
 		const products = getters.getAllProducts;
 		const windowTypes = getters.getSelectedWindowTypes;
+		const selectedImages = getters.getSelectedImages;
 
 		let filteredProducts = products;
 
-		if (windowTypes.length) {
+		if (windowTypes.length || selectedImages.length) {
 			filteredProducts = products.filter(product => {
-				if (windowTypes.length) {
-					if (windowTypes.indexOf(product.Position) !== -1) {
-						// if (this.selectedImages.length) {
-						// 	for (const img of product.Images) {
-						// 		if (img in this.selectedImages) {
-						// 			return true;
-						// 		}
-						// 	}
-						// }
-						return true;
+				if (windowTypes.length && selectedImages.length) {
+					if (windowTypes.includes(product.Position)) {
+						for (const image of product.Images) {
+							if (selectedImages.includes(image)) {
+								return true;
+							}
+						}
+						return false;
 					}
+				}
+				else if (windowTypes.length) {
+					return windowTypes.includes(product.Position);
+				}
+				else if (selectedImages.length) {
+					for (const image of product.Images) {
+						if (selectedImages.includes(image)) {
+							return true;
+						}
+					}
+					return false;
 				}
 
 				return false;
@@ -130,6 +169,30 @@ const actions = {
 		}
 
 		commit("SET_FILTERED_PRODUCTS", filteredProducts);
+	},
+	filterImages({commit, getters}) {
+		const windowTypes = getters.getSelectedWindowTypes;
+		const products = getters.getAllProducts;
+		const filteredImages = new Set;
+
+		if (windowTypes.length) {
+			for (const product of products) {
+				if (windowTypes.includes(product.Position)) {
+					for (const img of product.Images) {
+						filteredImages.add(img);
+					}
+				}
+			}
+		}
+		else {
+			for (const product of products) {
+				for (const img of product.Images) {
+					filteredImages.add(img);
+				}
+			}
+		}
+
+		commit("SET_FILTERED_IMAGES", Array.from(filteredImages));
 	},
 	async fetchMakes({commit}) {
 		axios.get(`http://﻿130.204.36.213/api/Makes`)
@@ -200,8 +263,6 @@ const actions = {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
 
-		console.warn(data);
-
 		return productsRepository.getProductTypes(data.reqBody)
 			.then(data => {
 				console.log("fetchProductTypes res ", data);
@@ -230,29 +291,33 @@ const actions = {
 
 		productsRepository.getProducts(reqBody)
 			.then(products => {
-				console.warn(products);
 				const productTypes = new Set;
+				const images = new Set;
 
 				products.forEach(function(product) {
-					// productsRepository.getPosition(product)
-					// 	.then(console.log);
 					productTypes.add(product.Position);
 
 					if (product.Images.length > 0) {
-						product.Images.forEach(function(image, index, object) {
-							let tempPath = "/Images/" + image + ".jpg";
-							object[index] = tempPath;
+						product.Images = product.Images.map(image => {
+							const imagePath = "/Images/" + image + ".jpg";
+							images.add(imagePath);
+							return imagePath;
 						});
 						if (product.Images.length === 0) {
 							product.Images.push("/Images/no-image.png");
+							images.add("/Images/no-image.png");
 						}
 					} else {
 						product.Images.push("/Images/no-image.png");
+						images.add("/Images/no-image.png");
 					}
 				});
+
 				store.dispatch('modules/general/deactivateLoading');
 				commit('SET_WINDOW_TYPES', [...productTypes]);
 				commit('SET_SELECTED_WINDOW_TYPES', []);
+				commit('SET_ALL_IMAGES', Array.from(images));
+				commit('SET_FILTERED_IMAGES', []);
 				commit('SET_SELECTED_IMAGES', []);
 				commit('SET_ALL_PRODUCTS', products);
 				commit('SET_FILTERED_PRODUCTS', products);
@@ -279,32 +344,36 @@ const actions = {
 	async searchForCode({commit}, code) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.get('http://﻿130.204.36.213/api/Products/Get?code=' + code)
-			.then(response => {
-				const products = response.data;
+		productsRepository.getProducts({ code })
+			.then(products => {
 				console.log("searchForCode -> ", products);
 				const productTypes = new Set;
+				const images = new Set;
 
-				products.forEach(product => {
+				products.forEach(function(product) {
 					productTypes.add(product.Position);
 
 					if (product.Images.length > 0) {
-						product.Images.forEach(function(image, index, object) {
-							let tempPath = "/Images/" + image + ".jpg";
-							object[index] = tempPath;
+						product.Images = product.Images.map(image => {
+							const imagePath = "/Images/" + image + ".jpg";
+							images.add(imagePath);
+							return imagePath;
 						});
 						if (product.Images.length === 0) {
 							product.Images.push("/Images/no-image.png");
+							images.add("/Images/no-image.png");
 						}
 					} else {
 						product.Images.push("/Images/no-image.png");
+						images.add("/Images/no-image.png");
 					}
 				});
 
 				store.dispatch('modules/general/deactivateLoading');
-
 				commit('SET_WINDOW_TYPES', [...productTypes]);
 				commit('SET_SELECTED_WINDOW_TYPES', []);
+				commit('SET_ALL_IMAGES', Array.from(images));
+				commit('SET_FILTERED_IMAGES', []);
 				commit('SET_SELECTED_IMAGES', []);
 				commit('SET_ALL_PRODUCTS', products);
 				commit('SET_FILTERED_PRODUCTS', products);

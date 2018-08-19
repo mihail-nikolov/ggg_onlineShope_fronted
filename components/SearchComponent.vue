@@ -13,7 +13,7 @@
 					</v-btn>
 				</v-flex>
 			</v-layout>
-			<h2>ИЛИ</h2>
+			<h3>ИЛИ</h3>
 		</v-container>
 		<v-container align-center class="search-selectors-container">
 			<multiselect class="search-multiselect" v-model="makeValue" :options="makeOptions" track-by="Id" label="Name" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери марка"></multiselect>
@@ -25,8 +25,18 @@
 			<glasses-svg class="glasses-svg" :selected-windows="selectedWindows" :available-windows="availableWindows" v-on:selectElement="onSelectWindowType"></glasses-svg>
 		</v-flex>
 
+        <v-flex class="images-container" align-center>
+            <img alt="" width="100" height="100" class="image-preview"
+                 v-for="image in allImages" :src="image"
+                 v-bind:class="{
+                    selected: selectedImages.includes(image),
+                    disabled: filteredImages.length && !filteredImages.includes(image)
+                    }"
+                 @click="toggleSelectImage(image);">
+        </v-flex>
+
 		<div v-if="foundProducts.length > 0">
-			<div class="count">Намерени резултати: <span style="color:#089148">{{ filteredProducts.length }}</span></div>
+			<div class="count">РЕЗУЛТАТИ: <span style="color:#089148">{{ filteredProducts.length }}</span></div>
 			<v-btn v-if="filteredProducts.length > 0" flat class="circle-btn" color="primary" @click="scrollToResults()">
 				<v-icon center>fa-angle-down</v-icon>
 			</v-btn>
@@ -75,6 +85,15 @@
 			},
 			filteredProducts() {
 				return this.$store.getters["modules/products/getFilteredProducts"];
+			},
+			allImages() {
+				return this.$store.getters["modules/products/getAllImages"];
+			},
+			filteredImages() {
+				return this.$store.getters["modules/products/getFilteredImages"];
+			},
+			selectedImages() {
+				return this.$store.getters["modules/products/getSelectedImages"];
 			}
 		},
 		methods: {
@@ -92,6 +111,22 @@
 			},
 			onSelectWindowType(windowTypes) {
 				this.$store.dispatch("modules/products/setSelectedWindowTypes", [...windowTypes]);
+				this.$store.dispatch("modules/products/filterImages");
+				this.$store.dispatch("modules/products/setSelectedImages", []);
+				this.$store.dispatch("modules/products/filterProducts");
+			},
+			toggleSelectImage(image) {
+				const selectedImages = this.selectedImages.slice();
+				const index = selectedImages.indexOf(image);
+
+				if (index !== -1) {
+					selectedImages.splice(index, 1);
+				}
+				else {
+					selectedImages.push(image);
+				}
+
+				this.$store.dispatch("modules/products/setSelectedImages", selectedImages);
 				this.$store.dispatch("modules/products/filterProducts");
 			},
 			search() {
@@ -187,8 +222,7 @@
 	.advanced-search {
 		width: 100%;
 		text-align: center;
-		font-size: 60px;
-		margin-bottom: 50px;
+		font-size: 50px;
 	}
 	
 	.search-component-container {
@@ -218,6 +252,32 @@
 		display: flex;
 		justify-content: center;
 	}
+
+    .image-preview {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin: 5px;
+        object-fit: contain;
+        will-change: background-color, opacity, box-shadow;
+        transition: background-color .3s cubic-bezier(0, .5, 0, .5), opacity .3s cubic-bezier(0, .5, 0, .5), box-shadow .3s cubic-bezier(0, .5, 0, .5);
+    }
+
+    .image-preview:hover {
+        cursor: pointer;
+        background-color: #f0f0f0;
+    }
+
+    .image-preview.disabled {
+        opacity: .3;
+        cursor: not-allowed;
+        background-color: #fff !important;
+    }
+
+    .image-preview.selected {
+        background-color: rgba(0, 100, 0, .15) !important;
+        border-color: darkgreen;
+        box-shadow: 0 3px 3px rgba(0,0,0, .2);
+    }
 
 	.count {
 		width: 100%;
