@@ -8,12 +8,14 @@
 			<nuxt-link to="/"><v-btn flat dark>Търсене</v-btn></nuxt-link>
 			<nuxt-link to="/about"><v-btn flat dark>За нас</v-btn></nuxt-link>
 			<nuxt-link to="/contact"><v-btn flat dark>Контакти</v-btn></nuxt-link>
+
+			<v-spacer></v-spacer>
+
 			<nuxt-link to="/"><v-btn v-if="isLoggedIn" flat dark @click="onLogoutClick">Изход</v-btn></nuxt-link>
 			<nuxt-link to="/login"><v-btn v-if="!isLoggedIn" flat dark>Вход</v-btn></nuxt-link>
-			<v-spacer></v-spacer>
-			<v-btn flat icon @click="onCartClick" :disabled="!addedItemsToCartCount">
-				<v-badge left bottom origin>
-					<span slot="badge">{{addedItemsToCartCount}}</span>
+			<v-btn flat icon @click="onCartClick" :disabled="!addedItemsToCartCount" style="margin-right: 25px;">
+				<v-badge right top color="green">
+					<span slot="badge" v-if="addedItemsToCartCount">{{addedItemsToCartCount}}</span>
 					<v-icon>shopping_cart</v-icon>
 				</v-badge>
 			</v-btn>
