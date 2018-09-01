@@ -107,7 +107,7 @@
 				scrollTo(productsContainer.offsetTop - 120, 300);
 			},
 			picker(index) {
-				return index % 2 == 0 ? 'grey lighten-5' : 'grey lighten-3';
+				return "white";
 			},
 			onAddProductToCart(product) {
 				this.dialogCartCountOpen = true;
@@ -117,8 +117,10 @@
 			onProductDetails(product) {
 				this.curProductDetails = product;
 				this.dialogDetailsOpen = true;
-				this.$store.dispatch("modules/products/getProductAvailability", product.Id);
-				console.log("onProductDetails", product);
+				if (product.item) {
+					const { Id: id } = product.item;
+					this.$store.dispatch("modules/products/getProductAvailability", id);
+				}
 			},
 			onCloseCartCountDialogClick() {
 				this.cartCount = 1;

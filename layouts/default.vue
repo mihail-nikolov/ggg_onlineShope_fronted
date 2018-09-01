@@ -99,6 +99,10 @@
 			cartPanelDetailsButtonClicked(product) {
 				this.curProductDetails = product.item;
 				this.dialogDetailsOpen = true;
+				if (product.item) {
+					const { Id: id } = product.item;
+					this.$store.dispatch("modules/products/getProductAvailability", id);
+				}
 			},
 			onCloseDetailsDialogClick(value) {
 				this.dialogDetailsOpen = value;

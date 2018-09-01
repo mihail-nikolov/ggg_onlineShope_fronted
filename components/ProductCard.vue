@@ -7,13 +7,13 @@
 					<span class="description-text">{{product.Description}}</span>
 				</v-card-title>
 				<v-card-actions class="actions">
-					<v-btn :color="btnColor" @click.stop="onAddProductToCart(product)" style="width:50%">
+					<v-btn :color="btnColor" @click.stop="onAddProductToCart(product)">
 						<v-icon left>mdi-cart-outline</v-icon>
 						Добави
 					</v-btn>
-					<v-btn :color="btnColor" @click.stop="onProductDetails(product)" style="width:50%">
-						<v-icon left>mdi-information-outline</v-icon>
-						Детайли
+					<v-spacer></v-spacer>
+					<v-btn flat icon :color="btnColor" @click.stop="onProductDetails(product)">
+						<v-icon>mdi-information-outline</v-icon>
 					</v-btn>
 				</v-card-actions>
 			</v-card>
@@ -44,7 +44,8 @@
 	.card {
 		border-radius: 3px;
 		height: 350px;
-		box-shadow: 0 2px 20px 0 rgba(0,0,0,0.05);
+		border: 1px solid #e8e8e8 !important;
+		box-shadow: none;
 		transition: box-shadow .3s cubic-bezier(0, .5, 0, .5);
 		will-change: box-shadow;
 		cursor: pointer;
