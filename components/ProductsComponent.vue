@@ -20,12 +20,49 @@
 		<v-content v-if="dialogCartCountOpen" class="cart-count-container">
 			<v-container fluid style="width:100%;height:100px;background-color:white;">
 				<no-ssr>
-					<v-dialog v-model="dialogCartCountOpen" persistent max-width="300">
-						<v-layout row wrap align-center style="background-color:white;">
-							<v-flex row xs6 offset-xs3 style="margin-bottom:20px">
+					<v-dialog v-model="dialogCartCountOpen" max-width="650">
+						<v-container row wrap align-center style="background-color:white;">
+							<v-flex v-if="cartGroupData.length">
+								<v-flex row class="text-xs-center" style="margin-bottom:20px">
+									<h2 style="text-align:center; padding: 15px;">Марка</h2>
+								</v-flex>
+								<v-flex row class="text-xs-center" style="margin-bottom:10px">
+									<div class="group-card"
+										 v-for="group in cartGroupData"
+										 @click="toggleSelectCartGroup(group)"
+										 v-bind:class="{
+											selected: selectedCartGroup === group.GoodId,
+											disabled: !hasAvailability(group)
+										}">
+										{{ group.Group }} - {{ round(group.Price) }}лв.
+									</div>
+								</v-flex>
+							</v-flex>
+
+							<v-flex v-if="selectedCartGroup !== null">
+								<v-flex row class="text-xs-center" style="margin-bottom:20px">
+									<h2 style="text-align:center; padding: 15px;">Сервиз</h2>
+								</v-flex>
+								<v-flex row class="text-xs-center" style="margin-bottom:10px">
+									<div v-for="group in cartGroupData"
+										 v-if="group.GoodId === selectedCartGroup">
+										<div class="group-card"
+											 v-for="(quantity, store)  in group.StoreQUantities"
+											 @click="toggleSelectCartStore(store)"
+											 v-bind:class="{
+												selected: selectedCartStore === store,
+												disabled: quantity === 0
+											}">
+											{{ store }} - {{ quantity }}бр.
+										</div>
+									</div>
+								</v-flex>
+							</v-flex>
+
+                            <v-flex row class="text-xs-center" style="margin-bottom:20px">
 								<h2 style="text-align:center; padding: 15px;">Количество</h2>
 							</v-flex>
-							<v-flex row xs8 offset-xs3 style="margin-bottom:10px">
+							<v-flex row class="text-xs-center" style="margin-bottom:10px">
 								<v-btn color="primary" icon flat @click="decreaseCartCount">
 									<v-icon>mdi-minus</v-icon>
 								</v-btn>
@@ -35,17 +72,17 @@
 								</v-btn>
 							</v-flex>
 
-							<v-container style="display: flex;">
+							<v-flex style="display: flex;">
 								<v-btn class="flex" color="primary" flat @click="onAddCartCountDialogClick">
 									<v-icon left>fa-cart-plus</v-icon>
 									Добави
 								</v-btn>
-								<v-btn class="flex" color="primary" flat @click="onCloseCartCountDialogClick">
+								<v-btn class="flex" color="primary" flat @click="dialogCartCountOpen = false">
 									<v-icon left>mdi-close</v-icon>
 									Затвори
 								</v-btn>
-							</v-container>
-						</v-layout>
+							</v-flex>
+						</v-container>
 					</v-dialog>
 				</no-ssr>
 			</v-container>
@@ -68,11 +105,12 @@
 			return {
 				pageNumProducts: 1,
 				maxElementsToShow: 6,
-				maxFiltersToShow: 8,
 				dialogDetailsOpen: false,
 				dialogCartCountOpen: false,
 				curProductDetails: null,
 				cartCount: 1,
+				selectedCartGroup: null,
+				selectedCartStore: null,
 				currentCartProductToAdd: null
 			};
 		},
@@ -98,6 +136,9 @@
 			},
 			filteredProducts() {
 				return this.$store.getters["modules/products/getFilteredProducts"];
+			},
+			cartGroupData() {
+				return this.$store.getters["modules/products/getCurrentObservedProductAvailability"];
 			}
 		},
 		methods: {
@@ -112,6 +153,9 @@
 			onAddProductToCart(product) {
 				this.dialogCartCountOpen = true;
 				this.currentCartProductToAdd = product;
+				this.$store.dispatch("modules/products/getProductAvailability", product.Id);
+
+				console.log(product);
 				console.log("onAddProductToCart", product);
 			},
 			onProductDetails(product) {
@@ -121,10 +165,6 @@
 					const { Id: id } = product.item;
 					this.$store.dispatch("modules/products/getProductAvailability", id);
 				}
-			},
-			onCloseCartCountDialogClick() {
-				this.cartCount = 1;
-				this.dialogCartCountOpen = false;
 			},
 			increaseCartCount() {
 				this.cartCount++;
@@ -148,7 +188,34 @@
 			},
 			onCloseDetailsDialogClick(value) {
 				this.dialogDetailsOpen = value;
-			}
+			},
+			toggleSelectCartGroup(group) {
+				if (this.selectedCartGroup === group.GoodId) {
+					this.selectedCartGroup = null;
+				}
+				else {
+					this.selectedCartGroup = group.GoodId;
+				}
+			},
+			toggleSelectCartStore(store) {
+				if (this.selectedCartStore === store) {
+					this.selectedCartStore = null;
+				}
+				else {
+					this.selectedCartStore = store;
+				}
+			},
+			hasAvailability(group) {
+				let quantities = 0;
+
+				for (const store in group.StoreQUantities) {
+					const storeQuantity = group.StoreQUantities[store];
+					quantities += storeQuantity;
+				}
+
+				return quantities > 0;
+			},
+			round: num => num.toFixed(2)
 		},
 		watch: {
 			filteredProducts() {
@@ -156,6 +223,14 @@
 			},
 			pageNumProducts() {
 				this.scrollToResults();
+			},
+			dialogCartCountOpen(value) {
+				if (value === false) {
+					this.cartCount = 1;
+					this.selectedCartGroup = null;
+					this.selectedCartStore = null;
+					this.currentCartProductToAdd = null;
+				}
 			}
 		}
 	};
@@ -171,30 +246,11 @@
 		padding: 0 60px;
 	}
 
-	.products-container .filters {
-		grid-area: filter;
-		margin: 0;
-		padding: 0;
-	}
-
 	.products-container .products {
 		grid-area: products;
 		display: grid;
 		margin: 0 auto;
 		padding: 0;
-	}
-
-	.products-container .filters .filters-card {
-		box-shadow: 0 2px 20px 0 rgba(0,0,0,0.05);
-	}
-
-	.products-container .filters .filters-title {
-		padding: 15px 20px;
-	}
-
-	.products-container .filters .filter-by-images {
-		display: flex;
-		justify-content: center;
 	}
 
 	.products-container .all-products {
@@ -206,33 +262,9 @@
 		padding: 0;
 	}
 
-	.filter-container {
-		width: 100%;
-		display: grid;
-		grid-template-columns: repeat( auto-fill, minmax(150px, 1fr) );
-		grid-column-gap: 20px;
-		grid-row-gap: 30px;
-		padding: 0 20px;
-		padding-bottom: 20px;
-	}
-
 	.cart-count-container {
 		background-color: #F1F1F1;
 	}
-	
-	.filter-image-button {
-		width: 140px;
-		height: 140px;
-	}
-	
-	.filter-image {
-		display: block;
-		max-width: 130px;
-		max-height: 130px;
-		object-fit: cover;
-		background-size: cover;
-		/*box-shadow: 0 0 8px 8px white inset;*/
-	}	
 	
 	.text-xs-center {
 		clear: both;
@@ -250,15 +282,38 @@
 		position: relative;
 		overflow: hidden;
 		margin-top: 20px;
-	}	
+	}
+
+	.group-card {
+		display: inline-block;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		padding: 10px;
+		margin: 5px;
+		will-change: background-color, opacity, box-shadow;
+		transition: background-color .3s cubic-bezier(0, .5, 0, .5), opacity .3s cubic-bezier(0, .5, 0, .5), box-shadow .3s cubic-bezier(0, .5, 0, .5);
+	}
+
+	.group-card:hover {
+		cursor: pointer;
+		background-color: #f0f0f0;
+	}
+
+	.group-card.disabled {
+		opacity: .3;
+		cursor: not-allowed;
+		background-color: #fff !important;
+	}
+
+	.group-card.selected {
+		background-color: rgba(0, 100, 0, .15) !important;
+		border-color: darkgreen;
+		box-shadow: 0 3px 3px rgba(0,0,0, .2);
+	}
 
 	@media all and (max-width: 992px) {
 		.products-container {
             padding: 0 200px;
-		}
-
-		.filter-container {
-			/*grid-template-columns: repeat( 12, minmax(150px, 1fr) );*/
 		}
 	}
     /*@media all and (max-width: 780px) {*/

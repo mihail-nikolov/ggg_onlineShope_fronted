@@ -46,7 +46,7 @@
 												<div>{{curProductDetails.ProductType}}</div>
 											</div>
 											<br>
-											<div>
+											<div v-if="currentProductAvailability.length">
 												<h4>Наличност</h4>
 												<div class="availability-container">
 													<div class="group" v-for="group in currentProductAvailability">
@@ -59,16 +59,16 @@
 											</div>
 										</v-card-text>
 									</v-flex>
-									<v-flex>
-										<v-card-actions style="padding: 0">
-											<v-spacer></v-spacer>
-											<v-btn color="primary" flat @click="openDialog = false" style="padding-right:5px">
-												<v-icon>mdi-close</v-icon>
-												Затвори
-											</v-btn>
-										</v-card-actions>
-									</v-flex>
 								</v-flex>
+                                <v-flex style="padding-bottom: 8px;">
+                                    <v-card-actions style="padding: 0">
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="primary" flat @click="openDialog = false" style="padding-right:5px">
+                                            <v-icon>mdi-close</v-icon>
+                                            Затвори
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-flex>
 							</v-layout>
 						</v-container>
 					</v-card>
