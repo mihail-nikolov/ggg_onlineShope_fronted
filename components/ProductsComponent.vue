@@ -48,7 +48,7 @@
 										 v-if="group.GoodId === selectedCartGroup">
 										<div class="group-card"
 											 v-for="(quantity, store)  in group.StoreQUantities"
-											 @click="toggleSelectCartStore(store)"
+											 @click="toggleSelectCartStore(group, store)"
 											 v-bind:class="{
 												selected: selectedCartStore === store,
 												disabled: quantity === 0
@@ -66,7 +66,7 @@
 								<v-btn color="primary" icon flat @click="decreaseCartCount">
 									<v-icon>mdi-minus</v-icon>
 								</v-btn>
-								<input type="number" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>
+								<input type="number" min="1" step="1" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>
 								<v-btn color="primary" icon flat @click="increaseCartCount">
 									<v-icon>mdi-plus</v-icon>
 								</v-btn>
@@ -167,11 +167,19 @@
 				}
 			},
 			increaseCartCount() {
-				this.cartCount++;
+				if (this.cartCount < 1) {
+					this.cartCount = 1;
+				}
+				else {
+					this.cartCount++;
+				}
 			},
 			decreaseCartCount() {
 				if (this.cartCount > 1) {
 					this.cartCount--;
+				}
+				else {
+					this.cartCount = 1;
 				}
 			},
 			onAddCartCountDialogClick() {
@@ -190,19 +198,23 @@
 				this.dialogDetailsOpen = value;
 			},
 			toggleSelectCartGroup(group) {
-				if (this.selectedCartGroup === group.GoodId) {
-					this.selectedCartGroup = null;
-				}
-				else {
-					this.selectedCartGroup = group.GoodId;
+				if (this.hasAvailability(group)) {
+					if (this.selectedCartGroup === group.GoodId) {
+						this.selectedCartGroup = null;
+					}
+					else {
+						this.selectedCartGroup = group.GoodId;
+					}
 				}
 			},
-			toggleSelectCartStore(store) {
-				if (this.selectedCartStore === store) {
-					this.selectedCartStore = null;
-				}
-				else {
-					this.selectedCartStore = store;
+			toggleSelectCartStore(group, store) {
+				if (this.hasAvailability(group)) {
+					if (this.selectedCartStore === store) {
+						this.selectedCartStore = null;
+					}
+					else {
+						this.selectedCartStore = store;
+					}
 				}
 			},
 			hasAvailability(group) {
