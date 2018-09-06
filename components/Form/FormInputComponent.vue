@@ -1,16 +1,22 @@
 <template>
 	<div class="group">
-		<input :type="elemType" v-bind:value="value" v-on:input="updateValue($event.target.value)" @blur="onBlur" v-bind:class="{ used: isUsed }" v-on:keyup="emitKeyUpEvent">
+		<input :type="elemType" v-bind:style="{ backgroundColor: color }" v-bind:value="value" v-on:input="updateValue($event.target.value)" @blur="onBlur" v-bind:class="{ used: isUsed }" v-on:keyup="emitKeyUpEvent">
 		<span class="highlight"></span>
 		<span class="bar"></span>
-		<label :class="{errorVal: hasError}">{{fieldName}} {{firstError}}</label>
+		<label :class="{errorVal: hasError}">{{fieldName}} {{mapErrorToString(firstError)}}</label>
 	</div>
 </template>
 
 <script>
+	const errorMsgMap = {
+		"Required.": "*",
+		"Must have 6 characters at least.": "- Минимум 6 символа",
+		"Not matched.": "- Не съвпада"
+	};
+
 	export default {
 		name: 'FormInputComponent',
-		props: ['elemType', 'value', 'fieldName', 'hasError', 'firstError'],
+		props: ['elemType', 'value', 'fieldName', 'hasError', 'firstError', 'color'],
 		data() {
 			return {
 				isUsed: false,
@@ -28,6 +34,9 @@
 			},
 			emitKeyUpEvent(e) {
 				this.$emit('onKeyUp', e);
+			},
+			mapErrorToString(error) {
+				return errorMsgMap[error] || error;
 			}
 		}
 	};

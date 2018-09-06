@@ -2,14 +2,70 @@
     <v-container>
         <v-card class="admin__card">
             <h2 class="admin__title">Смени адрес</h2>
+            <v-form class="form-wrapper">
+                <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="country" fieldName="Държава" :hasError="validation.hasError('country')" :firstError="validation.firstError('county')"></form-component>
+                <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="city" fieldName="Град" :hasError="validation.hasError('city')" :firstError="validation.firstError('city')"></form-component>
+                <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="address" fieldName="Адрес" :hasError="validation.hasError('address')" :firstError="validation.firstError('address')"></form-component>
+                <v-layout row wrap>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="onSubmit">Запази</v-btn>
+                </v-layout>
+            </v-form>
         </v-card>
     </v-container>
 </template>
 
 <script>
+	import SimpleVueValidation from 'simple-vue-validator';
+	import FormInputComponent from '~/components/Form/FormInputComponent';
+	const Validator = SimpleVueValidation.Validator;
+
 	export default {
 		layout: 'admin',
+		data() {
+			return {
+				country: '',
+				city: '',
+				address: ''
+			};
+		},
 		components: {
+			'form-component': FormInputComponent
+		},
+		methods: {
+			onSubmit(e) {
+				this.$validate()
+					.then(success => {
+						if (success) {
+							this.$store.dispatch("");
+						}
+						else {
+							this.$store.dispatch("modules/general/setSnackbarNotification", {
+								message: "Грешка при смяна на адреса.",
+								status: "error"
+							});
+							this.country = '';
+							this.city = '';
+							this.address = '';
+						}
+					});
+			},
+			onKeyUp(e) {
+				if (e.key === 'Enter') {
+					this.onSubmit();
+				}
+			}
+		},
+		validators: {
+			country(value) {
+				return Validator.value(value).required();
+			},
+			city(value) {
+				return Validator.value(value).required();
+			},
+			address(value) {
+				return Validator.value(value).required();
+			}
 		}
 	};
 </script>
@@ -23,5 +79,10 @@
     }
     .admin__card {
         padding: 20px;
+    }
+
+    .form-wrapper {
+        max-width: 450px;
+        margin-top: 50px;
     }
 </style>

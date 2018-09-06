@@ -1,3 +1,6 @@
+import usersRepository from "~/repositories/usersRepository";
+import ordersRepository from "~/repositories/ordersRepository";
+
 const state = () => ({
 	userDetails: {
 		Id: "",
@@ -12,7 +15,10 @@ const state = () => ({
 		PercentageReduction: 0
 	},
 	token: '',
-	isLoggedIn: false
+	isLoggedIn: false,
+	usersList: [],
+	ordersList: [],
+	ordersFilter: "All"
 });
 
 const mutations = {
@@ -46,6 +52,15 @@ const mutations = {
 	},
 	SET_LOGGED_IN(state, isLoggedIn) {
 		state.isLoggedIn = isLoggedIn;
+	},
+	SET_USERS_LIST(state, users) {
+		state.usersList = users;
+	},
+	SET_ORDERS_LIST(state, orders) {
+		state.ordersList = orders;
+	},
+	SET_ORDERS_FILTER(state, filter) {
+		state.ordersFilter = filter;
 	}
 };
 
@@ -58,6 +73,15 @@ const getters = {
 	},
 	getUserDetails(state) {
 		return state.userDetails;
+	},
+	getUsers(state) {
+		return state.usersList;
+	},
+	getOrders(state) {
+		return state.ordersList;
+	},
+	getOrdersFilter(state) {
+		return state.ordersFilter;
 	}
 };
 
@@ -155,8 +179,8 @@ const actions = {
 		console.log("register userDetails -> ", userDetails);
 		this.dispatch("modules/requester/request", {
 			method: 'post',
-			endpoint: endPoint, 
-			body: userDetails, 
+			endpoint: endPoint,
+			body: userDetails,
 			token: ''
 		}).then(res => {
 			// console.log("register res -> ", res);
@@ -171,7 +195,23 @@ const actions = {
 				status: 'error'
 			});
 		});
+	},
+	async getUsers({commit}, { token }) {
+		return usersRepository.getUsers( { token })
+			.then(users => {
+				commit("SET_USERS_LIST", users);
+			});
+	},
+	async getOrders({commit, state}, { token }) {
+		return ordersRepository.getOrders( { token }, state.ordersFilter)
+			.then(orders => {
+				commit("SET_ORDERS_LIST", orders);
+			});
+	},
+	setOrdersFilter({ commit }, filter) {
+		commit("SET_ORDERS_FILTER", filter);
 	}
+
 };
 
 export default {
