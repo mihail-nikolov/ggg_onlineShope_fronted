@@ -40,6 +40,11 @@
 													<div>{{curProductDetails.OesCode}}</div>
 													<br>
 												</div>
+												<div v-if="curProductDetails.LocalCode" class="floating-product-detail">
+													<h4>Local Code</h4>
+													<div>{{curProductDetails.LocalCode}}</div>
+													<br>
+												</div>
 											</div>
 											<div style="clear:both">
 												<h4>Тип</h4>

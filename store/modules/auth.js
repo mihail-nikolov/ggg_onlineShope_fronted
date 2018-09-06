@@ -17,6 +17,7 @@ const state = () => ({
 
 const mutations = {
 	LOGIN(state, data) {
+		console.warn(data);
 		state.userDetails = data.userDetails;
 		state.token = data.token;
 		state.isLoggedIn = true;
@@ -55,7 +56,7 @@ const getters = {
 	getToken(state) {
 		return state.token;
 	},
-	getUserDetails() {
+	getUserDetails(state) {
 		return state.userDetails;
 	}
 };

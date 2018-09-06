@@ -11,7 +11,7 @@
 
 			<v-spacer></v-spacer>
 
-			<nuxt-link to="/"><v-btn v-if="isLoggedIn" flat dark @click="onLogoutClick">Изход</v-btn></nuxt-link>
+			<nuxt-link to="/admin/profile"><v-btn v-if="isLoggedIn" flat dark>{{ user.Name || user.Email }}</v-btn></nuxt-link>
 			<nuxt-link to="/login"><v-btn v-if="!isLoggedIn" flat dark>Вход</v-btn></nuxt-link>
 			<v-btn flat icon @click="onCartClick" :disabled="!addedItemsToCartCount" style="margin-right: 25px;">
 				<v-badge right top color="green">
@@ -65,6 +65,10 @@
 		computed: {
 			isLoggedIn () {
 				return this.$store.getters["modules/auth/isLoggedIn"];
+			},
+			user() {
+				console.log(this.$store.getters["modules/auth/getUserDetails"]);
+				return this.$store.getters["modules/auth/getUserDetails"];
 			},
 			isLoadingActive() {
 				return this.$store.getters["modules/general/isLoadingActive"];

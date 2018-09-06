@@ -313,6 +313,8 @@ const actions = {
 					}
 				});
 
+				console.warn(products);
+
 				store.dispatch('modules/general/deactivateLoading');
 				commit('SET_WINDOW_TYPES', [...productTypes]);
 				commit('SET_SELECTED_WINDOW_TYPES', []);
@@ -330,7 +332,7 @@ const actions = {
 	async getProductAvailability({commit}, productId) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		axios.get('http://﻿130.204.36.213/api/Products/GetPriceAndQuantities/' + productId)
+		return axios.get('http://﻿130.204.36.213/api/Products/GetPriceAndQuantities/' + productId)
 			.then(response => {
 				console.log("Product availability -> ", response.data);
 				commit('SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY', response.data);

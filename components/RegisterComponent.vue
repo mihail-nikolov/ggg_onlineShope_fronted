@@ -66,7 +66,7 @@
 								Email: comp.email,
 								Password: comp.password,
 								ConfirmPassword: comp.confirmedPassword,
-								IsCompany: comp.legalEntity === "Individual" ? false : true,
+								IsCompany: comp.legalEntity === "Юридическо лице" ? false : true,
 								Name: comp.fullName,
 								DeliveryCountry: comp.country,
 								DeliveryTown: comp.city,

@@ -20,64 +20,84 @@
 		<v-content v-if="dialogCartCountOpen" class="cart-count-container">
 			<v-container fluid style="width:100%;height:100px;background-color:white;">
 				<no-ssr>
-					<v-dialog v-model="dialogCartCountOpen" max-width="650">
+					<v-dialog v-model="dialogCartCountOpen" :max-width="hasAnyAvailability() ? 650 : 450">
 						<v-container row wrap align-center style="background-color:white;">
-							<v-flex v-if="cartGroupData.length">
-								<v-flex row class="text-xs-center" style="margin-bottom:20px">
-									<h2 style="text-align:center; padding: 15px;">Марка</h2>
-								</v-flex>
-								<v-flex row class="text-xs-center" style="margin-bottom:10px">
-									<div class="group-card"
-										 v-for="group in cartGroupData"
-										 @click="toggleSelectCartGroup(group)"
-										 v-bind:class="{
-											selected: selectedCartGroup === group.GoodId,
-											disabled: !hasAvailability(group)
-										}">
-										{{ group.Group }} - {{ round(group.Price) }}лв.
-									</div>
-								</v-flex>
-							</v-flex>
-
-							<v-flex v-if="selectedCartGroup !== null">
-								<v-flex row class="text-xs-center" style="margin-bottom:20px">
-									<h2 style="text-align:center; padding: 15px;">Сервиз</h2>
-								</v-flex>
-								<v-flex row class="text-xs-center" style="margin-bottom:10px">
-									<div v-for="group in cartGroupData"
-										 v-if="group.GoodId === selectedCartGroup">
+							<div v-if="hasAnyAvailability()">
+								<v-flex v-if="cartGroupData.length">
+									<v-flex row class="text-xs-center" style="margin-bottom:20px">
+										<h2 style="text-align:center; padding: 15px;">Производител</h2>
+									</v-flex>
+									<v-flex row class="text-xs-center" style="margin-bottom:10px">
 										<div class="group-card"
-											 v-for="(quantity, store)  in group.StoreQUantities"
-											 @click="toggleSelectCartStore(group, store)"
+											 v-for="group in cartGroupData"
+											 @click="toggleSelectCartGroup(group)"
 											 v-bind:class="{
+											selected: selectedCartGroup === group.GoodId,
+											disabled: !groupHasAvailability(group)
+										}">
+											{{ group.Group }} - {{ round(group.Price) }}лв.
+										</div>
+									</v-flex>
+								</v-flex>
+
+								<v-flex v-if="selectedCartGroup !== null">
+									<v-flex row class="text-xs-center" style="margin-bottom:20px">
+										<h2 style="text-align:center; padding: 15px;">Сервиз</h2>
+									</v-flex>
+									<v-flex row class="text-xs-center" style="margin-bottom:10px">
+										<div v-for="group in cartGroupData"
+											 v-if="group.GoodId === selectedCartGroup">
+											<div class="group-card"
+												 v-for="(quantity, store)  in group.StoreQUantities"
+												 @click="toggleSelectCartStore(group, store)"
+												 v-bind:class="{
 												selected: selectedCartStore === store,
 												disabled: quantity === 0
 											}">
-											{{ store }} - {{ quantity }}бр.
+												{{ store }} - {{ quantity }}бр.
+											</div>
 										</div>
-									</div>
+									</v-flex>
 								</v-flex>
-							</v-flex>
 
-                            <v-flex row class="text-xs-center" style="margin-bottom:20px">
-								<h2 style="text-align:center; padding: 15px;">Количество</h2>
-							</v-flex>
-							<v-flex row class="text-xs-center" style="margin-bottom:10px">
-								<v-btn color="primary" icon flat @click="decreaseCartCount">
-									<v-icon>mdi-minus</v-icon>
-								</v-btn>
-								<input type="number" min="1" step="1" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>
-								<v-btn color="primary" icon flat @click="increaseCartCount">
-									<v-icon>mdi-plus</v-icon>
-								</v-btn>
-							</v-flex>
+								<v-flex row class="text-xs-center" style="margin-bottom:20px">
+									<h2 style="text-align:center; padding: 15px;">Количество</h2>
+								</v-flex>
+								<v-flex row class="text-xs-center" style="margin-bottom:10px">
+									<v-btn color="primary" icon flat @click="decreaseCartCount">
+										<v-icon>mdi-minus</v-icon>
+									</v-btn>
+									<input type="number" min="1" step="1" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>
+									<v-btn color="primary" icon flat @click="increaseCartCount">
+										<v-icon>mdi-plus</v-icon>
+									</v-btn>
+								</v-flex>
+							</div>
+							<div v-else>
+								<v-flex row class="text-xs-center" style="margin-bottom:20px">
+									<h2 style="text-align:center; padding: 15px;">Наличност</h2>
+								</v-flex>
+								<v-flex row style="margin-bottom:20px">
+									Този продукт не е в наличност. Можете да се свържете с нас, като цъкнете <a
+										target="_blank"
+										href="http://www.glassgoldgroup.eu/%D0%B0%D0%B2%D1%82%D0%BE%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-%D1%81%D0%BE%D1%84%D0%B8%D1%8F-%D1%81%D0%BA%D0%BB%D0%B0%D0%B4-%D0%BF%D0%BB%D0%BE%D0%B2%D0%B4%D0%B8%D0%B2">тук</a>.
+								</v-flex>
 
-							<v-flex style="display: flex;">
-								<v-btn class="flex" color="primary" flat @click="onAddCartCountDialogClick">
+							</div>
+							<v-flex style="display:flex;" v-if="hasAnyAvailability()">
+								<v-btn color="primary" flat @click="dialogCartCountOpen = false">
+									<v-icon left>mdi-close</v-icon>
+									Затвори
+								</v-btn>
+								<v-spacer></v-spacer>
+								<v-btn color="primary" @click="onAddCartCountDialogClick" v-if="hasAnyAvailability()">
 									<v-icon left>fa-cart-plus</v-icon>
 									Добави
 								</v-btn>
-								<v-btn class="flex" color="primary" flat @click="dialogCartCountOpen = false">
+							</v-flex>
+							<v-flex style="display:flex;" v-else>
+								<v-spacer></v-spacer>
+								<v-btn color="primary" flat @click="dialogCartCountOpen = false">
 									<v-icon left>mdi-close</v-icon>
 									Затвори
 								</v-btn>
@@ -151,9 +171,11 @@
 				return "white";
 			},
 			onAddProductToCart(product) {
-				this.dialogCartCountOpen = true;
 				this.currentCartProductToAdd = product;
-				this.$store.dispatch("modules/products/getProductAvailability", product.Id);
+				this.$store.dispatch("modules/products/getProductAvailability", product.Id)
+					.then(() => {
+						this.dialogCartCountOpen = true;
+					});
 
 				console.log(product);
 				console.log("onAddProductToCart", product);
@@ -198,7 +220,7 @@
 				this.dialogDetailsOpen = value;
 			},
 			toggleSelectCartGroup(group) {
-				if (this.hasAvailability(group)) {
+				if (this.groupHasAvailability(group)) {
 					if (this.selectedCartGroup === group.GoodId) {
 						this.selectedCartGroup = null;
 					}
@@ -208,7 +230,7 @@
 				}
 			},
 			toggleSelectCartStore(group, store) {
-				if (this.hasAvailability(group)) {
+				if (this.groupHasAvailability(group)) {
 					if (this.selectedCartStore === store) {
 						this.selectedCartStore = null;
 					}
@@ -217,7 +239,7 @@
 					}
 				}
 			},
-			hasAvailability(group) {
+			groupHasAvailability(group) {
 				let quantities = 0;
 
 				for (const store in group.StoreQUantities) {
@@ -226,6 +248,14 @@
 				}
 
 				return quantities > 0;
+			},
+			hasAnyAvailability() {
+				for (const group of this.cartGroupData) {
+					if (this.groupHasAvailability(group) > 0) {
+						return true;
+					}
+				}
+				return false;
 			},
 			round: num => num.toFixed(2)
 		},
