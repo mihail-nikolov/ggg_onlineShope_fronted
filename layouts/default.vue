@@ -6,8 +6,10 @@
 		<v-toolbar color="blue-grey darken-3" dark fixed app clipped-right>
 			<a v-bind:href="homeLink" class="logo-img" title="Glass Gold Group: Homepage"></a>
 			<nuxt-link to="/"><v-btn flat dark>Търсене</v-btn></nuxt-link>
-			<nuxt-link to="/about"><v-btn flat dark>За нас</v-btn></nuxt-link>
-			<nuxt-link to="/contact"><v-btn flat dark>Контакти</v-btn></nuxt-link>
+			<nuxt-link to="/terms"><v-btn flat dark>Общи условия</v-btn></nuxt-link>
+			<a href="http://www.glassgoldgroup.eu/%D0%B0%D0%B2%D1%82%D0%BE%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-%D1%81%D0%BE%D1%84%D0%B8%D1%8F-%D1%81%D0%BA%D0%BB%D0%B0%D0%B4-%D0%BF%D0%BB%D0%BE%D0%B2%D0%B4%D0%B8%D0%B2">
+        <v-btn flat dark>Контакти</v-btn>
+      </a>
 
 			<v-spacer></v-spacer>
 
