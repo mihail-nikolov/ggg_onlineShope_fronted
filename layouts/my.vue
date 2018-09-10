@@ -1,25 +1,24 @@
 <template>
-	<v-app id="inspire">
+	<v-app id="inspire-admin">
 		<v-navigation-drawer
 			permanent
-			absolute
+			fixed
 			class="admin__drawer"
 		>
 			<v-toolbar flat class="transparent">
 				<v-list class="pa-0">
 					<v-list-tile>
 						<v-list-tile-content>
-							{{ u }}
 							{{ userName }}
 						</v-list-tile-content>
 					</v-list-tile>
 				</v-list>
 			</v-toolbar>
 
-			<v-list class="admin__drawer__list-container" dense>
+			<v-list class="admin__drawer__list-container" dense v-if="userName">
 				<v-divider style="flex: 0"></v-divider>
 
-				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/admin/profile">
+				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/my/profile">
 					<v-list-tile-action>
 						<v-icon>person</v-icon>
 					</v-list-tile-action>
@@ -30,7 +29,7 @@
 						</v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
-				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/admin/change-password">
+				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/my/change-password">
 					<v-list-tile-action>
 						<v-icon>fingerprint</v-icon>
 					</v-list-tile-action>
@@ -39,7 +38,7 @@
 						<v-list-tile-title>Смени парола</v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
-				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/admin/change-address">
+				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/my/change-address">
 					<v-list-tile-action>
 						<v-icon>location_on</v-icon>
 					</v-list-tile-action>
@@ -49,7 +48,7 @@
 					</v-list-tile-content>
 				</v-list-tile>
 
-				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/admin/orders">
+				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/my/orders">
 					<v-list-tile-action>
 						<v-icon>format_list_numbered_rtl</v-icon>
 					</v-list-tile-action>
@@ -59,7 +58,7 @@
 					</v-list-tile-content>
 				</v-list-tile>
 
-				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/admin/users">
+				<v-list-tile class="admin__drawer__item" ripple nuxt-link to="/my/users" v-if="isAdmin">
 					<v-list-tile-action>
 						<v-icon>account_circle</v-icon>
 					</v-list-tile-action>
@@ -113,13 +112,9 @@
 			'loading': Loading,
 			'snack-bar': Snackbar
 		},
+		middleware: "auth",
 		mounted() {
 			this.$store.dispatch('modules/auth/autoLogin');
-		},
-		data() {
-			return {
-				u: {}
-			};
 		},
 		computed: {
 			user() {
@@ -134,12 +129,16 @@
 			},
 			isLoadingActive() {
 				return this.$store.getters["modules/general/isLoadingActive"];
+			},
+			isAdmin() {
+				return this.user.Email.toLocaleLowerCase() === "admin@admin.com";
 			}
 		},
 		watch: { },
 		methods: {
 			onLogoutClick(e) {
 				this.$store.dispatch("modules/auth/logout");
+				this.$router.push("/");
 			}
 		}
 	};

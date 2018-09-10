@@ -43,29 +43,31 @@
 		},
 		methods: {
 			onSubmit(e) {
-				let comp = this;
-				if (!comp.isButtonClicked && e) {
-					comp.isButtonClicked = true;
-					comp.circleX = e.pageX - (e.pageX - e.offsetX) + 'px';
-					comp.circleY = e.pageY - (e.pageY - e.offsetY) + 'px';
+				if (!this.isButtonClicked && e) {
+					this.isButtonClicked = true;
+					this.circleX = e.pageX - (e.pageX - e.offsetX) + 'px';
+					this.circleY = e.pageY - (e.pageY - e.offsetY) + 'px';
 					setTimeout(function() {
-						comp.isButtonClicked = false;
+						this.isButtonClicked = false;
 					}, 400);
 				}
-				comp.$validate()
-					.then(function(success) {
+				this.$validate()
+					.then(success => {
 						if (success) {
-							comp.$store.dispatch("modules/auth/login", {
-								email: comp.email,
-								password: comp.password
+							this.$store.dispatch("modules/auth/login", {
+								email: this.email,
+								password: this.password
+							}).then(() => {
+								console.log("redirecting");
+								this.$router.push({ path: `/my/profile` });
 							});
 						} else {
-							comp.$store.dispatch("modules/general/setSnackbarNotification", {
-								message: "Please fill in all the required fields and try again.",
+							this.$store.dispatch("modules/general/setSnackbarNotification", {
+								message: "Моля попълнете всички полета и опитайте отново.",
 								status: "error"
 							});
-							comp.email = '';
-							comp.password = '';
+							this.email = '';
+							this.password = '';
 						}
 					});
 			},

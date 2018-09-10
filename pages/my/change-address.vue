@@ -21,7 +21,7 @@
 	const Validator = SimpleVueValidation.Validator;
 
 	export default {
-		layout: 'admin',
+		layout: 'my',
 		data() {
 			return {
 				country: '',
@@ -32,12 +32,22 @@
 		components: {
 			'form-component': FormInputComponent
 		},
+		computed: {
+			user() {
+				return this.$store.getters["modules/auth/getUserDetails"];
+			}
+		},
 		methods: {
 			onSubmit(e) {
 				this.$validate()
 					.then(success => {
 						if (success) {
-							this.$store.dispatch("");
+							this.$store.dispatch("modules/auth/changeUserAddress", {
+								user: this.user,
+								country: this.country,
+								city: this.city,
+								address: this.address
+							});
 						}
 						else {
 							this.$store.dispatch("modules/general/setSnackbarNotification", {

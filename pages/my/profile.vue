@@ -28,12 +28,9 @@ const userKeyMap = {
 import adminNavigationButtons from '~/components/adminNavigationButtons';
 
 export default {
-	layout: 'admin',
+	layout: 'my',
 	components: {
 		"admin-navigation-buttons": adminNavigationButtons
-	},
-	created() {
-		console.log(123);
 	},
 	computed: {
 		user() {
@@ -48,15 +45,6 @@ export default {
 			return userKeyMap[key] || key;
 		}
 	}
-
-	// async asyncData ({ params, error }) {
-	// const userDetails = JSON.parse(localStorage.getItem('autoGlassUserDetails'));
-	//
-	// if (userDetails) {
-	// 	return { u: userDetails };
-	// }
-	// return error({ statusCode: 404, message: 'Page not found' });
-	// }
 };
 </script>
 

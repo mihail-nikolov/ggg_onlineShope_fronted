@@ -7,7 +7,7 @@
 					<product-card class="product product-card" v-for="(product, index) in listComponentItems" :key="product.Id" :product="product" :color="picker(index)" @onAddProductToCart="onAddProductToCart" @onProductDetails="onProductDetails" />
 				</div>
 				<v-container fluid class="text-xs-center" v-if="(filteredProducts.length !== 0 && filteredProducts.length > maxElementsToShow) || (foundProducts.length > maxElementsToShow && filteredProducts.length === 0)">
-					<v-pagination class="pagination" :length.number="paginationLengthProducts" v-model="pageNumProducts" :total-visible="7"></v-pagination>
+					<v-pagination class="pagination" :length.number="paginationLengthProducts" @input="scrollToResults" v-model="pageNumProducts" :total-visible="7"></v-pagination>
 				</v-container>
 			</v-container>
 		</div>
@@ -60,25 +60,25 @@
 									</v-flex>
 								</v-flex>
 
-								<v-flex row class="text-xs-center" style="margin-bottom:20px">
-									<h2 style="text-align:center; padding: 15px;">Количество</h2>
-								</v-flex>
-								<v-flex row class="text-xs-center" style="margin-bottom:10px">
-									<v-btn color="primary" icon flat @click="decreaseCartCount">
-										<v-icon>mdi-minus</v-icon>
-									</v-btn>
-									<input type="number" min="1" step="1" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>
-									<v-btn color="primary" icon flat @click="increaseCartCount">
-										<v-icon>mdi-plus</v-icon>
-									</v-btn>
-								</v-flex>
+								<!--<v-flex row class="text-xs-center" style="margin-bottom:20px">-->
+									<!--<h2 style="text-align:center; padding: 15px;">Количество</h2>-->
+								<!--</v-flex>-->
+								<!--<v-flex row class="text-xs-center" style="margin-bottom:10px">-->
+									<!--<v-btn color="primary" icon flat @click="decreaseCartCount">-->
+										<!--<v-icon>mdi-minus</v-icon>-->
+									<!--</v-btn>-->
+									<!--<input type="number" min="1" step="1" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>-->
+									<!--<v-btn color="primary" icon flat @click="increaseCartCount">-->
+										<!--<v-icon>mdi-plus</v-icon>-->
+									<!--</v-btn>-->
+								<!--</v-flex>-->
 							</div>
 							<div v-else>
 								<v-flex row class="text-xs-center" style="margin-bottom:20px">
 									<h2 style="text-align:center; padding: 15px;">Наличност</h2>
 								</v-flex>
 								<v-flex row style="margin-bottom:20px">
-									Този продукт не е в наличност. Можете да се свържете с нас, като цъкнете <a
+									Този продукт не е в наличност. Можете да се свържете с нас от <a
 										target="_blank"
 										href="http://www.glassgoldgroup.eu/%D0%B0%D0%B2%D1%82%D0%BE%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-%D1%81%D0%BE%D1%84%D0%B8%D1%8F-%D1%81%D0%BA%D0%BB%D0%B0%D0%B4-%D0%BF%D0%BB%D0%BE%D0%B2%D0%B4%D0%B8%D0%B2">тук</a>.
 								</v-flex>
@@ -176,17 +176,14 @@
 					.then(() => {
 						this.dialogCartCountOpen = true;
 					});
-
-				console.log(product);
-				console.log("onAddProductToCart", product);
 			},
 			onProductDetails(product) {
 				this.curProductDetails = product;
-				this.dialogDetailsOpen = true;
-				if (product.item) {
-					const { Id: id } = product.item;
-					this.$store.dispatch("modules/products/getProductAvailability", id);
-				}
+
+				this.$store.dispatch("modules/products/getProductAvailability", product.Id)
+					.then(() => {
+						this.dialogDetailsOpen = true;
+					});
 			},
 			increaseCartCount() {
 				if (this.cartCount < 1) {
@@ -262,9 +259,6 @@
 		watch: {
 			filteredProducts() {
 				this.pageNumProducts = 1;
-			},
-			pageNumProducts() {
-				this.scrollToResults();
 			},
 			dialogCartCountOpen(value) {
 				if (value === false) {

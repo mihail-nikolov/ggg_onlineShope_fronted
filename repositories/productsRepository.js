@@ -9,8 +9,11 @@ class ProductsRepository {
 			position: "Products/GetPositions",
 			productsByDetails: "Products/FindByVehicleInfo",
 			product: "Products/GetItemByFullCode",
-			productTypes: "Products/GetProductTypes"
+			productTypes: "Products/GetProductTypes",
+			fullProduct: "Products/GetDetailedInfo"
 		};
+
+		console.log(this);
 	}
 
 
@@ -83,6 +86,24 @@ class ProductsRepository {
 		}
 		else if (data.IndustryCode !== void 0) {
 			return this.http.get(this.URL.product, { IndustryCode: data.IndustryCode });
+		}
+		else {
+			return Promise.reject("invalid code", data);
+		}
+	}
+
+	getFullProduct(data) {
+		if (data.EuroCode !== void 0) {
+			return this.http.get(this.URL.fullProduct, { EuroCode: data.EuroCode });
+		}
+		else if (data.OesCode !== void 0) {
+			return this.http.get(this.URL.fullProduct, { OesCode: data.OesCode });
+		}
+		else if (data.MaterialNumber !== void 0) {
+			return this.http.get(this.URL.fullProduct, { MaterialNumber: data.MaterialNumber });
+		}
+		else if (data.IndustryCode !== void 0) {
+			return this.http.get(this.URL.fullProduct, { IndustryCode: data.IndustryCode });
 		}
 		else {
 			return Promise.reject("invalid code", data);

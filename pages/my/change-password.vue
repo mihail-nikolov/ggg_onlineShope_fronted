@@ -21,7 +21,7 @@ import FormInputComponent from '~/components/Form/FormInputComponent';
 const Validator = SimpleVueValidation.Validator;
 
 export default {
-	layout: 'admin',
+	layout: 'my',
 	data() {
 		return {
 			password: '',
@@ -37,7 +37,11 @@ export default {
 			this.$validate()
 				.then(success => {
 					if (success) {
-						this.$store.dispatch("");
+						this.$store.dispatch("modules/auth/changeUserPassword", {
+							OldPassword: this.password,
+							NewPassword: this.newPassword,
+							ConfirmPassword: this.newPassword2
+						});
 					}
 					else {
 						this.$store.dispatch("modules/general/setSnackbarNotification", {

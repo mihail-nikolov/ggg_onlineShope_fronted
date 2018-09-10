@@ -4,43 +4,14 @@
             <h2 class="admin__title">Поръчки</h2>
             <div class="filters">
                 <v-btn :flat="ordersFilter !== 'All'" v-bind:style="{ marginLeft: 0, marginRight: '15px' }" @click="selectOrderFilter('All')">Всички</v-btn>
-                <v-btn :flat="ordersFilter !== 'New'"  v-bind:style="{ marginLeft: 0, marginRight: '15px' }" @click="selectOrderFilter('New')">Нови</v-btn>
-                <v-btn :flat="ordersFilter !== 'Done'"  v-bind:style="{ marginLeft: 0, marginRight: '15px' }" @click="selectOrderFilter('Done')">Завършени</v-btn>
+                <v-btn :flat="ordersFilter !== 'New'" v-bind:style="{ marginLeft: 0, marginRight: '15px' }" @click="selectOrderFilter('New')">Нови</v-btn>
+                <v-btn :flat="ordersFilter !== 'Done'" v-bind:style="{ marginLeft: 0, marginRight: '15px' }" @click="selectOrderFilter('Done')">Завършени</v-btn>
             </div>
         </v-card>
         <div class="orders-list" v-if="orderGroups">
             <div v-for="(group, date) in orderGroups" class="order-group">
                 <div class="date-delimeter">{{ date }}</div>
-                <v-card v-for="order in group" :key="order.Id" class="order">
-                    <div>
-                        <b>#{{ order.EuroCode }}</b>&nbsp;<span>{{ order.Description }} ({{ order.Manufacturer }})</span> - <span class="order__status">{{ mapOrderStatus(order.Status) }}</span>
-                    </div>
-                    <div>
-                        <span>Потребител: </span>
-                        {{ order.UserInfo }} - {{ order.UserЕmail }}
-                    </div>
-                    <div>
-                        <span>Адрес: </span>
-                        {{ order.FullAddress }}
-                    </div>
-                    <div>
-                        <span>Описание: </span>
-                        {{ order.DeliveryNotes || ' - ' }}
-                    </div>
-                    <v-flex style="display: flex;">
-                        <v-chip v-if="order.WithInstallation">+ Инсталация </v-chip>
-                        <v-chip v-if="order.IsInvoiceNeeded">+ Фактура </v-chip>
-
-                        <v-chip v-if="order.PaidPrice">+ Платено: {{ order.PaidPrice }}</v-chip>
-                        <v-chip v-else>- Неплатено</v-chip>
-
-                        <v-spacer></v-spacer>
-
-                        <b class="order__price">
-                            {{ order.Price }}лв.
-                        </b>
-                    </v-flex>
-                </v-card>
+                <order-card v-for="order in group" :key="order.Id" :order="order" :editable="isAdmin" @statusChanged="onChangeOrderStatus"></order-card>
             </div>
         </div>
         <div v-else>
@@ -50,7 +21,7 @@
 </template>
 
 <script>
-	import ProductCard from '~/components/ProductCard';
+	import OrderCard from "~/components/OrderCard";
 
 	const orderStatusMap = {
 		"Done": "Завършена",
@@ -59,13 +30,22 @@
 	};
 
 	export default {
-		layout: 'admin',
+		layout: 'my',
 		components: {
-			'product-card': ProductCard
+			'order-card': OrderCard
+		},
+		data() {
+			return {
+				ordersRequested: false
+			};
 		},
 		computed: {
 			token() {
 				return this.$store.getters["modules/auth/getToken"];
+			},
+			isAdmin() {
+				const user = this.$store.getters["modules/auth/getUserDetails"];
+				return user && user.Email === "admin@admin.com";
 			},
 			orderGroups() {
 				const orders = this.$store.getters["modules/auth/getOrders"];
@@ -85,8 +65,25 @@
 
 				return empty ? null : orderGroups;
 			},
+			orderStatusModels() {
+				const orders = this.$store.getters["modules/auth/getOrders"];
+				const statuses = {};
+
+				orders.forEach(order => {
+					statuses[order.Id] = order.Status;
+				});
+
+				return statuses;
+			},
 			ordersFilter() {
 				return this.$store.getters["modules/auth/getOrdersFilter"];
+			}
+		},
+		watch: {
+			token() {
+				if (this.token) {
+					this.fetchOrders();
+				}
 			}
 		},
 		methods: {
@@ -107,13 +104,20 @@
 			},
 			mapOrderStatus(status) {
 				return orderStatusMap[status] || status;
+			},
+			fetchOrders() {
+				const token = this.token;
+				if (token && !this.ordersRequested) {
+					this.$store.dispatch("modules/auth/getOrders", { token });
+					this.ordersRequested = true;
+				}
+			},
+			onChangeOrderStatus({ order, status }) {
+				this.$store.dispatch("modules/auth/changeOrderStatus", { order, status });
 			}
 		},
 		created() {
-			if (this.token) {
-				const token = this.token;
-				this.$store.dispatch("modules/auth/getOrders", { token });
-			}
+			this.fetchOrders();
 		}
 	};
 </script>
@@ -127,6 +131,13 @@
     }
     .admin__card {
         padding: 20px;
+    }
+
+    .search-multiselect {
+        background-color: transparent;
+        display: inline-block;
+        width: 100%;
+        height: 40px;
     }
 
     .date-delimeter {
@@ -149,22 +160,5 @@
     }
     .order-group {
         padding: 30px 0;
-    }
-    .order {
-        padding: 20px;
-        margin-bottom: 25px;
-        margin-top: 25px;
-    }
-    .order > * {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .orders-list {
-        max-height: calc(100vh - 170px);
-        margin-left: -5px;
-        margin-right: -5px;
-        padding-left: 5px;
-        padding-right: 5px;
-        overflow: scroll;
     }
 </style>

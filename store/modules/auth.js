@@ -23,7 +23,6 @@ const state = () => ({
 
 const mutations = {
 	LOGIN(state, data) {
-		console.warn(data);
 		state.userDetails = data.userDetails;
 		state.token = data.token;
 		state.isLoggedIn = true;
@@ -61,6 +60,23 @@ const mutations = {
 	},
 	SET_ORDERS_FILTER(state, filter) {
 		state.ordersFilter = filter;
+	},
+	SET_USER_HIGH_COST_VISIBILITY(state, { user, visibility }) {
+		const userCached = state.usersList.find(u => u === user);
+
+		userCached.OnlyHighCostVisible = visibility;
+	},
+	SET_USER_EMAIL_CONFIRMED(state, { user, confirmed }) {
+		const userCached = state.usersList.find(u => u === user);
+
+		userCached.EmailConfirmed = confirmed;
+	},
+	SET_ADDRESS(state, { city, country, address }) {
+		const user = state.userDetails;
+
+		user.DeliveryCountry = country;
+		user.DeliveryTown = city;
+		user.DeliveryAddress = address;
 	}
 };
 
@@ -87,7 +103,6 @@ const getters = {
 
 const actions = {
 	autoLogin({ commit }) {
-		console.log("AUTOLOGIN");
 		const savedCartItems = JSON.parse(sessionStorage.getItem('autoGlassAddedToCartItems'));
 		if (savedCartItems) {
 			console.log("savedCartItems existing..");
@@ -116,29 +131,31 @@ const actions = {
 	async login({commit}, {email, password}) {
 		let endPoint = 'Token',
 			postBody = 'Username=' + email + '&Password=' + password + '&grant_type=password';
-		this.dispatch("modules/requester/request", {
+		return this.dispatch("modules/requester/request", {
 			method: 'post',
 			endpoint: endPoint, 
 			body: postBody, 
 			token: ''
 		}).then(res => {
-			// console.log("login res -> ", res);
 			const token = res.data.token_type + ' ' + res.data.access_token,
 				now = new Date(),
 				expirationDate = new Date(now.getTime() + res.data.expires_in * 1000);
 			localStorage.setItem('autoGlassToken', token);
 			localStorage.setItem('autoGlassExpiresIn', expirationDate);
-			this.dispatch("modules/auth/getUserDetailsFromApi", token);
-			this.dispatch("modules/general/setSnackbarNotification", {
-				message: "Login successful. You'll be automatically redirected to 'Advanced search' page.",
-				status: 'success'
-			});
+			return this.dispatch("modules/auth/getUserDetailsFromApi", token)
+				.then(() => {
+					this.dispatch("modules/general/setSnackbarNotification", {
+						message: "Успешен вход",
+						status: 'success'
+					});
+				});
 		}).catch(e => {
-			console.log("error: ", e);
 			this.dispatch("modules/general/setSnackbarNotification", {
-				message: e,
+				message: "Грешен имейл или парола",
 				status: 'error'
 			});
+
+			throw e;
 		});
 	},
 	logout({commit}) {
@@ -146,19 +163,20 @@ const actions = {
 		localStorage.removeItem('autoGlassExpiresIn');
 		localStorage.removeItem('autoGlassUserDetails');
 		commit('LOGOUT');
-		console.log("in logout...");
+
 		this.dispatch("modules/general/setSnackbarNotification", {
-			message: "Logout successful!",
+			message: "Изход!",
 			status: "success"
 		});
 	},
 	async getUserDetailsFromApi({commit}, token) {
 		let endPoint = 'api/Account/';
-		this.dispatch("modules/requester/request", {
+		return this.dispatch("modules/requester/request", {
 			method: 'get',
 			endpoint: endPoint,
 			token: token
 		}).then(res => {
+			console.log("GOT DETAILS");
 			// console.log("getUserDetailsFromApi res -> ", res);
 			localStorage.setItem('autoGlassUserDetails', JSON.stringify(res.data));
 			commit('LOGIN', {
@@ -210,8 +228,37 @@ const actions = {
 	},
 	setOrdersFilter({ commit }, filter) {
 		commit("SET_ORDERS_FILTER", filter);
+	},
+	async setUserHighCostVisibility({ commit, state }, { user, visibility }) {
+		const token = state.token;
+		commit("SET_USER_HIGH_COST_VISIBILITY", { user, visibility });
+		return usersRepository.setUserHighCostVisibility( { token, user, visibility });
+	},
+	async sendUserConfirmationMail({ commit, state }, { user }) {
+		const token = state.token;
+		const confirmed = true;
+		commit("SET_USER_EMAIL_CONFIRMED", { user, confirmed });
+		return usersRepository.sendConfirmationMail({ token, user });
+	},
+	async changeUserPassword({ commit, state }, { OldPassword, NewPassword, ConfirmPassword }) {
+		const token = state.token;
+		return usersRepository.changeUserPassword({ token, OldPassword, NewPassword, ConfirmPassword });
+	},
+	async changeUserDetails({ commit, state }, { user }) {
+		const token = state.token;
+		return usersRepository.changeUserDetails({ token, user });
+	},
+	async changeUserAddress({ commit, state }, { city, country, address }) {
+		const token = state.token;
+		const user = state.userDetails;
+		commit("SET_ADDRESS", { city, country, address });
+		return usersRepository.changeUserDetails({ token, user });
+	},
+	async changeOrderStatus({ commit, state }, { order, status }) {
+		const token = state.token;
+		commit("SET_ORDER_STATUS", { order, status });
+		return ordersRepository.changeStatus({ token, order, status });
 	}
-
 };
 
 export default {

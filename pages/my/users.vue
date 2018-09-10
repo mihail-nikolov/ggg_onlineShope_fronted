@@ -10,7 +10,10 @@
                 </div>
                 <div class="users-table__user" v-for="user in users" v-if="user.Email !== 'admin@admin.com'">
                     <span v-for="key in availableUserKeys" v-if="isKeyAllowed(key)">
-                        <v-btn small v-if="key === 'EmailConfirmed' && !user[key]" v-bind:style="{ margin: 0 }" @click="confirmUser(user)">Потвърди</v-btn>
+                        <v-btn small v-if="key === 'EmailConfirmed' && !user[key]" v-bind:style="{ margin: 0 }" @click="sendUserConfirmationEmail(user)">Потвърди</v-btn>
+                        <v-btn small v-else-if="key === 'OnlyHighCostVisible'" v-bind:style="{ margin: 0 }" @click="changeUserHighCostVisibility(user, !user[key])">
+                            {{ mapUserKeyValue(key, user[key]) }}
+                        </v-btn>
                         <span v-else>{{ mapUserKeyValue(key, user[key]) }}</span>
                     </span>
                 </div>
@@ -36,12 +39,16 @@ const userKeyPriorityMap = {
 };
 
 export default {
-	layout: 'admin',
+	layout: 'my',
+	data() {
+		return {
+			usersRequested: false
+		};
+	},
 	components: {
 	},
 	computed: {
 		user() {
-			console.warn(this.$store.getters["modules/auth/getUserDetails"]);
 			return this.$store.getters["modules/auth/getUserDetails"];
 		},
 		token() {
@@ -79,21 +86,38 @@ export default {
 		},
 		mapUserKeyValue(key, value) {
 			if (key === "OnlyHighCostVisible" || key === "EmailConfirmed") {
-				const negative = !value;
-				return (!negative) ? "Да" : "Не";
+				return value ? "Да" : "Не";
 			}
 			else {
 				return value;
 			}
 		},
-		confirmUser(user) {
-
+		sendUserConfirmationEmail(user) {
+			this.$store.dispatch("modules/auth/sendUserConfirmationMail", { user });
+		},
+		changeUserHighCostVisibility(user, visibility) {
+			this.$store.dispatch("modules/auth/setUserHighCostVisibility", { user, visibility });
+		},
+		fetchUsers() {
+			if (this.token && !this.usersRequested) {
+				const token = this.token;
+				this.$store.dispatch("modules/auth/getUsers", { token });
+				this.usersRequested = true;
+			}
+		}
+	},
+	watch: {
+		token() {
+			if (this.token) {
+				this.fetchUsers();
+			}
 		}
 	},
 	created() {
-		if (this.token) {
-			const token = this.token;
-			this.$store.dispatch("modules/auth/getUsers", { token });
+		const token = this.token;
+
+		if (token && !this.usersRequested) {
+			this.fetchUsers();
 		}
 	}
 };

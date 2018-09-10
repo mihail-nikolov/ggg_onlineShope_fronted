@@ -14,7 +14,7 @@
 			</v-layout>
 		</v-container>
 
-		<v-container class="cart-panel-card" v-for="(product, index) in addedItemsToCart" :key="index">
+		<v-container class="cart-panel-card" v-for="(cartItem, index) in addedItemsToCart" :key="index">
 			<v-layout row wrap>
 				<v-flex xs12>
 					<v-card class="panel-card" color="blue-grey lighten-5">
@@ -23,10 +23,10 @@
 								<v-flex xs4 column>
 									<v-card-media height="130px" contain left>
 										<v-carousel class="panel-card-carousel" hide-controls hide-delimiters interval="3500">
-											<v-carousel-item v-for="(image,i) in product.item.Images" :src="image" :key="i" contain></v-carousel-item>
+											<v-carousel-item v-for="(image,i) in cartItem.item.Images" :src="image" :key="i" contain></v-carousel-item>
 										</v-carousel>
 									</v-card-media>
-									<v-btn color="primary" flat @click="onProductDetails(product)">
+									<v-btn color="primary" flat @click="onProductDetails(cartItem)">
 										<v-icon left>mdi-information-outline</v-icon>
 										Детайли
 									</v-btn>
@@ -35,33 +35,18 @@
 
 									<v-flex column>
 										<v-card-title>
-											<h3 style="width:100%">Eurocode: {{product.item.EuroCode}}</h3>
-											<div style="width:100%">{{product.item.Description}}</div>
+											<h3 style="width:100%">Eurocode: {{cartItem.item.EuroCode}}</h3>
+											<div style="width:100%">{{cartItem.item.Description}}</div>
 											<div style="font-weight:bold;margin-top:10px;width:100%">Цена: 100lv</div>
 										</v-card-title>
 									</v-flex>
 
 									<v-flex column>
 										<v-card-actions>
-											<v-flex xs5 align-center>
-												<div class="action-title">Количество</div>
-												<v-btn color="primary" icon flat @click="decreaseProductQuantity(product, index)">
-													<v-icon>mdi-minus</v-icon>
-												</v-btn>
-												<span class="product-quantity">{{product.cartCount}}</span>
-												<v-btn color="primary" icon flat @click="increaseProductQuantity(product, index)">
-													<v-icon>mdi-plus</v-icon>
-												</v-btn>
-											</v-flex>
-											<v-flex xs4 align-center>
-												<div class="action-title">Общо</div>
-												<div class="total-product-sum">{{product.cartCount * 100}}lv</div>
-											</v-flex>
-											<v-flex xs2 align-end>
-												<v-btn color="primary" icon flat @click="removeProductFromCart(index)">
-													<v-icon>mdi-delete</v-icon>
-												</v-btn>
-											</v-flex>
+											<v-spacer></v-spacer>
+											<v-btn color="primary" icon flat @click="removeProductFromCart(index)">
+												<v-icon>mdi-delete</v-icon>
+											</v-btn>
 										</v-card-actions>
 									</v-flex>
 								</v-flex>

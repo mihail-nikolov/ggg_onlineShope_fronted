@@ -340,7 +340,6 @@ const actions = {
 			})
 			.catch(e => {
 				store.dispatch('modules/general/deactivateLoading');
-				console.log("error getProductAvailability -> ", e);
 			});
 	},
 	async searchForCode({commit}, code) {

@@ -17,6 +17,7 @@
 }
 
 #inspire,
+#inspire-admin,
 .index-page,
 .login-page,
 .register-page,
@@ -24,4 +25,14 @@
 .cart-page,
 .contact-page {
 	font-family: Verdana;
+}
+
+@media all and (max-width: 1200px) {
+	#inspire-admin.application {
+		overflow: auto;
+	}
+	#inspire-admin .application--wrap {
+		min-width: 1200px;
+		display: block;
+	}
 }
