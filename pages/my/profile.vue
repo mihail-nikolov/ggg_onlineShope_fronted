@@ -22,9 +22,9 @@ const userKeyMap = {
 	"PhoneNumber": "Телефонен номер",
 	"DeliveryCountry": "Държава",
 	"DeliveryTown": "Град",
-  "DeliveryAddress": "Адрес",
-  "IsDeferredPaymentAllowed": "Разсрочено плащане",
-  "PercentageReduction": "Отстъпка"
+	"DeliveryAddress": "Адрес",
+	"IsDeferredPaymentAllowed": "Разсрочено плащане",
+	"PercentageReduction": "Отстъпка"
 };
 
 import adminNavigationButtons from '~/components/adminNavigationButtons';

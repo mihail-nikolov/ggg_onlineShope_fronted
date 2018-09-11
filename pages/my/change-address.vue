@@ -27,8 +27,8 @@
 			return {
 				country: '',
 				city: '',
-        address: '',
-        phoneNumber: ''
+				address: '',
+				phoneNumber: ''
 			};
 		},
 		components: {
@@ -48,8 +48,8 @@
 								user: this.user,
 								country: this.country,
 								city: this.city,
-                address: this.address,
-                phoneNumber: this.phoneNumber
+								address: this.address,
+								phoneNumber: this.phoneNumber
 							});
 						}
 						else {
@@ -59,8 +59,8 @@
 							});
 							this.country = '';
 							this.city = '';
-              this.address = '';
-              this.phoneNumber = '';
+							this.address = '';
+							this.phoneNumber = '';
 						}
 					});
 			},
@@ -79,10 +79,10 @@
 			},
 			address(value) {
 				return Validator.value(value).required();
-      },
-      phoneNumber(value) {
-        return Validator.value(value).required();
-      }
+			},
+			phoneNumber(value) {
+				return Validator.value(value).required();
+			}
 		}
 	};
 </script>
