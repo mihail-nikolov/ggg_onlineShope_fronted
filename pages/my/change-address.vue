@@ -3,13 +3,14 @@
         <v-card class="admin__card">
             <h2 class="admin__title">Смени адрес</h2>
             <v-form class="form-wrapper">
-                <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="country" fieldName="Държава" :hasError="validation.hasError('country')" :firstError="validation.firstError('county')"></form-component>
-                <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="city" fieldName="Град" :hasError="validation.hasError('city')" :firstError="validation.firstError('city')"></form-component>
-                <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="address" fieldName="Адрес" :hasError="validation.hasError('address')" :firstError="validation.firstError('address')"></form-component>
-                <v-layout row wrap>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="onSubmit">Запази</v-btn>
-                </v-layout>
+              <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="country" fieldName="Държава" :hasError="validation.hasError('country')" :firstError="validation.firstError('county')"></form-component>
+              <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="city" fieldName="Град" :hasError="validation.hasError('city')" :firstError="validation.firstError('city')"></form-component>
+              <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="address" fieldName="Адрес" :hasError="validation.hasError('address')" :firstError="validation.firstError('address')"></form-component>
+              <form-component @onKeyUp="onKeyUp" :color="'white'" elemType="text" v-model="phoneNumber" fieldName="Телефонен Номер" :hasError="validation.hasError('phoneNumber')" :firstError="validation.firstError('phoneNumber')"></form-component>
+              <v-layout row wrap>
+                <v-spacer></v-spacer>
+                <v-btn @click="onSubmit">Запази</v-btn>
+              </v-layout>
             </v-form>
         </v-card>
     </v-container>
@@ -26,7 +27,8 @@
 			return {
 				country: '',
 				city: '',
-				address: ''
+        address: '',
+        phoneNumber: ''
 			};
 		},
 		components: {
@@ -46,7 +48,8 @@
 								user: this.user,
 								country: this.country,
 								city: this.city,
-								address: this.address
+                address: this.address,
+                phoneNumber: this.phoneNumber
 							});
 						}
 						else {
@@ -56,7 +59,8 @@
 							});
 							this.country = '';
 							this.city = '';
-							this.address = '';
+              this.address = '';
+              this.phoneNumber = '';
 						}
 					});
 			},
@@ -75,7 +79,10 @@
 			},
 			address(value) {
 				return Validator.value(value).required();
-			}
+      },
+      phoneNumber(value) {
+        return Validator.value(value).required();
+      }
 		}
 	};
 </script>
