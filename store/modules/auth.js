@@ -71,12 +71,13 @@ const mutations = {
 
 		userCached.EmailConfirmed = confirmed;
 	},
-	SET_ADDRESS(state, { city, country, address }) {
+	SET_ADDRESS(state, { city, country, address, phoneNumber }) {
 		const user = state.userDetails;
 
 		user.DeliveryCountry = country;
 		user.DeliveryTown = city;
-		user.DeliveryAddress = address;
+	user.DeliveryAddress = address;
+	  user.PhoneNumber = phoneNumber;
 	}
 };
 
@@ -248,10 +249,10 @@ const actions = {
 		const token = state.token;
 		return usersRepository.changeUserDetails({ token, user });
 	},
-	async changeUserAddress({ commit, state }, { city, country, address }) {
+	async changeUserAddress({ commit, state }, { city, country, address, phoneNumber }) {
 		const token = state.token;
 		const user = state.userDetails;
-		commit("SET_ADDRESS", { city, country, address });
+		commit("SET_ADDRESS", { city, country, address, phoneNumber });
 		return usersRepository.changeUserDetails({ token, user });
 	},
 	async changeOrderStatus({ commit, state }, { order, status }) {
