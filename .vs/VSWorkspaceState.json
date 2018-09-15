@@ -3,8 +3,7 @@
     "",
     "\\components",
     "\\pages",
-    "\\pages\\my",
-    "\\store\\modules"
+    "\\pages\\my"
   ],
   "SelectedNode": "\\pages\\my\\users.vue",
   "PreviewInSolutionExplorer": false

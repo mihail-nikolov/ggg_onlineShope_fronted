@@ -251,8 +251,8 @@
 					OtherCodes: null,
 					DeliveryNotes: "",
 					PaidPrice: 0,
-					AnonymousUserEmail: "",
-					AnonymousUserInfo: "",
+					UserEmail: "",
+					UserInfo: "",
 					UserId: null,
 					FullAddress: ""
 				};
@@ -277,8 +277,8 @@
 					}
 				}
 				order.DeliveryNotes = this.description;
-				order.AnonymousUserEmail = this.email;
-				order.AnonymousUserInfo = this.name;
+				order.UserEmail = this.email;
+				order.UserInfo = this.name;
 				order.UserId = this.user && this.user.Id || null;
 				order.FullAddress = `${this.country}; ${this.city}; ${this.address}`;
 
