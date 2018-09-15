@@ -6,10 +6,10 @@ class UsersRepository {
 		this.http = baseRepository;
 		this.URL = {
 			getUsers: "Administration/ManageUsers",
-			updateUser: "Account/UpdateUserInfo",
+			updateUser: "Administration/ManageUsers/UpdateUserInfo",
 			emailConfirmation: "Administration/ManageUsers/SendEmailConfirmation",
 			changePassword: "Account/ChangePassword",
-			changeDetails: "Account/UpdateUserInfo"
+			changeDetails: "Account/UpdateUserInfo",
 		};
 	}
 
