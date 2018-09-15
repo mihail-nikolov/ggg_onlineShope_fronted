@@ -243,7 +243,7 @@
 				const order = {
 					Manufacturer: "",
 					Price: 0,
-					DeliveryStatus: "New",
+					Status: "New",
 					WithInstallation: false,
 					IsInvoiceNeeded: false,
 					Description: "",
