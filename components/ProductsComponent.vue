@@ -206,6 +206,9 @@
 					product = {};
 				product.item = JSON.parse(JSON.stringify(comp.currentCartProductToAdd));
 				product.cartCount = ~~comp.cartCount;
+				product.cartGroupData = JSON.parse(JSON.stringify(this.cartGroupData));
+				product.selectedCartGroup = this.selectedCartGroup;
+				product.selectedCartStore = this.selectedCartStore;
 				comp.$store.dispatch("modules/cart/addItemToCart", {
 					productToBeAdded: product,
 					originalProduct: comp.currentCartProductToAdd

@@ -37,7 +37,7 @@
 										<v-card-title>
 											<h3 style="width:100%">Eurocode: {{cartItem.item.EuroCode}}</h3>
 											<div style="width:100%">{{cartItem.item.Description}}</div>
-											<div style="font-weight:bold;margin-top:10px;width:100%">Цена: 100lv</div>
+											<div style="font-weight:bold;margin-top:10px;width:100%">{{ getItemManufacturer(cartItem) }}: Цена: {{ round(getItemPrice(cartItem)) }}лв.</div>
 										</v-card-title>
 									</v-flex>
 
@@ -58,17 +58,36 @@
 		</v-container>
 
 		<v-container>
+			<v-form class="form-wrapper">
+				<form-component elemType="text" v-model="name" fieldName="Име" :hasError="validation.hasError('name')" :firstError="validation.firstError('name')"></form-component>
+				<form-component elemType="text" v-model="email" fieldName="Имейл" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
+				<form-component elemType="text" v-model="country" fieldName="Държава" :hasError="validation.hasError('country')" :firstError="validation.firstError('county')"></form-component>
+				<form-component elemType="text" v-model="city" fieldName="Град" :hasError="validation.hasError('city')" :firstError="validation.firstError('city')"></form-component>
+				<form-component elemType="text" v-model="address" fieldName="Адрес" :hasError="validation.hasError('address')" :firstError="validation.firstError('address')"></form-component>
+				<form-component elemType="text" v-model="phoneNumber" fieldName="Телефонен Номер" :hasError="validation.hasError('phoneNumber')" :firstError="validation.firstError('phoneNumber')"></form-component>
+				<form-component elemType="text" v-model="description" fieldName="Допълнителна информация"></form-component>
+
+				<div style="flex: 1; display: flex;">
+					<v-flex xs-6>
+						<v-chip v-if="isInvoiceNeeded" @click="removeInvoice()">+ ФАКТУРА</v-chip>
+						<v-chip v-if="isInstalationNeeded" @click="removeInstallation()">+ МОНТАЖ</v-chip>
+					</v-flex>
+					<v-spacer></v-spacer>
+					<v-btn flat small @click="addInvoice()" v-if="!this.isInvoiceNeeded">Фактура</v-btn>
+					<v-btn flat small @click="addInstallation()" v-if="!this.isInstalationNeeded">Монтаж</v-btn>
+				</div>
+			</v-form>
+		</v-container>
+
+		<v-container>
 			<v-layout row>
-				<v-flex xs5 offset-xs7>
-					<h3 class="total-sum-text">Общо: {{totalSum}}lv</h3>
-					<h3 class="total-sum-text">Доставка: 0lv</h3>
+				<v-flex xs6 offset-xs6>
+					<h3 class="total-sum-text">Общо: {{ round(totalSum) }}лв.</h3>
+					<h3 class="total-sum-text">Доставка: 0лв.</h3>
 					<br>
-					<h2 class="total-sum-text">Крайна сума: {{totalSum}}lv</h2>
+					<h2 class="total-sum-text">Крайна сума: {{ round(totalSum) }}лв.</h2>
 					<v-flex right>
-						<v-btn color="primary" @click="onCheckout">
-							<v-icon left>mdi-credit-card-multiple</v-icon>
-							Плати
-						</v-btn>
+						<v-btn color="primary" @click="onCheckout">Изпрати</v-btn>
 					</v-flex>
 				</v-flex>
 			</v-layout>
@@ -77,10 +96,29 @@
 </template>
 
 <script>
+	import SimpleVueValidation from 'simple-vue-validator';
+	import FormInputComponent from '~/components/Form/FormInputComponent';
+	import cart from "../store/modules/cart";
+	const Validator = SimpleVueValidation.Validator;
+	import ordersRepository from "~/repositories/ordersRepository";
+
 	export default {
 		name: 'CartPanel',
 		data() {
-			return {};
+			return {
+				country: '',
+				city: '',
+				address: '',
+				phoneNumber: '',
+				name: '',
+				email: '',
+				description: '',
+				isInvoiceNeeded: false,
+				isInstalationNeeded: false
+			};
+		},
+		components: {
+			'form-component': FormInputComponent
 		},
 		computed: {
 			addedItemsToCart() {
@@ -95,10 +133,32 @@
 			},
 			totalSum() {
 				let sum = 0;
-				this.$store.getters["modules/cart/getCartItems"].forEach(function(product) {
-					sum += product.cartCount;
+
+				this.$store.getters["modules/cart/getCartItems"].forEach((cartItem) => {
+					sum += (this.getItemPrice(cartItem) * cartItem.cartCount);
 				});
-				return sum * 100;
+
+				return sum;
+			},
+			user() {
+				return this.$store.getters["modules/auth/getUserDetails"];
+			}
+		},
+		created() {
+			if (this.user) {
+				this.setUserData(this.user);
+			}
+		},
+		watch: {
+			addedItemsToCart(value) {
+				console.log("New items -> ", value);
+				sessionStorage.removeItem('autoGlassAddedToCartItems');
+				sessionStorage.setItem('autoGlassAddedToCartItems', JSON.stringify(value));
+			},
+			user() {
+				if (this.user) {
+					this.setUserData(this.user);
+				}
 			}
 		},
 		methods: {
@@ -127,20 +187,119 @@
 				this.$store.dispatch('modules/cart/removeProductFromCart', index);
 			},
 			onCheckout() {
-				console.log("CHECKOUT");
+				while (this.addedItemsToCart.length) {
+					const cartItem = this.addedItemsToCart[0];
+					const order = this.createOrder(cartItem);
+					ordersRepository.order({ order })
+						.then(() => {
+						});
+					this.removeProductFromCart(0);
+				}
 			},
 			slideDrawerOut() {
 				this.$emit('slideDrawerOut');
 			},
 			onProductDetails(product) {
 				this.$emit('cartPanelDetailsButtonClicked', product);
-			}
+			},
+			getItemPrice(cartItem) {
+				const group = this.getItemGroup(cartItem);
+
+				return group.Price;
+			},
+			getItemManufacturer(cartItem) {
+				const group = this.getItemGroup(cartItem);
+
+				return group.Group;
+			},
+			getItemGroup(cartItem) {
+				return cartItem.cartGroupData.find(group => group.GoodId === cartItem.selectedCartGroup);
+			},
+			addInvoice() {
+				this.isInvoiceNeeded = true;
+			},
+			removeInvoice() {
+				this.isInvoiceNeeded = false;
+			},
+			addInstallation() {
+				this.isInstalationNeeded = true;
+			},
+			removeInstallation() {
+				this.isInstalationNeeded = false;
+			},
+			setUserData(user) {
+				this.name = user.Name;
+				this.email = user.Email;
+				this.address = user.DeliveryAddress;
+				this.country = user.DeliveryCountry;
+				this.city = user.DeliveryTown;
+				this.phoneNumber = user.PhoneNumber;
+			},
+			createOrder(cartItem) {
+				const order = {
+					Manufacturer: "",
+					Price: 0,
+					DeliveryStatus: "New",
+					WithInstallation: false,
+					IsInvoiceNeeded: false,
+					Description: "",
+					Eurocode: null,
+					OtherCodes: null,
+					DeliveryNotes: "",
+					PaidPrice: 0,
+					AnonymousUserEmail: "",
+					AnonymousUserInfo: "",
+					UserId: null,
+					FullAddress: ""
+				};
+
+				order.Manufacturer = this.getItemManufacturer(cartItem);
+				order.Price = this.getItemPrice(cartItem);
+				order.WithInstallation = this.isInstalationNeeded;
+				order.IsInvoiceNeeded = this.isInvoiceNeeded;
+				order.Description = cartItem.item.Description;
+				if (cartItem.item.EuroCode) {
+					order.Eurocode = cartItem.item.EuroCode;
+				}
+				else {
+					if (cartItem.item.OesCode) {
+						order.OtherCodes += `${cartItem.item.OesCode};`;
+					}
+					if (cartItem.item.MaterialNumber) {
+						order.OtherCodes += `${cartItem.item.MaterialNumber};`;
+					}
+					if (cartItem.item.LocalCode) {
+						order.OtherCodes += `${cartItem.item.LocalCode};`;
+					}
+				}
+				order.DeliveryNotes = this.description;
+				order.AnonymousUserEmail = this.email;
+				order.AnonymousUserInfo = this.name;
+				order.UserId = this.user && this.user.Id || null;
+				order.FullAddress = `${this.country}; ${this.city}; ${this.address}`;
+
+				return order;
+			},
+			round: num => num.toFixed(2)
 		},
-		watch: {
-			addedItemsToCart(value) {
-				console.log("New items -> ", value);
-				sessionStorage.removeItem('autoGlassAddedToCartItems');
-				sessionStorage.setItem('autoGlassAddedToCartItems', JSON.stringify(value));
+		validators: {
+			name(value) {
+				return Validator.value(value).required();
+			},
+			email(value) {
+				return Validator.value(value).required().email();
+			},
+			country(value) {
+				return Validator.value(value).required();
+			},
+			city(value) {
+				return Validator.value(value).required();
+			},
+			address(value) {
+				return Validator.value(value).required();
+			},
+			phoneNumber(value) {
+				return Validator.value(value).required();
 			}
 		}
 	};

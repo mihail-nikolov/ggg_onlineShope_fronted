@@ -26,6 +26,9 @@
 		},
 		methods: {
 			onBlur() {
+				this.checkIsUsed();
+			},
+			checkIsUsed() {
 				if (this.value) this.isUsed = true;
 				else this.isUsed = false;
 			},
@@ -38,6 +41,14 @@
 			mapErrorToString(error) {
 				return errorMsgMap[error] || error;
 			}
+		},
+		watch: {
+			value() {
+				this.checkIsUsed();
+			}
+		},
+		created() {
+			this.checkIsUsed();
 		}
 	};
 </script>
