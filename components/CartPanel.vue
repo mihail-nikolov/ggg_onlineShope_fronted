@@ -277,7 +277,7 @@
 					}
 				}
 				order.DeliveryNotes = this.description;
-        order.UserЕmail = this.email;
+				order.UserЕmail = this.email;
 				order.UserInfo = this.name;
 				order.UserId = this.user && this.user.Id || null;
 				order.FullAddress = `${this.country}; ${this.city}; ${this.address}`;
