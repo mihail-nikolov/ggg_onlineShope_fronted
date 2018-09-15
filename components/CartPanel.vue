@@ -187,14 +187,18 @@
 				this.$store.dispatch('modules/cart/removeProductFromCart', index);
 			},
 			onCheckout() {
+				const orders = [];
+
 				while (this.addedItemsToCart.length) {
 					const cartItem = this.addedItemsToCart[0];
 					const order = this.createOrder(cartItem);
-					ordersRepository.order({ order })
-						.then(() => {
-						});
+					orders.push(order);
 					this.removeProductFromCart(0);
 				}
+
+				ordersRepository.order({ orders })
+					.then(() => {
+					});
 			},
 			slideDrawerOut() {
 				this.$emit('slideDrawerOut');

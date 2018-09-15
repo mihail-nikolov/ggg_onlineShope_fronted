@@ -39,8 +39,8 @@ class OrdersRepository {
 		string UserId – if registered user orders it
 		[Required] string FullAddress
 	* */
-	order({ order }) {
-		return this.http.post(this.URL.makeOrder, order, null);
+	order({ orders }) {
+		return this.http.post(this.URL.makeOrder, orders, null);
 	}
 }
 
