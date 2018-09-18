@@ -30,7 +30,7 @@
                  v-for="image in allImages" :src="image"
                  v-bind:class="{
                     selected: selectedImages.includes(image),
-                    disabled: filteredImages.length && !filteredImages.includes(image)
+                    hidden: filteredImages.length && !filteredImages.includes(image)
                     }"
                  @click="toggleSelectImage(image);">
         </v-flex>
