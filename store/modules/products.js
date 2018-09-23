@@ -301,6 +301,12 @@ const actions = {
 						const imagePath = "/Images/" + product.FeaturedImageId + ".jpg";
 						images.add(imagePath);
 					}
+					if (product.Images.length > 0) {
+						product.Images = product.Images.map(image => {
+							const imagePath = "/Images/" + image + ".jpg";
+							return imagePath;
+						});
+					}
 				});
 
 				console.warn(products);
@@ -344,19 +350,15 @@ const actions = {
 				products.forEach(function(product) {
 					productTypes.add(product.Position);
 
+					if (product.FeaturedImageId !== null) {
+						const imagePath = "/Images/" + product.FeaturedImageId + ".jpg";
+						images.add(imagePath);
+					}
 					if (product.Images.length > 0) {
 						product.Images = product.Images.map(image => {
 							const imagePath = "/Images/" + image + ".jpg";
-							images.add(imagePath);
 							return imagePath;
 						});
-						if (product.Images.length === 0) {
-							product.Images.push("/Images/no-image.png");
-							images.add("/Images/no-image.png");
-						}
-					} else {
-						product.Images.push("/Images/no-image.png");
-						images.add("/Images/no-image.png");
 					}
 				});
 
