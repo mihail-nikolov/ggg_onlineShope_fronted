@@ -306,6 +306,8 @@ const actions = {
 							const imagePath = "/Images/" + image + ".jpg";
 							return imagePath;
 						});
+					} else {
+						product.Images.push("/Images/no-image.png");
 					}
 				});
 
@@ -357,6 +359,8 @@ const actions = {
 							const imagePath = "/Images/" + image + ".jpg";
 							return imagePath;
 						});
+					} else {
+						product.Images.push("/Images/no-image.png");
 					}
 				});
 
