@@ -71,6 +71,9 @@
 			user() {
 				return this.$store.getters["modules/auth/getUserDetails"];
 			},
+			token() {
+				return this.$store.getters["modules/auth/getToken"];
+			},
 			isLoadingActive() {
 				return this.$store.getters["modules/general/isLoadingActive"];
 			},
@@ -106,7 +109,7 @@
 				this.dialogDetailsOpen = true;
 				if (product.item) {
 					const { Id: id } = product.item;
-					this.$store.dispatch("modules/products/getProductAvailability", id);
+					this.$store.dispatch("modules/products/getProductAvailability", { id, token: this.token });
 				}
 			},
 			onCloseDetailsDialogClick(value) {

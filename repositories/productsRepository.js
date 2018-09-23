@@ -10,7 +10,8 @@ class ProductsRepository {
 			productsByDetails: "Products/FindByVehicleInfo",
 			product: "Products/GetItemByFullCode",
 			productTypes: "Products/GetProductTypes",
-			fullProduct: "Products/GetDetailedInfo"
+			fullProduct: "Products/GetDetailedInfo",
+			availability: "Products/GetPriceAndQuantities"
 		};
 
 		console.log(this);
@@ -170,8 +171,8 @@ class ProductsRepository {
 		id: number
 	}
 	*/
-	getProductAvailability(data) {
-
+	getProductAvailability(id, token) {
+		return this.http.get(`${this.URL.availability}/${id}`, null, null, { Authorization: token || undefined });
 	}
 }
 

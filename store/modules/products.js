@@ -325,17 +325,15 @@ const actions = {
 				console.log("error serchForProducts -> ", e);
 			});
 	},
-	async getProductAvailability({commit}, productId) {
-		let store = this;
-		store.dispatch('modules/general/activateLoading');
-		return axios.get('http://﻿130.204.36.213/api/Products/GetPriceAndQuantities/' + productId)
-			.then(response => {
-				console.log("Product availability -> ", response.data);
-				commit('SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY', response.data);
-				store.dispatch('modules/general/deactivateLoading');
+	async getProductAvailability({commit}, { id, token }) {
+		this.dispatch('modules/general/activateLoading');
+		return productsRepository.getProductAvailability(id, token)
+			.then(availability => {
+				commit('SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY', availability);
+				this.dispatch('modules/general/deactivateLoading');
 			})
 			.catch(e => {
-				store.dispatch('modules/general/deactivateLoading');
+				this.dispatch('modules/general/deactivateLoading');
 			});
 	},
 	async searchForCode({commit}, code) {

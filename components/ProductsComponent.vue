@@ -135,6 +135,9 @@
 			};
 		},
 		computed: {
+			token() {
+				return this.$store.getters["modules/auth/getToken"];
+			},
 			foundProducts() {
 				return this.$store.getters["modules/products/getAllProducts"];
 			},
@@ -172,7 +175,7 @@
 			},
 			onAddProductToCart(product) {
 				this.currentCartProductToAdd = product;
-				this.$store.dispatch("modules/products/getProductAvailability", product.Id)
+				this.$store.dispatch("modules/products/getProductAvailability", { id: product.Id, token: this.token })
 					.then(() => {
 						this.dialogCartCountOpen = true;
 					});
@@ -180,7 +183,7 @@
 			onProductDetails(product) {
 				this.curProductDetails = product;
 
-				this.$store.dispatch("modules/products/getProductAvailability", product.Id)
+				this.$store.dispatch("modules/products/getProductAvailability", { id: product.Id, token: this.token })
 					.then(() => {
 						this.dialogDetailsOpen = true;
 					});
