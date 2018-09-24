@@ -76,8 +76,8 @@ const mutations = {
 
 		user.DeliveryCountry = country;
 		user.DeliveryTown = city;
-	user.DeliveryAddress = address;
-	  user.PhoneNumber = phoneNumber;
+		user.DeliveryAddress = address;
+		user.PhoneNumber = phoneNumber;
 	}
 };
 
@@ -151,10 +151,28 @@ const actions = {
 					});
 				});
 		}).catch(e => {
-			this.dispatch("modules/general/setSnackbarNotification", {
-				message: "Грешен имейл или парола",
-				status: 'error'
-			});
+			console.log(e.response);
+			if (e.response && e.response.data) {
+				const { error_description } = e.response.data
+				if (error_description === "Account pending approval.") {
+					this.dispatch("modules/general/setSnackbarNotification", {
+						message: "Регистрацията не е потвърдена",
+						status: 'error'
+					});
+				}
+				else {
+					this.dispatch("modules/general/setSnackbarNotification", {
+						message: "Грешен имейл или парола",
+						status: 'error'
+					});
+				}
+			}
+			else {
+				this.dispatch("modules/general/setSnackbarNotification", {
+					message: "Грешен имейл или парола",
+					status: 'error'
+				});
+			}
 
 			throw e;
 		});
