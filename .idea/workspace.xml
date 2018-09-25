@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="20de1c0b-4c29-4efd-80b0-31a60d931272" name="Default" comment="fix products images">
+    <list default="true" id="20de1c0b-4c29-4efd-80b0-31a60d931272" name="Default" comment="product details &amp; product accessories">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/modules/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/modules/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ProductDetailsDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProductDetailsDialog.vue" afterDir="false" />
     </list>
     <ignored path=".idea/inspectionProfiles/Project_Default.xml" />
     <ignored path=".idea/ggg.iml" />
@@ -19,29 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CartPanel.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/components/CartPanel.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="16" column="85" selection-start-line="16" selection-start-column="85" selection-end-line="16" selection-end-column="85" />
-              <folding>
-                <element signature="n#v-container#1;n#v-container#0;n#template#0;n#!!top" />
-                <element signature="n#v-flex#0;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#1;n#v-container#0;n#template#0;n#!!top" />
-                <element signature="n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#1;n#v-container#0;n#template#0;n#!!top" />
-                <element signature="n#style#0;n#h3#0;n#v-card-title#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#1;n#v-container#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#v-card-title#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#1;n#v-container#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#v-card-title#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#1;n#v-container#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#4276#4331#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="productsRepository.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/repositories/productsRepository.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="174" column="8" selection-start-line="174" selection-start-column="8" selection-end-line="174" selection-end-column="8" />
+            <state relative-caret-position="870">
+              <caret line="58" column="36" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -49,61 +31,15 @@
       <file leaf-file-name="products.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/store/modules/products.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="357" column="70" lean-forward="true" selection-start-line="357" selection-start-column="70" selection-end-line="357" selection-end-column="70" />
+            <state relative-caret-position="230">
+              <caret line="399" column="18" selection-start-line="399" selection-start-column="18" selection-end-line="399" selection-end-column="18" />
               <folding>
-                <element signature="e#0#26#0" expanded="true" />
+                <element signature="e#0#22#0" expanded="true" />
                 <element signature="e#3233#4155#0" />
                 <element signature="e#4190#4728#0" />
                 <element signature="e#4758#5303#0" />
                 <element signature="e#5340#6126#0" />
                 <element signature="e#6166#7027#0" />
-                <element signature="e#7070#7917#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="auth.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/store/modules/auth.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="158" column="59" selection-start-line="158" selection-start-column="59" selection-end-line="158" selection-end-column="59" />
-              <folding>
-                <element signature="e#0#61#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="default.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/layouts/default.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="110" column="52" lean-forward="true" selection-start-line="110" selection-start-column="52" selection-end-line="110" selection-end-column="52" />
-              <folding>
-                <element signature="n#style#0;n#v-btn#0;n#v-toolbar#0;n#v-app#0;n#template#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProductCard.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/components/ProductCard.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="79" selection-start-line="4" selection-start-column="76" selection-end-line="4" selection-end-column="79" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="change-address.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/my/change-address.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="40" column="10" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
-              <folding>
-                <element signature="e#1315#1370#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -112,29 +48,86 @@
       <file leaf-file-name="ProductsComponent.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/components/ProductsComponent.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="175" column="41" selection-start-line="175" selection-start-column="41" selection-end-line="175" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ordersRepository.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/repositories/ordersRepository.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="108" lean-forward="true" selection-start-line="18" selection-start-column="84" selection-end-line="18" selection-end-column="108" />
+            <state relative-caret-position="410">
+              <caret line="240" column="21" lean-forward="true" selection-start-line="240" selection-start-column="21" selection-end-line="241" selection-end-column="50" />
               <folding>
-                <element signature="e#0#46#0" expanded="true" />
+                <element signature="n#style#0;n#v-container#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#v-flex#0;n#v-container#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#5072#5123#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="orders.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/my/orders.vue">
+      <file leaf-file-name="ProductDetailsDialog.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/ProductDetailsDialog.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1110">
-              <caret line="74" selection-start-line="74" selection-end-line="74" />
+            <state relative-caret-position="608">
+              <caret line="198" column="24" selection-start-line="198" selection-start-column="24" selection-end-line="198" selection-end-column="24" />
+              <folding>
+                <element signature="n#style#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#3;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#4;n#div#3;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SearchComponent.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/SearchComponent.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-8">
+              <caret line="3" column="40" lean-forward="true" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#v-container#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#2455#2497#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="default.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/layouts/default.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="37" column="16" selection-start-line="37" selection-start-column="16" selection-end-line="37" selection-end-column="16" />
+              <folding>
+                <element signature="n#style#0;n#v-btn#0;n#v-toolbar#0;n#v-app#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#2280#2331#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Loading.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/Loading.vue">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="AccessoryDetailsDialog.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/AccessoryDetailsDialog.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="134">
+              <caret line="195" column="17" lean-forward="true" selection-start-line="195" selection-start-column="17" selection-end-line="195" selection-end-column="17" />
+              <folding>
+                <element signature="n#style#0;n#v-flex#0;n#v-flex#0;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#h2#0;n#v-flex#0;n#v-flex#0;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#v-flex#1;n#v-flex#0;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#v-flex#0;n#v-flex#1;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#h2#0;n#v-flex#0;n#v-flex#1;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#v-flex#1;n#v-flex#1;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#v-flex#1;n#div#6;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OrderCard.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/OrderCard.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="25" column="47" lean-forward="true" selection-start-line="25" selection-start-column="47" selection-end-line="25" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -150,36 +143,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>OrdersRep</find>
-      <find>onCheckout</find>
-      <find>createOrder</find>
-      <find>[0]</find>
-      <find>label</find>
-      <find>getProducts</find>
-      <find>SearchF</find>
-      <find>GetQuantities</find>
-      <find>Quanti</find>
-      <find>currentProductAvailability</find>
-      <find>src</find>
-      <find>.token</find>
-      <find>token(</find>
-      <find>ch(&quot;modules/products/getP</find>
-      <find>Authorization:</find>
+      <find>curProductDetails</find>
+      <find>forEach</find>
+      <find>onCloseDetailsDialogClick</find>
+      <find>време</find>
+      <find>curP</find>
+      <find>IsAc</find>
+      <find>details-dialog-carousel</find>
+      <find>currentAccessoryAvailability</find>
+      <find>toggleSel</find>
+      <find>currentlyObservedAccessoryAvailability</find>
+      <find>SET_CURRENT_OBSERVED_ACCESSORY_AVAILABILITY</find>
+      <find>getAccessoryAvailabilty</find>
+      <find>selectedCartGroup</find>
+      <find>onAddCartCountDialogClick</find>
+      <find>добави</find>
+      <find>group</find>
+      <find>getItemManufacturer</find>
+      <find>toggleS</find>
+      <find>10;</find>
+      <find>onOpen</find>
+      <find>onOpenAccessoryDialog</find>
+      <find>hasA</find>
+      <find>has</find>
+      <find>hasAny</find>
       <find>hasAnyAvailability</find>
-      <find>cartGroupData</find>
-      <find>currentlyObservedProductAvailability</find>
-      <find>SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY</find>
-      <find>token</find>
-      <find>getProductAva</find>
-      <find>getProductA</find>
-      <find>console.log</find>
-      <find>getCurrentObservedProductAvailability</find>
-      <find>getProductAvailability</find>
-      <find>Images</find>
-      <find>Feature</find>
-      <find>FeaturedImageId</find>
-      <find>auth.</find>
-      <find>log</find>
+      <find>&gt;=</find>
+      <find>groupHasAvailability</find>
+      <find>currentCartProductToAdd</find>
+      <find>access</find>
+      <find>loading</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -206,10 +199,8 @@
         <option value="$PROJECT_DIR$/pages/index.vue" />
         <option value="$PROJECT_DIR$/components/ProductCard.vue" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.vue" />
-        <option value="$PROJECT_DIR$/components/SearchComponent.vue" />
         <option value="$PROJECT_DIR$/pages/product/index.vue" />
         <option value="$PROJECT_DIR$/components/RegisterComponent.vue" />
-        <option value="$PROJECT_DIR$/components/ProductDetailsDialog.vue" />
         <option value="$PROJECT_DIR$/pages/product/_id.vue" />
         <option value="$PROJECT_DIR$/components/admin-navigation-buttons.vue" />
         <option value="$PROJECT_DIR$/pages/admin/change-password.vue" />
@@ -239,11 +230,14 @@
         <option value="$PROJECT_DIR$/components/Form/FormInputComponent.vue" />
         <option value="$PROJECT_DIR$/repositories/ordersRepository.js" />
         <option value="$PROJECT_DIR$/components/CartPanel.vue" />
-        <option value="$PROJECT_DIR$/layouts/default.vue" />
-        <option value="$PROJECT_DIR$/components/ProductsComponent.vue" />
+        <option value="$PROJECT_DIR$/store/modules/auth.js" />
+        <option value="$PROJECT_DIR$/components/SearchComponent.vue" />
         <option value="$PROJECT_DIR$/repositories/productsRepository.js" />
         <option value="$PROJECT_DIR$/store/modules/products.js" />
-        <option value="$PROJECT_DIR$/store/modules/auth.js" />
+        <option value="$PROJECT_DIR$/components/ProductsComponent.vue" />
+        <option value="$PROJECT_DIR$/components/AccessoryDetailsDialog.vue" />
+        <option value="$PROJECT_DIR$/components/ProductDetailsDialog.vue" />
+        <option value="$PROJECT_DIR$/layouts/default.vue" />
       </list>
     </option>
   </component>
@@ -347,7 +341,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="auth.&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/auth.js&#10;show hi&#9;ACTION&#9;Vcs.ShowTabbedFileHistory&#10;history&#9;ACTION&#9;Vcs.ShowTabbedFileHistory&#10;formI&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/Form/FormInputComponent.vue&#10;products&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;cart&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/cart.js&#10;productsR&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/productsRepository.js&#10;cart.&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/cart.js&#10;defaul&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/layouts/default.vue&#10;ordersRepository&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/ordersRepository.js&#10;auth&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/auth.js&#10;productsC&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;searc&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/SearchComponent.vue&#10;users&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/usersRepository.js&#10;орде&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/pages/my/orders.vue&#10;productC&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductCard.vue&#10;productDet&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductDetailsDialog.vue&#10;loginC&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/LoginComponent.vue&#10;middle&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/middleware&#10;adminN&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/adminNavigationButtons.vue&#10;productsc&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;prof&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/pages/admin/profile.vue&#10;productsRe&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/productsRepository.js&#10;products.j&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/products.js&#10;registerCom&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/RegisterComponent.vue&#10;register&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/pages/register.vue&#10;auth.j&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/auth.js&#10;histo&#9;ACTION&#9;Vcs.ShowTabbedFileHistory&#10;ProductsCom&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;search&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/SearchComponent.vue&#10;productCard&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductCard.vue&#10;products.&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/products.js&#10;product&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductCard.vue&#10;prod&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;scrollTo&#9;null&#9;null&#10;produc&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/productsRepository.js&#10;InterchangeablePart&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="CartPane&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/CartPanel.vue&#10;search&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/SearchComponent.vue&#10;p&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;produ&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/products.js&#10;productsR&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/productsRepository.js&#10;auth.&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/auth.js&#10;show hi&#9;ACTION&#9;Vcs.ShowTabbedFileHistory&#10;history&#9;ACTION&#9;Vcs.ShowTabbedFileHistory&#10;formI&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/Form/FormInputComponent.vue&#10;products&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;cart&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/cart.js&#10;cart.&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/cart.js&#10;defaul&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/layouts/default.vue&#10;ordersRepository&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/ordersRepository.js&#10;auth&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/auth.js&#10;productsC&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;searc&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/SearchComponent.vue&#10;users&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/usersRepository.js&#10;орде&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/pages/my/orders.vue&#10;productC&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductCard.vue&#10;productDet&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductDetailsDialog.vue&#10;loginC&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/LoginComponent.vue&#10;middle&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/middleware&#10;adminN&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/adminNavigationButtons.vue&#10;productsc&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;prof&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/pages/admin/profile.vue&#10;productsRe&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/productsRepository.js&#10;products.j&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/products.js&#10;registerCom&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/RegisterComponent.vue&#10;register&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/pages/register.vue&#10;auth.j&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/auth.js&#10;histo&#9;ACTION&#9;Vcs.ShowTabbedFileHistory&#10;ProductsCom&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;productCard&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductCard.vue&#10;products.&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/store/modules/products.js&#10;product&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductCard.vue&#10;prod&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/components/ProductsComponent.vue&#10;scrollTo&#9;null&#9;null&#10;produc&#9;FILE&#9;file:///Users/i/PhpstormProjects/ggg/repositories/productsRepository.js&#10;InterchangeablePart&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -360,11 +354,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/components" />
       <recent name="$PROJECT_DIR$/repositories" />
       <recent name="$PROJECT_DIR$/pages/admin" />
       <recent name="$PROJECT_DIR$/pages" />
       <recent name="$PROJECT_DIR$/layouts" />
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -403,7 +397,7 @@
       <workItem from="1536438744303" duration="77000" />
       <workItem from="1536438840596" duration="16418000" />
       <workItem from="1536985785908" duration="7967000" />
-      <workItem from="1537729750893" duration="2841000" />
+      <workItem from="1537729750893" duration="18488000" />
     </task>
     <task id="LOCAL-00001" summary="add base repository/products repository">
       <created>1530871287257</created>
@@ -552,11 +546,32 @@
       <option name="project" value="LOCAL" />
       <updated>1537732505215</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="account not approved login message">
+      <created>1537781933898</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1537781933899</updated>
+    </task>
+    <task id="LOCAL-00023" summary="product details &amp; product accessories">
+      <created>1537901316934</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1537901316937</updated>
+    </task>
+    <task id="LOCAL-00024" summary="fix add product to cart bug when toggling group">
+      <created>1537901532897</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1537901532897</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128940000" />
+    <option name="totallyTimeSpent" value="144587000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -565,10 +580,10 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="13" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="10" visible="true" weight="0.3296593" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.3296593" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.31506848" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.31362724" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16369048" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.31362724" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16369048" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -650,7 +665,10 @@
     <MESSAGE value="fix products images" />
     <MESSAGE value="fix products quantity (onlyHighClass)" />
     <MESSAGE value="fix products without image" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix products without image" />
+    <MESSAGE value="account not approved login message" />
+    <MESSAGE value="product details &amp; product accessories" />
+    <MESSAGE value="fix add product to cart bug when toggling group" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix add product to cart bug when toggling group" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -658,20 +676,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/models/interchangeablePart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="6" selection-start-column="6" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Downloads/eff/form.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="68" column="9" selection-start-line="68" selection-start-column="9" selection-end-line="68" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Downloads/uibank/static.html" />
     <entry file="file://$USER_HOME$/Downloads/uibank/static_2.html" />
     <entry file="file://$USER_HOME$/Downloads/x/2008/12/20081201 copy.html" />
@@ -840,16 +844,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/SearchComponent.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" selection-start-line="18" selection-end-line="19" />
-          <folding>
-            <element signature="e#2455#2497#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/my/change-password.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="482">
@@ -892,13 +886,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/OrderCard.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/store/modules/cart.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1005">
@@ -930,16 +917,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/ProductDetailsDialog.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="56" column="113" selection-start-line="56" selection-start-column="87" selection-end-line="56" selection-end-column="113" />
-          <folding>
-            <element signature="n#style#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/components/ProductCard.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -957,12 +934,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/store/modules/auth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="154" column="48" lean-forward="true" selection-start-line="154" selection-start-column="48" selection-end-line="154" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/OrderCard.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="47" lean-forward="true" selection-start-line="25" selection-start-column="47" selection-end-line="25" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/components/CartPanel.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="16" column="85" selection-start-line="16" selection-start-column="85" selection-end-line="16" selection-end-column="85" />
+        <state relative-caret-position="2332">
+          <caret line="219" column="55" lean-forward="true" selection-start-line="219" selection-start-column="55" selection-end-line="219" selection-end-column="55" />
           <folding>
-            <element signature="n#v-container#1;n#v-container#0;n#template#0;n#!!top" />
             <element signature="n#v-flex#0;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#1;n#v-container#0;n#template#0;n#!!top" />
             <element signature="n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#1;n#v-container#0;n#template#0;n#!!top" />
             <element signature="n#style#0;n#h3#0;n#v-card-title#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#1;n#v-container#0;n#template#0;n#!!top" expanded="true" />
@@ -973,52 +966,90 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/layouts/default.vue">
+    <entry file="file://$PROJECT_DIR$/components/SearchComponent.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="110" column="52" lean-forward="true" selection-start-line="110" selection-start-column="52" selection-end-line="110" selection-end-column="52" />
+        <state relative-caret-position="-8">
+          <caret line="3" column="40" lean-forward="true" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
           <folding>
-            <element signature="n#style#0;n#v-btn#0;n#v-toolbar#0;n#v-app#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#v-container#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2455#2497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/repositories/productsRepository.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="58" column="36" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/store/modules/products.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="399" column="18" selection-start-line="399" selection-start-column="18" selection-end-line="399" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#3233#4155#0" />
+            <element signature="e#4190#4728#0" />
+            <element signature="e#4758#5303#0" />
+            <element signature="e#5340#6126#0" />
+            <element signature="e#6166#7027#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/AccessoryDetailsDialog.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="195" column="17" lean-forward="true" selection-start-line="195" selection-start-column="17" selection-end-line="195" selection-end-column="17" />
+          <folding>
+            <element signature="n#style#0;n#v-flex#0;n#v-flex#0;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h2#0;n#v-flex#0;n#v-flex#0;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#v-flex#1;n#v-flex#0;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#v-flex#0;n#v-flex#1;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h2#0;n#v-flex#0;n#v-flex#1;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#v-flex#1;n#v-flex#1;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#v-flex#1;n#div#6;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/ProductsComponent.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="175" column="41" selection-start-line="175" selection-start-column="41" selection-end-line="175" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/repositories/productsRepository.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="174" column="8" selection-start-line="174" selection-start-column="8" selection-end-line="174" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/store/modules/products.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="357" column="70" lean-forward="true" selection-start-line="357" selection-start-column="70" selection-end-line="357" selection-end-column="70" />
+        <state relative-caret-position="410">
+          <caret line="240" column="21" lean-forward="true" selection-start-line="240" selection-start-column="21" selection-end-line="241" selection-end-column="50" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#3233#4155#0" />
-            <element signature="e#4190#4728#0" />
-            <element signature="e#4758#5303#0" />
-            <element signature="e#5340#6126#0" />
-            <element signature="e#6166#7027#0" />
-            <element signature="e#7070#7917#0" />
+            <element signature="n#style#0;n#v-container#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#v-flex#0;n#v-container#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#5072#5123#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/store/modules/auth.js">
+    <entry file="file://$PROJECT_DIR$/components/ProductDetailsDialog.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="158" column="59" selection-start-line="158" selection-start-column="59" selection-end-line="158" selection-end-column="59" />
+        <state relative-caret-position="608">
+          <caret line="198" column="24" selection-start-line="198" selection-start-column="24" selection-end-line="198" selection-end-column="24" />
           <folding>
-            <element signature="e#0#61#0" expanded="true" />
+            <element signature="n#style#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#4;n#div#3;n#v-card-text#0;n#v-flex#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-card#0;n#v-dialog#0;n#no-ssr#0;n#v-container#0;n#v-content#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/Loading.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/layouts/default.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="37" column="16" selection-start-line="37" selection-start-column="16" selection-end-line="37" selection-end-column="16" />
+          <folding>
+            <element signature="n#style#0;n#v-btn#0;n#v-toolbar#0;n#v-app#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2280#2331#0" expanded="true" />
           </folding>
         </state>
       </provider>

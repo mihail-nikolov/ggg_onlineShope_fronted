@@ -99,7 +99,7 @@
 											<div v-if="curProductDetails.Accessories.length" style="clear:both">
 												<h4>Аксесоари</h4>
 												<div class="availability-container">
-													<h5 v-for="accessory in curProductDetails.Accessories" @click="openAccessoryDialog(accessory)">{{ accessory.Description }}</h5>
+													<h5 class="pointer" v-for="accessory in curProductDetails.Accessories" @click="openAccessoryDialog(accessory)">{{ accessory.Description }}</h5>
 												</div>
 											</div>
 										</v-card-text>
@@ -194,5 +194,8 @@
 	.availability-container .group {
 		margin-right: 25px;
 		margin-bottom: 25px;
+	}
+	.pointer {
+		cursor: pointer;
 	}
 </style>
