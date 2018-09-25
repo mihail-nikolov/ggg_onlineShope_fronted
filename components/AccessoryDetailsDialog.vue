@@ -194,7 +194,6 @@
 						return true;
 					}
 				}
-				console.error("?");
 				return false;
 			},
 			toggleSelectCartGroup(group) {
@@ -205,6 +204,7 @@
 					else {
 						this.selectedCartGroup = group.GoodId;
 					}
+					this.selectedCartStore = null;
 				}
 			},
 			toggleSelectCartStore(group, store) {

@@ -239,6 +239,7 @@
 					else {
 						this.selectedCartGroup = group.GoodId;
 					}
+					this.selectedCartStore = null;
 				}
 			},
 			toggleSelectCartStore(group, store) {
@@ -259,7 +260,7 @@
 					quantities += storeQuantity;
 				}
 
-				return quantities >= 0;
+				return quantities > 0;
 			},
 			hasAnyAvailability() {
 				for (const group of this.cartGroupData) {
