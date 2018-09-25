@@ -2,7 +2,7 @@
 	<v-content>
 
 		<div class="products-container">
-			<v-container class="products" v-if="foundProducts.length">
+			<v-container class="products" v-if="foundProducts.length && productsAreFetched">
 				<div class="all-products">
 					<product-card class="product product-card" v-for="(product, index) in listComponentItems" :key="product.Id" :product="product" :color="picker(index)" @onAddProductToCart="onAddProductToCart" @onProductDetails="onProductDetails" />
 				</div>
@@ -14,7 +14,10 @@
 
 
 		<!-- Details Dialog -->
-		<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick"></product-details-dialog>
+		<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick" @onOpenAccessoryDialog="onOpenAccessoryDialog"></product-details-dialog>
+
+		<!-- Acessory Details Dialog -->
+		<accessory-details-dialog :dialogDetailsOpen="dialogDetailsAccessoryOpen" :curProductDetails="curProductAccessory" @onCloseDetailsDialogClick="onCloseDetailsAccessoryDialogClick"></accessory-details-dialog>
 
 		<!-- Cart count Dialog -->
 		<v-content v-if="dialogCartCountOpen" class="cart-count-container">
@@ -49,7 +52,7 @@
 											 v-if="group.GoodId === selectedCartGroup">
 											<div class="group-card"
 												 v-for="(quantity, store)  in group.StoreQUantities"
-												 @click="toggleSelectCartStore(group, store)"
+												 @click="quantity !== 0 && toggleSelectCartStore(group, store)"
 												 v-bind:class="{
 												selected: selectedCartStore === store,
 												disabled: quantity === 0
@@ -90,7 +93,7 @@
 									Затвори
 								</v-btn>
 								<v-spacer></v-spacer>
-								<v-btn color="primary" @click="onAddCartCountDialogClick" v-if="hasAnyAvailability()">
+								<v-btn color="primary" v-bind:disabled="selectedCartGroup === null || selectedCartStore === null" @click="onAddCartCountDialogClick" v-if="hasAnyAvailability()">
 									<v-icon left>fa-cart-plus</v-icon>
 									Добави
 								</v-btn>
@@ -114,12 +117,14 @@
 <script>
 	import ProductCard from '~/components/ProductCard';
 	import ProductDetailsDialog from '~/components/ProductDetailsDialog';
+	import AccessoryDetailsDialog from '~/components/AccessoryDetailsDialog';
 	import scrollTo from "~/utils/scrollTo";
 
 	export default {
 		components: {
 			'product-card': ProductCard,
-			'product-details-dialog': ProductDetailsDialog
+			'product-details-dialog': ProductDetailsDialog,
+			'accessory-details-dialog': AccessoryDetailsDialog
 		},
 		data() {
 			return {
@@ -131,7 +136,9 @@
 				cartCount: 1,
 				selectedCartGroup: null,
 				selectedCartStore: null,
-				currentCartProductToAdd: null
+				currentCartProductToAdd: null,
+				dialogDetailsAccessoryOpen: false,
+				curProductAccessory: []
 			};
 		},
 		computed: {
@@ -162,6 +169,9 @@
 			},
 			cartGroupData() {
 				return this.$store.getters["modules/products/getCurrentObservedProductAvailability"];
+			},
+			productsAreFetched() {
+				return this.$store.getters["modules/products/getProductsAreFetched"];
 			}
 		},
 		methods: {
@@ -181,10 +191,9 @@
 					});
 			},
 			onProductDetails(product) {
-				this.curProductDetails = product;
-
-				this.$store.dispatch("modules/products/getProductAvailability", { id: product.Id, token: this.token })
+				this.$store.dispatch("modules/products/getFullProduct", { product })
 					.then(() => {
+						this.curProductDetails = this.$store.getters["modules/products/getAllProducts"].find(prod => prod.Id === product.Id);
 						this.dialogDetailsOpen = true;
 					});
 			},
@@ -250,21 +259,37 @@
 					quantities += storeQuantity;
 				}
 
-				return quantities > 0;
+				return quantities >= 0;
 			},
 			hasAnyAvailability() {
 				for (const group of this.cartGroupData) {
-					if (this.groupHasAvailability(group) > 0) {
+					if (this.groupHasAvailability(group) >= 0) {
 						return true;
 					}
 				}
 				return false;
 			},
+			onCloseDetailsAccessoryDialogClick(value) {
+				this.dialogDetailsAccessoryOpen = value;
+				this.curProductAccessory = [];
+			},
+			onOpenAccessoryDialog(accessory) {
+				this.$store.dispatch("modules/products/getAccessory", accessory)
+					.then(() => {
+						this.curProductAccessory = this.$store.getters["modules/products/getCurrentlyObservedProductAcessory"];
+						return this.$store.dispatch("modules/products/getAccessoryAvailabilty", { id: this.curProductAccessory.Id, token: this.token });
+					})
+					.then(() => {
+						this.dialogDetailsAccessoryOpen = true;
+					});
+			},
 			round: num => num.toFixed(2)
 		},
 		watch: {
-			filteredProducts() {
-				this.pageNumProducts = 1;
+			filteredProducts(val, old) {
+				if (val.length !== old.length) {
+					this.pageNumProducts = 1;
+				}
 			},
 			dialogCartCountOpen(value) {
 				if (value === false) {

@@ -51,13 +51,25 @@ class ProductsRepository {
 			const { code } = data;
 			const requestParams = { code };
 
-			return this.http.get(this.URL.productsByCode, requestParams);
+			return this.http.get(this.URL.productsByCode, requestParams)
+				.then(products => {
+					products.forEach(product => {
+						this.inflateProduct(product);
+					});
+					return products;
+				});
 		}
 		else {
 			const { MakeId, ModelId, BodyTypeId, ProductType } = data;
 			const requestData = { MakeId, ModelId, BodyTypeId, ProductType };
 
-			return this.http.post(this.URL.productsByDetails, requestData);
+			return this.http.post(this.URL.productsByDetails, requestData)
+				.then(products => {
+					products.forEach(product => {
+						this.inflateProduct(product);
+					});
+					return products;
+				});
 		}
 	}
 
@@ -94,21 +106,35 @@ class ProductsRepository {
 	}
 
 	getFullProduct(data) {
+		let id = data.Id || '',
+			eurocode = '',
+			localCode = '',
+			materialNumber = '',
+			industryCode = '';
+
 		if (data.EuroCode !== void 0) {
-			return this.http.get(this.URL.fullProduct, { EuroCode: data.EuroCode });
+			eurocode = data.EuroCode;
 		}
-		else if (data.OesCode !== void 0) {
-			return this.http.get(this.URL.fullProduct, { OesCode: data.OesCode });
+		if (data.OesCode !== void 0) {
+			localCode = data.localCode;
 		}
-		else if (data.MaterialNumber !== void 0) {
-			return this.http.get(this.URL.fullProduct, { MaterialNumber: data.MaterialNumber });
+		if (data.MaterialNumber !== void 0) {
+			materialNumber = data.MaterialNumber;
 		}
-		else if (data.IndustryCode !== void 0) {
-			return this.http.get(this.URL.fullProduct, { IndustryCode: data.IndustryCode });
+		if (data.IndustryCode !== void 0) {
+			industryCode = data.IndustryCode;
 		}
-		else {
-			return Promise.reject("invalid code", data);
-		}
+
+		return this.http.get(this.URL.fullProduct, {
+			id,
+			eurocode,
+			localCode,
+			materialNumber,
+			industryCode
+		})
+			.then(product => {
+				return this.inflateProduct(product);
+			});
 	}
 
 	/**
@@ -173,6 +199,19 @@ class ProductsRepository {
 	*/
 	getProductAvailability(id, token) {
 		return this.http.get(`${this.URL.availability}/${id}`, null, null, { Authorization: token || undefined });
+	}
+
+	inflateProduct(product) {
+		if (product.Images.length > 0) {
+			product.Images = product.Images.map(image => {
+				const imagePath = "/Images/" + image + ".jpg";
+				return imagePath;
+			});
+		} else {
+			product.Images.push("/Images/no-image.png");
+		}
+
+		return product;
 	}
 }
 

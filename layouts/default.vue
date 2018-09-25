@@ -25,7 +25,8 @@
 		<v-content id="main-content">
 			<v-layout justify-center align-center>
 				<nuxt/>
-				<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick"></product-details-dialog>
+				<product-details-dialog :dialogDetailsOpen="dialogDetailsOpen" :curProductDetails="curProductDetails" @onCloseDetailsDialogClick="onCloseDetailsDialogClick" @onOpenAccessoryDialog="onOpenAccessoryDialog"></product-details-dialog>
+				<accessory-details-dialog :dialogDetailsOpen="dialogDetailsAccessoryOpen" :curProductDetails="curProductAccessory" @onCloseDetailsDialogClick="onCloseDetailsAccessoryDialogClick"></accessory-details-dialog>
 			</v-layout>
 		</v-content>
 		<v-footer color="blue-grey darken-3" class="white--text" fixed app>
@@ -43,12 +44,15 @@
 	import Snackbar from '~/components/Snackbar';
 	import Loading from '~/components/Loading.vue';
 	import ProductDetailsDialog from '~/components/ProductDetailsDialog';
+	import AccessoryDetailsDialog from '~/components/AccessoryDetailsDialog';
+
 	export default {
 		components: {
 			'cart-panel': CartPanel,
 			'loading': Loading,
 			'snack-bar': Snackbar,
-			'product-details-dialog': ProductDetailsDialog
+			'product-details-dialog': ProductDetailsDialog,
+			'accessory-details-dialog': AccessoryDetailsDialog
 		},
 		mounted() {
 			this.$store.dispatch('modules/auth/autoLogin');
@@ -58,7 +62,9 @@
 				drawerRight: false,
 				homeLink: "http://www.glassgoldgroup.eu/",
 				dialogDetailsOpen: false,
-				curProductDetails: []
+				curProductDetails: [],
+				dialogDetailsAccessoryOpen: false,
+				curProductAccessory: []
 			};
 		},
 		props: {
@@ -105,16 +111,28 @@
 				this.drawerRight = false;
 			},
 			cartPanelDetailsButtonClicked(product) {
-				this.curProductDetails = product.item;
-				this.dialogDetailsOpen = true;
 				if (product.item) {
-					const { Id: id } = product.item;
-					this.$store.dispatch("modules/products/getProductAvailability", { id, token: this.token });
+					this.$store.dispatch("modules/products/getFullProduct", { product: product.item })
+						.then(() => {
+							this.curProductDetails = this.$store.getters["modules/products/getAllProducts"].find(prod => prod.Id === product.item.Id);
+							this.dialogDetailsOpen = true;
+						});
 				}
 			},
 			onCloseDetailsDialogClick(value) {
 				this.dialogDetailsOpen = value;
 				this.curProductDetails = [];
+			},
+			onCloseDetailsAccessoryDialogClick(value) {
+				this.dialogDetailsAccessoryOpen = value;
+				this.curProductAccessory = [];
+			},
+			onOpenAccessoryDialog(accessory) {
+				this.$store.dispatch("modules/products/getAccessory", accessory)
+					.then(() => {
+						this.curProductAccessory = this.$store.getters["modules/products/getCurrentlyObservedProductAcessory"];
+						this.dialogDetailsAccessoryOpen = true;
+					});
 			}
 		}
 	};

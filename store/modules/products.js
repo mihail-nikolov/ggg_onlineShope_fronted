@@ -1,3 +1,4 @@
+import Vue from "vue";
 import axios from 'axios';
 import productsRepository from "~/repositories/productsRepository";
 
@@ -9,11 +10,14 @@ const state = () => ({
 	allProducts: [],
 	filteredProducts: [],
 	currentlyObservedProductAvailability: [],
+	currentlyObservedProductAcessory: null,
+	currentlyObservedAccessoryAvailability: [],
 	windowTypes: [],
 	selectedWindowTypes: [],
 	allImages: [],
 	filteredImages: [],
-	selectedImages: []
+	selectedImages: [],
+	productsAreFetched: false
 });
 
 const mutations = {
@@ -55,6 +59,39 @@ const mutations = {
 	},
 	SET_FILTERED_PRODUCTS(state, filteredProducts) {
 		state.filteredProducts = filteredProducts;
+	},
+	UPDATE_PRODUCT(state, product) {
+		const prodInAll = state.allProducts.find(prod => prod.Id === product.Id);
+		const prodInFiltered = state.filteredProducts.find(prod => prod.Id === product.Id);
+		const keys = Object.keys(product).filter(x => {
+			return (
+				x !== "FeaturedImageId" &&
+				x !== "Images"
+			);
+		});
+
+		if (prodInAll) {
+			for (const key of keys) {
+				Vue.set(prodInAll, key, product[key]);
+			}
+		}
+		else {
+			state.allProducts = [ product ];
+		}
+		if (prodInFiltered) {
+			for (const key of keys) {
+				Vue.set(prodInFiltered, key, product[key]);
+			}
+		}
+	},
+	SET_PRODUCTS_ARE_FETCHED(state, fetched) {
+		state.productsAreFetched = fetched;
+	},
+	SET_CURRENT_OBSERVED_PRODUCT_ACCESSORY(state, accessory) {
+		state.currentlyObservedProductAcessory = accessory;
+	},
+	SET_CURRENT_OBSERVED_ACCESSORY_AVAILABILITY(state, availability) {
+		state.currentlyObservedAccessoryAvailability = availability;
 	}
 };
 
@@ -94,6 +131,15 @@ const getters = {
 	},
 	getSelectedWindowTypes(state) {
 		return state.selectedWindowTypes;
+	},
+	getProductsAreFetched(state) {
+		return state.productsAreFetched;
+	},
+	getCurrentObservedAccessoryAvailability(state) {
+		return state.currentlyObservedAccessoryAvailability;
+	},
+	getCurrentlyObservedProductAcessory(state) {
+		return state.currentlyObservedProductAcessory;
 	}
 };
 
@@ -195,7 +241,7 @@ const actions = {
 		commit("SET_FILTERED_IMAGES", Array.from(filteredImages));
 	},
 	async fetchMakes({commit}) {
-		axios.get(`http://﻿130.204.36.213/api/Makes`)
+		axios.get("http://﻿130.204.36.213/api/Makes")
 			.then(response => {
 				if (response && response.data && response.data.length > 0) {
 					this.dispatch("modules/general/setSnackbarNotification", {
@@ -262,6 +308,7 @@ const actions = {
 	async fetchProductTypes({commit}, data) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
+		console.log(data.reqBody);
 
 		return productsRepository.getProductTypes(data.reqBody)
 			.then(data => {
@@ -301,14 +348,6 @@ const actions = {
 						const imagePath = "/Images/" + product.FeaturedImageId + ".jpg";
 						images.add(imagePath);
 					}
-					if (product.Images.length > 0) {
-						product.Images = product.Images.map(image => {
-							const imagePath = "/Images/" + image + ".jpg";
-							return imagePath;
-						});
-					} else {
-						product.Images.push("/Images/no-image.png");
-					}
 				});
 
 				console.warn(products);
@@ -325,6 +364,9 @@ const actions = {
 			.catch(e => {
 				store.dispatch('modules/general/deactivateLoading');
 				console.log("error serchForProducts -> ", e);
+			})
+			.then(x => {
+				commit("SET_PRODUCTS_ARE_FETCHED", true);
 			});
 	},
 	async getProductAvailability({commit}, { id, token }) {
@@ -332,6 +374,39 @@ const actions = {
 		return productsRepository.getProductAvailability(id, token)
 			.then(availability => {
 				commit('SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY', availability);
+				this.dispatch('modules/general/deactivateLoading');
+			})
+			.catch(e => {
+				this.dispatch('modules/general/deactivateLoading');
+			});
+	},
+	async getAccessoryAvailabilty({commit}, {id, token}) {
+		this.dispatch('modules/general/activateLoading');
+		return productsRepository.getProductAvailability(id, token)
+			.then(availability => {
+				console.log(availability);
+				commit('SET_CURRENT_OBSERVED_ACCESSORY_AVAILABILITY', availability);
+				this.dispatch('modules/general/deactivateLoading');
+			})
+			.catch(e => {
+				this.dispatch('modules/general/deactivateLoading');
+			});
+	},
+	async getFullProduct({commit}, { product }) {
+		this.dispatch('modules/general/activateLoading');
+		return productsRepository.getFullProduct(product)
+			.then(fullProduct => {
+				commit('UPDATE_PRODUCT', fullProduct);
+				this.dispatch('modules/general/deactivateLoading');
+			})
+			.catch(e => {
+				this.dispatch('modules/general/deactivateLoading');
+			});
+	},
+	async getAccessory({commit}, accessory) {
+		return productsRepository.getFullProduct(accessory)
+			.then(accessoryProduct => {
+				commit('SET_CURRENT_OBSERVED_PRODUCT_ACCESSORY', accessoryProduct);
 				this.dispatch('modules/general/deactivateLoading');
 			})
 			.catch(e => {
@@ -354,14 +429,6 @@ const actions = {
 						const imagePath = "/Images/" + product.FeaturedImageId + ".jpg";
 						images.add(imagePath);
 					}
-					if (product.Images.length > 0) {
-						product.Images = product.Images.map(image => {
-							const imagePath = "/Images/" + image + ".jpg";
-							return imagePath;
-						});
-					} else {
-						product.Images.push("/Images/no-image.png");
-					}
 				});
 
 				store.dispatch('modules/general/deactivateLoading');
@@ -376,6 +443,9 @@ const actions = {
 			.catch(e => {
 				store.dispatch('modules/general/deactivateLoading');
 				console.log("error searchForCode -> ", e);
+			})
+			.then(x => {
+				commit("SET_PRODUCTS_ARE_FETCHED", true);
 			});
 	}
 };

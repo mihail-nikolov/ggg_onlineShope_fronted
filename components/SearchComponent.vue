@@ -35,7 +35,7 @@
                  @click="toggleSelectImage(image);">
         </v-flex>
 
-		<div v-if="foundProducts.length > 0">
+		<div v-if="foundProducts.length > 0 && productsAreFetched">
 			<div class="count">РЕЗУЛТАТИ: <span style="color:#089148">{{ filteredProducts.length }}</span></div>
 			<v-btn v-if="filteredProducts.length > 0" flat class="circle-btn" color="primary" @click="scrollToResults()">
 				<v-icon center>fa-angle-down</v-icon>
@@ -94,6 +94,9 @@
 			},
 			selectedImages() {
 				return this.$store.getters["modules/products/getSelectedImages"];
+			},
+			productsAreFetched() {
+				return this.$store.getters["modules/products/getProductsAreFetched"];
 			}
 		},
 		methods: {
