@@ -22,6 +22,16 @@ class UsersRepository {
 		return this.http.post(this.URL.updateUser, updated, null, { Authorization: token });
 	}
 
+	setUserAllowedDeferredPayment({ token, user, allowed }) {
+		const updated = { ...user, IsDeferredPaymentAllowed: allowed };
+		return this.http.post(this.URL.updateUser, updated, null, { Authorization: token });
+	}
+
+	setUserPercentageReduction({ token, user, percentage }) {
+		const updated = { ...user, PercentageReduction: percentage };
+		return this.http.post(this.URL.updateUser, updated, null, { Authorization: token });
+	}
+
 	sendConfirmationMail({ token, user }) {
 		return this.http.post(this.URL.emailConfirmation, user, null, { Authorization: token });
 	}

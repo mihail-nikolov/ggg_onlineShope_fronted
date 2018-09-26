@@ -66,6 +66,16 @@ const mutations = {
 
 		userCached.OnlyHighCostVisible = visibility;
 	},
+	SET_USER_ALLOWED_DEFERRED_PAYMENT(state, { user, allowed }) {
+		const userCached = state.usersList.find(u => u === user);
+
+		userCached.IsDeferredPaymentAllowed = allowed;
+	},
+	SET_USER_PERCENTAGE_REDUCTION(state, { user, percentage }) {
+		const userCached = state.usersList.find(u => u === user);
+
+		userCached.PercentageReduction = percentage;
+	},
 	SET_USER_EMAIL_CONFIRMED(state, { user, confirmed }) {
 		const userCached = state.usersList.find(u => u === user);
 
@@ -252,6 +262,16 @@ const actions = {
 		const token = state.token;
 		commit("SET_USER_HIGH_COST_VISIBILITY", { user, visibility });
 		return usersRepository.setUserHighCostVisibility( { token, user, visibility });
+	},
+	async setUserAllowedDeferredPayment({ commit, state }, { user, allowed }) {
+		const token = state.token;
+		commit("SET_USER_ALLOWED_DEFERRED_PAYMENT", { user, allowed });
+		return usersRepository.setUserAllowedDeferredPayment( { token, user, allowed });
+	},
+	async setUserPercentageReduction({ commit, state }, { user, percentage }) {
+		const token = state.token;
+		commit("SET_USER_PERCENTAGE_REDUCTION", { user, percentage });
+		return usersRepository.setUserPercentageReduction( { token, user, percentage });
 	},
 	async sendUserConfirmationMail({ commit, state }, { user }) {
 		const token = state.token;
