@@ -108,8 +108,8 @@
 			</v-layout>
 			<v-layout row>
 				<v-radio-group v-model="wayToPay">
-					<v-radio value="cash-on-delivery" label="Наложен платеж" color="primary" disabled="true"></v-radio>
-					<v-radio value="epay" label="Ипей" color="primary" disabled="true"></v-radio>
+					<v-radio value="cash-on-delivery" label="Наложен платеж" color="primary" :disabled="true"></v-radio>
+					<v-radio value="epay" label="Ипей" color="primary" :disabled="true"></v-radio>
 				</v-radio-group>
 			</v-layout>
 		</v-container>
@@ -118,9 +118,10 @@
 			<v-layout row>
 				<v-flex xs6 offset-xs6>
 					<h3 class="total-sum-text">Общо: {{ round(totalSum) }}лв.</h3>
+					<h3 class="total-sum-text" v-if="user.PercentageReduction">Намаление: <span class="success-color">{{ user.PercentageReduction }}%</span></h3>
 					<h3 class="total-sum-text">Доставка: 0лв.</h3>
 					<br>
-					<h2 class="total-sum-text">Крайна сума: {{ round(totalSum) }}лв.</h2>
+					<h2 class="total-sum-text">Крайна сума: <span v-bind:class="{'success-color': !!user && user.PercentageReduction}">{{ round(reducedSum) }}лв.</span></h2>
 				</v-flex>
 			</v-layout>
 		</v-container>
@@ -186,6 +187,15 @@
 				});
 
 				return sum;
+			},
+			reducedSum() {
+				let sum = this.totalSum;
+				if (this.user && this.user.PercentageReduction) {
+					return sum * (this.user.PercentageReduction / 100);
+				}
+				else {
+					return sum;
+				}
 			},
 			user() {
 				return this.$store.getters["modules/auth/getUserDetails"];
@@ -416,5 +426,8 @@
 	.info-container h4 {
 		display: inline-block;
 		width: auto;
+	}
+	.success-color {
+		color: darkgreen;
 	}
 </style>
