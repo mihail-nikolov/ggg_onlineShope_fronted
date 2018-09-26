@@ -1,6 +1,6 @@
 <template>
 	<v-app id="inspire">
-		<v-navigation-drawer stateless fixed v-model="drawerRight" temporary right clipped app width="700" style="background-color:#FAFAFA">
+		<v-navigation-drawer stateless fixed v-model="drawerRight" temporary right clipped app width="700" style="background-color:#FAFAFA; padding-bottom: 0;">
 			<cart-panel @slideDrawerOut="slideDrawerOut" @cartPanelDetailsButtonClicked="cartPanelDetailsButtonClicked"></cart-panel>
 		</v-navigation-drawer>
 		<v-toolbar color="blue-grey darken-3" dark fixed app clipped-right>

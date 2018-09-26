@@ -264,7 +264,7 @@
 			},
 			hasAnyAvailability() {
 				for (const group of this.cartGroupData) {
-					if (this.groupHasAvailability(group) >= 0) {
+					if (this.groupHasAvailability(group) > 0) {
 						return true;
 					}
 				}

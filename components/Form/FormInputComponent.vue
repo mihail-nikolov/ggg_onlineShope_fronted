@@ -1,6 +1,6 @@
 <template>
 	<div class="group">
-		<input :type="elemType" v-bind:style="{ backgroundColor: color }" v-bind:value="value" v-on:input="updateValue($event.target.value)" @blur="onBlur" v-bind:class="{ used: isUsed }" v-on:keyup="emitKeyUpEvent">
+		<input :type="elemType" v-bind:disabled="disabled" v-bind:style="{ backgroundColor: color }" v-bind:value="value" v-on:input="updateValue($event.target.value)" @blur="onBlur" v-bind:class="{ used: isUsed }" v-on:keyup="emitKeyUpEvent">
 		<span class="highlight"></span>
 		<span class="bar"></span>
 		<label :class="{errorVal: hasError}">{{fieldName}} {{mapErrorToString(firstError)}}</label>
@@ -16,7 +16,7 @@
 
 	export default {
 		name: 'FormInputComponent',
-		props: ['elemType', 'value', 'fieldName', 'hasError', 'firstError', 'color'],
+		props: ['elemType', 'value', 'fieldName', 'hasError', 'firstError', 'color', 'disabled'],
 		data() {
 			return {
 				isUsed: false,

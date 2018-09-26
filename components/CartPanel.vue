@@ -14,7 +14,7 @@
 			</v-layout>
 		</v-container>
 
-		<v-container class="cart-panel-card" v-for="(cartItem, index) in addedItemsToCart" :key="index">
+		<v-container v-if="activeStep === 1 || activeStep === 3"class="cart-panel-card" v-for="(cartItem, index) in addedItemsToCart" :key="index">
 			<v-layout row wrap>
 				<v-flex xs12>
 					<v-card class="panel-card" color="blue-grey lighten-5">
@@ -57,10 +57,10 @@
 			</v-layout>
 		</v-container>
 
-		<v-container>
+		<v-container v-if="activeStep === 2">
 			<v-form class="form-wrapper">
-				<form-component elemType="text" v-model="name" fieldName="Име" :hasError="validation.hasError('name')" :firstError="validation.firstError('name')"></form-component>
-				<form-component elemType="text" v-model="email" fieldName="Имейл" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
+				<form-component elemType="text" v-model="name" fieldName="Име" v-bind:disabled="!!(this.user && this.user.Id)" :hasError="validation.hasError('name')" :firstError="validation.firstError('name')"></form-component>
+				<form-component elemType="text" v-model="email" fieldName="Имейл" v-bind:disabled="!!(this.user && this.user.Id)" :hasError="validation.hasError('email')" :firstError="validation.firstError('email')"></form-component>
 				<form-component elemType="text" v-model="country" fieldName="Държава" :hasError="validation.hasError('country')" :firstError="validation.firstError('county')"></form-component>
 				<form-component elemType="text" v-model="city" fieldName="Град" :hasError="validation.hasError('city')" :firstError="validation.firstError('city')"></form-component>
 				<form-component elemType="text" v-model="address" fieldName="Адрес" :hasError="validation.hasError('address')" :firstError="validation.firstError('address')"></form-component>
@@ -78,6 +78,41 @@
 				</div>
 			</v-form>
 		</v-container>
+		<v-container v-if="activeStep === 3" class="info-container">
+			<v-layout row>
+				<h4>Име</h4> :&nbsp;<span>{{ name }}</span>
+			</v-layout>
+			<v-layout row>
+				<h4>Имейл</h4> :&nbsp;<span>{{ email }}</span>
+			</v-layout>
+			<v-layout row>
+				<h4>Държава</h4> :&nbsp;<span>{{ country }}</span>
+			</v-layout>
+			<v-layout row>
+				<h4>Град</h4> :&nbsp;<span>{{ city }}</span>
+			</v-layout>
+			<v-layout row>
+				<h4>Адрес</h4> :&nbsp;<span>{{ address }}</span>
+			</v-layout>
+			<v-layout row>
+				<h4>Телефонен Номер</h4> :&nbsp;<span>{{ phoneNumber }}</span>
+			</v-layout>
+			<v-layout row>
+				<h4>Допълнителна Информация</h4> :&nbsp;<span>{{ description }}</span>
+			</v-layout>
+		</v-container>
+
+		<v-container v-if="activeStep === 3" class="ways-to-pay">
+			<v-layout row>
+				<h4>Начин за плащане:</h4>
+			</v-layout>
+			<v-layout row>
+				<v-radio-group v-model="wayToPay">
+					<v-radio value="cash-on-delivery" label="Наложен платеж" color="primary" disabled="true"></v-radio>
+					<v-radio value="epay" label="Ипей" color="primary" disabled="true"></v-radio>
+				</v-radio-group>
+			</v-layout>
+		</v-container>
 
 		<v-container>
 			<v-layout row>
@@ -86,9 +121,18 @@
 					<h3 class="total-sum-text">Доставка: 0лв.</h3>
 					<br>
 					<h2 class="total-sum-text">Крайна сума: {{ round(totalSum) }}лв.</h2>
-					<v-flex right>
-						<v-btn color="primary" @click="onCheckout">Изпрати</v-btn>
-					</v-flex>
+				</v-flex>
+			</v-layout>
+		</v-container>
+		<v-container>
+			<v-layout row>
+				<v-flex>
+					<v-card-actions>
+						<v-btn flat @click="onPrevStep" v-if="activeStep > 1">Назад</v-btn>
+						<v-spacer></v-spacer>
+						<v-btn v-if="activeStep === 3" color="primary" @click="onCheckout">Изпрати</v-btn>
+						<v-btn v-else color="primary" @click="onNextStep">Продължи</v-btn>
+					</v-card-actions>
 				</v-flex>
 			</v-layout>
 		</v-container>
@@ -114,7 +158,10 @@
 				email: '',
 				description: '',
 				isInvoiceNeeded: false,
-				isInstalationNeeded: false
+				isInstalationNeeded: false,
+				steps: 3,
+				activeStep: 1,
+				wayToPay: "cash-on-delivery"
 			};
 		},
 		components: {
@@ -162,6 +209,28 @@
 			}
 		},
 		methods: {
+			onPrevStep() {
+				if (this.activeStep <= 1) {
+					return;
+				}
+				this.activeStep -= 1;
+			},
+			onNextStep() {
+				if (this.activeStep >=3) {
+					return;
+				}
+				if (this.activeStep === 2) {
+					this.$validate()
+						.then(success => {
+							if (success) {
+								this.activeStep += 1;
+							}
+						});
+				}
+				else {
+					this.activeStep += 1;
+				}
+			},
 			decreaseProductQuantity(product, index) {
 				console.log("decrease product -> ", product, "index -> ", index);
 				if (product.cartCount > 1) {
@@ -343,5 +412,9 @@
 	
 	.cart-panel-title {
 		text-align: center;
+	}
+	.info-container h4 {
+		display: inline-block;
+		width: auto;
 	}
 </style>
