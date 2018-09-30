@@ -152,7 +152,7 @@
 				productsRepository.getFullProduct(acc)
 					.then(console.warn);
 			},
-			onOpenInterchangeableDialog(acc) {
+      onOpenInterchangeableDialog(interchangeablePart) {
 				this.$emit("onOpenInterchangeableDialog", interchangeablePart);
 				productsRepository.getFullProduct(interchangeablePart)
 					.then(console.warn);
