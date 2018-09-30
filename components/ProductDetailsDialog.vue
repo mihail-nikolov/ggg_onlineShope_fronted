@@ -54,17 +54,17 @@
                       <div class="text-container" style="clear:both">
                         <div v-if="curProductDetails.Height" class="floating-product-detail">
                           <h4>Височина: </h4>
-                          <div>{{ curProductDetails.Height }}</div>
+                          <div>{{ curProductDetails.Height }} мм</div>
                           <br>
                         </div>
                         <div v-if="curProductDetails.Width" class="floating-product-detail">
                           <h4>Дължина </h4>
-                          <div>{{ curProductDetails.Width }}</div>
+                          <div>{{ curProductDetails.Width }} мм</div>
                           <br>
                         </div>
                         <div v-if="curProductDetails.FittingTimeHours" class="floating-product-detail">
                           <h4>Време за монтаж: </h4>
-                          <div>{{ curProductDetails.FittingTimeHours }}</div>
+                          <div>{{ curProductDetails.FittingTimeHours }} ч</div>
                           <br>
                         </div>
                         <div v-if="curProductDetails.Tint" class="floating-product-detail">
