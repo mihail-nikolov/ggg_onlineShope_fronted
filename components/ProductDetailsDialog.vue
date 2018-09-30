@@ -96,6 +96,12 @@
                       <!--</div>-->
                       <!--</div>-->
                       <!--</div>-->
+                      <div v-if="curProductDetails.Characteristics.length" style="clear:both">
+                        <h4>Аксесоари</h4>
+                        <div class="availability-container">
+                          <h5 class="pointer" v-for="characteristic in curProductDetails.Characteristics">{{ characteristic }}</h5>
+                        </div>
+                      </div>
                       <div v-if="curProductDetails.Accessories.length" style="clear:both">
                         <h4>Аксесоари</h4>
                         <div class="availability-container">
