@@ -151,12 +151,12 @@
 				this.$emit("onOpenAccessoryDialog", acc);
 				productsRepository.getFullProduct(acc)
 					.then(console.warn);
-		},
-		onOpenInterchangeableDialog(acc) {
-			this.$emit("onOpenInterchangeableDialog", interchangeablePart);
-			productsRepository.getFullProduct(interchangeablePart)
-				.then(console.warn);
-		}
+			},
+			onOpenInterchangeableDialog(acc) {
+				this.$emit("onOpenInterchangeableDialog", interchangeablePart);
+				productsRepository.getFullProduct(interchangeablePart)
+					.then(console.warn);
+			}
 		},
 		watch: {
 			dialogDetailsOpen(value) {
