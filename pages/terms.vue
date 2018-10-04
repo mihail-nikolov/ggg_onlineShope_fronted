@@ -133,9 +133,9 @@
 
 <script>
   export default {
-    layout: 'default',
-    components: {
-    }
+	layout: 'default',
+	components: {
+	}
   };
 </script>
 
