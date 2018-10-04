@@ -1,10 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\components",
-    "\\pages",
-    "\\pages\\my"
+    "\\repositories",
+    "\\store",
+    "\\store\\modules"
   ],
-  "SelectedNode": "\\pages\\my\\users.vue",
+  "SelectedNode": "\\repositories\\productsRepository.js",
   "PreviewInSolutionExplorer": false
 }

@@ -59,7 +59,7 @@ const userKeysMap = {
 	"PhoneNumber": "Телефонен номер",
 	"EmailConfirmed": "Потвърден",
 	"OnlyHighCostVisible": "Само горен клас",
-	"IsDeferredPaymentAllowed": "Отложена поръчка"
+	"IsDeferredPaymentAllowed": "Разсрочено плащане"
 };
 const userKeyPriorityMap = {
 	"Name": 100,

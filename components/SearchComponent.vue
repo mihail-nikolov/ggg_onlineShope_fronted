@@ -18,7 +18,7 @@
 		<v-container align-center class="search-selectors-container">
 			<multiselect class="search-multiselect" v-model="makeValue" :options="makeOptions" track-by="Id" label="Name" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери марка"></multiselect>
 			<multiselect class="search-multiselect" v-model="modelValue" :options="modelOptions" track-by="Id" label="Name" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери модел"></multiselect>
-			<multiselect class="search-multiselect" v-model="bodyTypeValue" :options="bodyTypeOptions" track-by="Id" label="Description" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери част"></multiselect>
+			<multiselect class="search-multiselect" v-model="bodyTypeValue" :options="bodyTypeOptions" track-by="Id" label="Description" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери купе"></multiselect>
 		</v-container>
 
 		<v-flex class="car-container" align-center>
