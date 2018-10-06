@@ -112,13 +112,13 @@ class ProductsRepository {
 			materialNumber = '',
 			industryCode = '';
 
-		if (data.hasOwnProperty('CleanEurocode')) {
-			data.EuroCode = data.CleanEurocode;
+		if (data.hasOwnProperty('CleanEurocode') && data.CleanEurocode !== void 0) {
+			eurocode = data.CleanEurocode;
 		}
-
-		if (data.EuroCode !== void 0) {
+		else if (data.EuroCode !== void 0) {
 			eurocode = data.EuroCode;
 		}
+
 		if (data.OesCode !== void 0) {
 			localCode = data.localCode;
 		}
