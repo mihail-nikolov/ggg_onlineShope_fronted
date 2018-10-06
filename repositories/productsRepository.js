@@ -112,6 +112,10 @@ class ProductsRepository {
 			materialNumber = '',
 			industryCode = '';
 
+		if (data.hasOwnProperty('CleanEurocode')) {
+			data.EuroCode = data.CleanEurocode;
+		}
+
 		if (data.EuroCode !== void 0) {
 			eurocode = data.EuroCode;
 		}
