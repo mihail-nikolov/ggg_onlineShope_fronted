@@ -413,10 +413,10 @@ const actions = {
 				this.dispatch('modules/general/deactivateLoading');
 			});
 	},
-	async searchForCode({commit}, code) {
+	async searchForCode({commit}, { code, type }) {
 		let store = this;
 		store.dispatch('modules/general/activateLoading');
-		productsRepository.getProducts({ code })
+		productsRepository.getProducts({ code, type })
 			.then(products => {
 				console.log("searchForCode -> ", products);
 				const productTypes = new Set;

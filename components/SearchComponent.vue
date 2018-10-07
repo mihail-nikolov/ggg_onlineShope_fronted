@@ -3,15 +3,14 @@
 		<h2 class="advanced-search">ТЪРСЕНЕ</h2>
 		<v-container align-center fluid>
 			<v-layout row justify-center>
-				<v-flex xs6>
-					<v-text-field color="primary" name="searchByCode" v-model="codeForSearch" label="Eurocode / Material number / Oes code / Industry code"></v-text-field>
-				</v-flex>
-				<v-flex xs1>
+				<div style="max-width: 600px; display: flex; flex-wrap: wrap;align-items: center; justify-content: center;">
+					<v-text-field color="primary" name="searchByCode" v-model="codeForSearch" label="Код" style="width: 220px; min-width: 220px;"></v-text-field>
+					<switch-group :options="codeTypes" :model="selectedCodeType" @onSelect="onSelectCodeType"></switch-group>
 					<v-btn flat color="primary" @click="onCodeSearchClicked">
 						<v-icon left>fa-search</v-icon>
 						ТЪРСИ
 					</v-btn>
-				</v-flex>
+				</div>
 			</v-layout>
 			<h3>ИЛИ</h3>
 		</v-container>
@@ -47,11 +46,13 @@
 <script>
 	import Multiselect from 'vue-multiselect';
 	import GlassesSVG from '~/components/GlassesSVG';
+	import SwitchGroup from '~/components/SwitchGroup';
 	import scrollTo from "~/utils/scrollTo";
 
 	export default {
 		components: {
-			'multiselect': Multiselect,
+			Multiselect,
+			SwitchGroup,
 			'glasses-svg': GlassesSVG
 		},
 		data: function() {
@@ -61,7 +62,9 @@
 				bodyTypeValue: null,
 				productTypeValue: null,
 				codeForSearch: '',
-				selectedWindows: []
+				selectedWindows: [],
+				codeTypes: ['eurocode', 'oescode'],
+				selectedCodeType: 'eurocode'
 			};
 		},
 		computed: {
@@ -106,7 +109,10 @@
 				scrollTo(productsContainer.offsetTop - 120, 300);
 			},
 			onCodeSearchClicked() {
-				this.$store.dispatch("modules/products/searchForCode", this.codeForSearch);
+				this.$store.dispatch("modules/products/searchForCode", {
+					code: this.codeForSearch,
+					type: this.selectedCodeType
+				});
 				this.makeValue = null;
 				this.modelValue = null;
 				this.bodyTypeValue = null;
@@ -140,6 +146,9 @@
 					"ProductType": this.productTypeValue && this.productTypeValue.Id || null
 				};
 				this.$store.dispatch("modules/products/searchForProducts", reqBody);
+			},
+			onSelectCodeType(type) {
+				this.selectedCodeType = type;
 			}
 		},
 		watch: {

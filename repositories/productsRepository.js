@@ -5,6 +5,7 @@ class ProductsRepository {
 	constructor() {
 		this.http = baseRepository;
 		this.URL = {
+			clean: "Products",
 			productsByCode: "Products/Get",
 			position: "Products/GetPositions",
 			productsByDetails: "Products/FindByVehicleInfo",
@@ -51,7 +52,7 @@ class ProductsRepository {
 			const { code } = data;
 			const requestParams = { code };
 
-			return this.http.get(this.URL.productsByCode, requestParams)
+			return this.http.get(`${this.URL.clean}?${data.type}=${data.code}`)
 				.then(products => {
 					products.forEach(product => {
 						this.inflateProduct(product);
