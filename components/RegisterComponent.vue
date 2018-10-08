@@ -44,6 +44,7 @@
 				phone: '',
 				legalEntity: '',
 				entities: ['Юридическо лице', 'Организация'],
+				bulstat: '',
 				isButtonClicked: false,
 				circleX: '0px',
 				circleY: '0px'
@@ -76,7 +77,14 @@
 								DeliveryAddress: comp.address,
 								PhoneNumber: comp.phone,
 								PercentageReduction: 0 // TODO: ask misho WTF is that?
-							});
+							})
+								.catch(err => {
+									const message = err.response.data.Message;
+									comp.$store.dispatch("modules/general/setSnackbarNotification", {
+										message: message,
+										status: 'error'
+									});
+								});
 						} else {
 							comp.$store.dispatch("modules/general/setSnackbarNotification", {
 								message: "Please fill in all the required fields with correct data.",

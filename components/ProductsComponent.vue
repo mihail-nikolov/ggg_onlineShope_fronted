@@ -64,16 +64,16 @@
 								</v-flex>
 
 								<!--<v-flex row class="text-xs-center" style="margin-bottom:20px">-->
-									<!--<h2 style="text-align:center; padding: 15px;">Количество</h2>-->
+								<!--<h2 style="text-align:center; padding: 15px;">Количество</h2>-->
 								<!--</v-flex>-->
 								<!--<v-flex row class="text-xs-center" style="margin-bottom:10px">-->
-									<!--<v-btn color="primary" icon flat @click="decreaseCartCount">-->
-										<!--<v-icon>mdi-minus</v-icon>-->
-									<!--</v-btn>-->
-									<!--<input type="number" min="1" step="1" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>-->
-									<!--<v-btn color="primary" icon flat @click="increaseCartCount">-->
-										<!--<v-icon>mdi-plus</v-icon>-->
-									<!--</v-btn>-->
+								<!--<v-btn color="primary" icon flat @click="decreaseCartCount">-->
+								<!--<v-icon>mdi-minus</v-icon>-->
+								<!--</v-btn>-->
+								<!--<input type="number" min="1" step="1" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>-->
+								<!--<v-btn color="primary" icon flat @click="increaseCartCount">-->
+								<!--<v-icon>mdi-plus</v-icon>-->
+								<!--</v-btn>-->
 								<!--</v-flex>-->
 							</div>
 							<div v-else>
@@ -83,9 +83,8 @@
 								<v-flex row style="margin-bottom:20px">
 									Този продукт не е в наличност. Можете да се свържете с нас от <a
 										target="_blank"
-										href="http://www.glassgoldgroup.eu/%D0%B0%D0%B2%D1%82%D0%BE%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-%D1%81%D0%BE%D1%84%D0%B8%D1%8F-%D1%81%D0%BA%D0%BB%D0%B0%D0%B4-%D0%BF%D0%BB%D0%BE%D0%B2%D0%B4%D0%B8%D0%B2">тук</a>.
+										href="http://www.glassgoldgroup.eu/%D0%B0%D0%B2%D1%82%D0%BE%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-%D1%81%D0%BE%D1%84%D0%B8%D1%8F-%D1%81%D0%BA%D0%BB%D0%B0%D0%B4-%D0%BF%D0%BB%D0%BE%D0%B2%D0%B4%D0%B8%D0%B2">тук</a>, или да направите запитване.
 								</v-flex>
-
 							</div>
 							<v-flex style="display:flex;" v-if="hasAnyAvailability()">
 								<v-btn color="primary" flat @click="dialogCartCountOpen = false">
@@ -99,6 +98,10 @@
 								</v-btn>
 							</v-flex>
 							<v-flex style="display:flex;" v-else>
+								<v-btn color="primary" flat @click="onOpenRequestDialog()">
+									<v-icon left>mdi-help-circle-outline</v-icon>
+									Запитване
+								</v-btn>
 								<v-spacer></v-spacer>
 								<v-btn color="primary" flat @click="dialogCartCountOpen = false">
 									<v-icon left>mdi-close</v-icon>
@@ -106,6 +109,17 @@
 								</v-btn>
 							</v-flex>
 						</v-container>
+					</v-dialog>
+				</no-ssr>
+			</v-container>
+		</v-content>
+
+		<!-- Request Dialog -->
+		<v-content v-if="dialogRequestOpen">
+			<v-container fluid style="width:100%;height:100px;background-color:white;">
+				<no-ssr>
+					<v-dialog v-model="dialogRequestOpen" :max-width="650">
+						<request-dialog @onClose="onCloseRequestDialog()"></request-dialog>
 					</v-dialog>
 				</no-ssr>
 			</v-container>
@@ -119,9 +133,11 @@
 	import ProductDetailsDialog from '~/components/ProductDetailsDialog';
 	import AccessoryDetailsDialog from '~/components/AccessoryDetailsDialog';
 	import scrollTo from "~/utils/scrollTo";
+	import RequestDialog from "./RequestDialog";
 
 	export default {
 		components: {
+			RequestDialog,
 			'product-card': ProductCard,
 			'product-details-dialog': ProductDetailsDialog,
 			'accessory-details-dialog': AccessoryDetailsDialog
@@ -138,7 +154,8 @@
 				selectedCartStore: null,
 				currentCartProductToAdd: null,
 				dialogDetailsAccessoryOpen: false,
-				curProductAccessory: []
+				curProductAccessory: [],
+				dialogRequestOpen: false
 			};
 		},
 		computed: {
@@ -284,7 +301,13 @@
 						this.dialogDetailsAccessoryOpen = true;
 					});
 			},
-			round: num => num.toFixed(2)
+			round: num => num.toFixed(2),
+			onOpenRequestDialog() {
+				this.dialogRequestOpen = true;
+			},
+			onCloseRequestDialog() {
+				this.dialogRequestOpen = false;
+			}
 		},
 		watch: {
 			filteredProducts(val, old) {

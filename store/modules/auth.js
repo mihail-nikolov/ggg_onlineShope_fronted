@@ -223,8 +223,8 @@ const actions = {
 	},
 	async register({commit}, userDetails) {
 		let endPoint = "api/Account/Register";
-		console.log("register userDetails -> ", userDetails);
-		this.dispatch("modules/requester/request", {
+		// console.log("register userDetails -> ", userDetails);
+		return this.dispatch("modules/requester/request", {
 			method: 'post',
 			endpoint: endPoint,
 			body: userDetails,
@@ -234,12 +234,6 @@ const actions = {
 			this.dispatch("modules/general/setSnackbarNotification", {
 				message: "Registration successful. Please check your email for confirmation.",
 				status: 'success'
-			});
-		}).catch(e => {
-			// console.log("error: ", e.response.data.ModelState[""][1]);
-			this.dispatch("modules/general/setSnackbarNotification", {
-				message: e.response.data.Message + " " + e.response.data.ModelState && e.response.data.ModelState[""] && e.response.data.ModelState[""][1],
-				status: 'error'
 			});
 		});
 	},
