@@ -44,12 +44,7 @@
 				return allowedUserKeys.includes(key);
 			},
 			mapUserKey(key) {
-				if (key === "IsDeferredPaymentAllowed") {
-					return value ? "Да" : "Не";
-				}
-				else {
-					return value;
-				}
+				return userKeyMap[key] || key;
 			}
 		}
 	};
