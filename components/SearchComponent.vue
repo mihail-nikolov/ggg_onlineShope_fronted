@@ -28,7 +28,8 @@
             <img alt="" width="100" height="100" class="image-preview"
                  v-for="image in allImages" :src="image"
                  v-bind:class="{
-                    selected: selectedImages.includes(image)
+                    selected: selectedImages.includes(image),
+                    hidden: filteredImages.length && !filteredImages.includes(image)
                     }"
                  @click="toggleSelectImage(image);">
         </v-flex>
@@ -282,6 +283,10 @@
         opacity: .3;
         cursor: not-allowed;
         background-color: #fff !important;
+    }
+
+    .image-preview.hidden {
+      visibility: hidden;
     }
 
     .image-preview.selected {
