@@ -15,44 +15,44 @@
 
 <script>
 	const allowedUserKeys = ["Email", "Bulstat", "Name", "PhoneNumber", "DeliveryCountry", "DeliveryTown", "DeliveryAddress", "IsDeferredPaymentAllowed", "PercentageReduction" ];
-const userKeyMap = {
-	"Email": "Имейл",
-	"Bulstat": "Булстат",
-	"Name": "Име",
-	"PhoneNumber": "Телефонен номер",
-	"DeliveryCountry": "Държава",
-	"DeliveryTown": "Град",
-	"DeliveryAddress": "Адрес",
-	"IsDeferredPaymentAllowed": "Разсрочено плащане",
-	"PercentageReduction": "Отстъпка (%)"
-};
+	const userKeyMap = {
+		"Email": "Имейл",
+		"Bulstat": "Булстат",
+		"Name": "Име",
+		"PhoneNumber": "Телефонен номер",
+		"DeliveryCountry": "Държава",
+		"DeliveryTown": "Град",
+		"DeliveryAddress": "Адрес",
+		"IsDeferredPaymentAllowed": "Разсрочено плащане",
+		"PercentageReduction": "Отстъпка (%)"
+	};
 
-import adminNavigationButtons from '~/components/adminNavigationButtons';
+	import adminNavigationButtons from '~/components/adminNavigationButtons';
 
-export default {
-	layout: 'my',
-	components: {
-		"admin-navigation-buttons": adminNavigationButtons
-	},
-	computed: {
-		user() {
-			return this.$store.getters["modules/auth/getUserDetails"];
-		}
-	},
-	methods: {
-		keyInUserIsAllowed(key) {
-			return allowedUserKeys.includes(key);
+	export default {
+		layout: 'my',
+		components: {
+			"admin-navigation-buttons": adminNavigationButtons
 		},
-		mapUserKey(key) {
-			if (key === "IsDeferredPaymentAllowed") {
-				return value ? "Да" : "Не";
+		computed: {
+			user() {
+				return this.$store.getters["modules/auth/getUserDetails"];
 			}
-			else {
-				return value;
+		},
+		methods: {
+			keyInUserIsAllowed(key) {
+				return allowedUserKeys.includes(key);
+			},
+			mapUserKey(key) {
+				if (key === "IsDeferredPaymentAllowed") {
+					return value ? "Да" : "Не";
+				}
+				else {
+					return value;
+				}
 			}
 		}
-	}
-};
+	};
 </script>
 
 <style scoped>
