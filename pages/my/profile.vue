@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  const allowedUserKeys = ["Email", "Bulstat", "Name", "PhoneNumber", "DeliveryCountry", "DeliveryTown", "DeliveryAddress", "IsDeferredPaymentAllowed", "PercentageReduction" ];
+	const allowedUserKeys = ["Email", "Bulstat", "Name", "PhoneNumber", "DeliveryCountry", "DeliveryTown", "DeliveryAddress", "IsDeferredPaymentAllowed", "PercentageReduction" ];
 const userKeyMap = {
 	"Email": "Имейл",
 	"Bulstat": "Булстат",
@@ -24,7 +24,7 @@ const userKeyMap = {
 	"DeliveryTown": "Град",
 	"DeliveryAddress": "Адрес",
 	"IsDeferredPaymentAllowed": "Разсрочено плащане",
-	"PercentageReduction": "Отстъпка"
+	"PercentageReduction": "Отстъпка (%)"
 };
 
 import adminNavigationButtons from '~/components/adminNavigationButtons';
@@ -44,7 +44,12 @@ export default {
 			return allowedUserKeys.includes(key);
 		},
 		mapUserKey(key) {
-			return userKeyMap[key] || key;
+			if (key === "IsDeferredPaymentAllowed") {
+				return value ? "Да" : "Не";
+			}
+			else {
+				return value;
+			}
 		}
 	}
 };

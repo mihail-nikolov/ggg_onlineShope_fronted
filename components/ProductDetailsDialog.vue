@@ -115,7 +115,7 @@
                       <div v-if="curProductDetails.InterchangeableParts.length" style="clear:both">
                         <h4>Взаимнозаменяеми части</h4>
                         <div class="availability-container">
-                          <h5 class="pointer" v-for="part in curProductDetails.InterchangeableParts" @click="onOpenInterchangeableDialog(part)">{{ part.Description }}</h5>
+                          <h5 class="pointer" v-for="part in curProductDetails.InterchangeableParts" @click="openInterchangeableDialog(part)">{{ part.Description }}</h5>
                         </div>
                       </div>
                     </v-card-text>
@@ -162,8 +162,8 @@
 				productsRepository.getFullProduct(acc)
 					.then(console.warn);
 			},
-			onOpenInterchangeableDialog(interchangeablePart) {
-				this.$emit("onOpenInterchangeableDialog", interchangeablePart);
+			openInterchangeableDialog(interchangeablePart) {
+				this.$emit("onOpenAccessoryDialog", interchangeablePart);
 				productsRepository.getFullProduct(interchangeablePart)
 					.then(console.warn);
 			}
