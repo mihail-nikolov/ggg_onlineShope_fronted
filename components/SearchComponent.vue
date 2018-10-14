@@ -286,7 +286,7 @@
     }
 
     .image-preview.hidden {
-      visibility: hidden;
+		display: none;
     }
 
     .image-preview.selected {

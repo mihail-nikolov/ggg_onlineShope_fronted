@@ -53,6 +53,7 @@
 		methods: {
 			onSubmit(e) {
 				let comp = this;
+				console.log(comp);
 				if (!comp.isButtonClicked) {
 					comp.isButtonClicked = true;
 					comp.circleX = e.pageX - (e.pageX - e.offsetX) + 'px';
@@ -78,6 +79,9 @@
 								PhoneNumber: comp.phone,
 								PercentageReduction: 0 // TODO: ask misho WTF is that?
 							})
+								.then(() => {
+									comp.$router.push({ path: `/login` });
+								})
 								.catch(err => {
 									const message = err.response.data.Message;
 									comp.$store.dispatch("modules/general/setSnackbarNotification", {
