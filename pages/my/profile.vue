@@ -5,7 +5,7 @@
             <div class="profile-table">
                 <div class="profile-table-row" v-for="(value, key) in user" v-if="keyInUserIsAllowed(key)">
                     <div class="profile-table-row__key">{{ mapUserKey(key) }}</div>
-                    <div class="profile-table-row__value">{{ value }}</div>
+                    <div class="profile-table-row__value">{{ value === true ? "Да" : value === false ? "Не" : value }}</div>
                 </div>
             </div>
         </v-card>
