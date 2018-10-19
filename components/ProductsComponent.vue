@@ -98,10 +98,6 @@
 								</v-btn>
 							</v-flex>
 							<v-flex style="display:flex;" v-else>
-								<v-btn color="primary" flat @click="onOpenRequestDialog()">
-									<v-icon left>mdi-help-circle-outline</v-icon>
-									Запитване
-								</v-btn>
 								<v-spacer></v-spacer>
 								<v-btn color="primary" flat @click="dialogCartCountOpen = false">
 									<v-icon left>mdi-close</v-icon>
@@ -113,18 +109,6 @@
 				</no-ssr>
 			</v-container>
 		</v-content>
-
-		<!-- Request Dialog -->
-		<v-content v-if="dialogRequestOpen">
-			<v-container fluid style="width:100%;height:100px;background-color:white;">
-				<no-ssr>
-					<v-dialog v-model="dialogRequestOpen" :max-width="650">
-						<request-dialog @onClose="onCloseRequestDialog()"></request-dialog>
-					</v-dialog>
-				</no-ssr>
-			</v-container>
-		</v-content>
-
 	</v-content>
 </template>
 
@@ -133,11 +117,9 @@
 	import ProductDetailsDialog from '~/components/ProductDetailsDialog';
 	import AccessoryDetailsDialog from '~/components/AccessoryDetailsDialog';
 	import scrollTo from "~/utils/scrollTo";
-	import RequestDialog from "./RequestDialog";
 
 	export default {
 		components: {
-			RequestDialog,
 			'product-card': ProductCard,
 			'product-details-dialog': ProductDetailsDialog,
 			'accessory-details-dialog': AccessoryDetailsDialog
@@ -154,8 +136,7 @@
 				selectedCartStore: null,
 				currentCartProductToAdd: null,
 				dialogDetailsAccessoryOpen: false,
-				curProductAccessory: [],
-				dialogRequestOpen: false
+				curProductAccessory: []
 			};
 		},
 		computed: {
@@ -301,13 +282,7 @@
 						this.dialogDetailsAccessoryOpen = true;
 					});
 			},
-			round: num => num.toFixed(2),
-			onOpenRequestDialog() {
-				this.dialogRequestOpen = true;
-			},
-			onCloseRequestDialog() {
-				this.dialogRequestOpen = false;
-			}
+			round: num => num.toFixed(2)
 		},
 		watch: {
 			filteredProducts(val, old) {

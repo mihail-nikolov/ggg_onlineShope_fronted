@@ -2,6 +2,11 @@
 	<v-container align-center class="search-component-container">
 		<h2 class="advanced-search">ТЪРСЕНЕ</h2>
 		<v-container align-center fluid>
+			Aко не сте сигурни за продуктите - изпратете ни  
+			<v-btn color="primary" flat="" @click="onOpenRequestDialog()">
+			<v-icon left="">mdi-help-circle-outline</v-icon>
+				Запитване
+			</v-btn></br>
 			<v-layout row justify-center>
 				<div style="max-width: 600px; display: flex; flex-wrap: wrap;align-items: center; justify-content: center;">
 					<v-text-field color="primary" name="searchByCode" v-model="codeForSearch" label="Код" style="width: 220px; min-width: 220px;"></v-text-field>
@@ -14,6 +19,17 @@
 			</v-layout>
 			<h3>ИЛИ</h3>
 		</v-container>
+	  <!-- Request Dialog -->
+	  <v-content v-if="dialogRequestOpen">
+		<v-container fluid="" style="width:100%;height:100px;background-color:white;">
+		  <no-ssr>
+			<v-dialog v-model="dialogRequestOpen" :max-width="650">
+			  <request-dialog @onClose="onCloseRequestDialog()"></request-dialog>
+			</v-dialog>
+		  </no-ssr>
+		</v-container>
+	  </v-content>
+
 		<v-container align-center class="search-selectors-container">
 			<multiselect class="search-multiselect" v-model="makeValue" :options="makeOptions" track-by="Id" label="Name" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери марка"></multiselect>
 			<multiselect class="search-multiselect" v-model="modelValue" :options="modelOptions" track-by="Id" label="Name" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери модел"></multiselect>
@@ -24,15 +40,15 @@
 			<glasses-svg class="glasses-svg" :selected-windows="selectedWindows" :available-windows="availableWindows" v-on:selectElement="onSelectWindowType"></glasses-svg>
 		</v-flex>
 
-        <v-flex class="images-container" align-center>
-            <img alt="" width="100" height="100" class="image-preview"
-                 v-for="image in allImages" :src="image"
-                 v-bind:class="{
-                    selected: selectedImages.includes(image),
-                    hidden: filteredImages.length && !filteredImages.includes(image)
-                    }"
-                 @click="toggleSelectImage(image);">
-        </v-flex>
+		<v-flex class="images-container" align-center>
+			<img alt="" width="100" height="100" class="image-preview"
+				 v-for="image in allImages" :src="image"
+				 v-bind:class="{
+					selected: selectedImages.includes(image),
+					hidden: filteredImages.length && !filteredImages.includes(image)
+					}"
+				 @click="toggleSelectImage(image);">
+		</v-flex>
 
 		<div v-if="foundProducts.length > 0 && productsAreFetched">
 			<div class="count">РЕЗУЛТАТИ: <span style="color:#089148">{{ filteredProducts.length }}</span></div>
@@ -48,11 +64,13 @@
 	import GlassesSVG from '~/components/GlassesSVG';
 	import SwitchGroup from '~/components/SwitchGroup';
 	import scrollTo from "~/utils/scrollTo";
+	import RequestDialog from "./RequestDialog";
 
 	export default {
 		components: {
 			Multiselect,
 			SwitchGroup,
+			RequestDialog,
 			'glasses-svg': GlassesSVG
 		},
 		data: function() {
@@ -64,7 +82,8 @@
 				codeForSearch: '',
 				selectedWindows: [],
 				codeTypes: ['eurocode', 'oescode'],
-				selectedCodeType: 'eurocode'
+				selectedCodeType: 'eurocode',
+				dialogRequestOpen: false
 			};
 		},
 		computed: {
@@ -149,6 +168,12 @@
 			},
 			onSelectCodeType(type) {
 				this.selectedCodeType = type;
+			},
+			onOpenRequestDialog() {
+				this.dialogRequestOpen = true;
+			},
+			onCloseRequestDialog() {
+				this.dialogRequestOpen = false;
 			}
 		},
 		watch: {
@@ -265,35 +290,35 @@
 		justify-content: center;
 	}
 
-    .image-preview {
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        margin: 5px;
-        object-fit: contain;
-        will-change: background-color, opacity, box-shadow;
-        transition: background-color .3s cubic-bezier(0, .5, 0, .5), opacity .3s cubic-bezier(0, .5, 0, .5), box-shadow .3s cubic-bezier(0, .5, 0, .5);
-    }
+	.image-preview {
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		margin: 5px;
+		object-fit: contain;
+		will-change: background-color, opacity, box-shadow;
+		transition: background-color .3s cubic-bezier(0, .5, 0, .5), opacity .3s cubic-bezier(0, .5, 0, .5), box-shadow .3s cubic-bezier(0, .5, 0, .5);
+	}
 
-    .image-preview:hover {
-        cursor: pointer;
-        background-color: #f0f0f0;
-    }
+	.image-preview:hover {
+		cursor: pointer;
+		background-color: #f0f0f0;
+	}
 
-    .image-preview.disabled {
-        opacity: .3;
-        cursor: not-allowed;
-        background-color: #fff !important;
-    }
+	.image-preview.disabled {
+		opacity: .3;
+		cursor: not-allowed;
+		background-color: #fff !important;
+	}
 
-    .image-preview.hidden {
+	.image-preview.hidden {
 		display: none;
-    }
+	}
 
-    .image-preview.selected {
-        background-color: rgba(0, 100, 0, .15) !important;
-        border-color: darkgreen;
-        box-shadow: 0 3px 3px rgba(0,0,0, .2);
-    }
+	.image-preview.selected {
+		background-color: rgba(0, 100, 0, .15) !important;
+		border-color: darkgreen;
+		box-shadow: 0 3px 3px rgba(0,0,0, .2);
+	}
 
 	.count {
 		width: 100%;
