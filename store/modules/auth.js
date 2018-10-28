@@ -192,6 +192,8 @@ const actions = {
 		localStorage.removeItem('autoGlassExpiresIn');
 		localStorage.removeItem('autoGlassUserDetails');
 		commit('LOGOUT');
+		commit("SET_ORDERS_LIST", []);
+		commit("SET_USERS_LIST", []);
 
 		this.dispatch("modules/general/setSnackbarNotification", {
 			message: "Изход!",

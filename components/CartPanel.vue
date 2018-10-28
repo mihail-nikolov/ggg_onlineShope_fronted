@@ -204,6 +204,9 @@
 			},
 			user() {
 				return this.$store.getters["modules/auth/getUserDetails"];
+			},
+			token() {
+				return this.$store.getters["modules/auth/getToken"];
 			}
 		},
 		created() {
@@ -272,6 +275,7 @@
 			},
 			onCheckout() {
 				const orders = [];
+				const token = this.token;
 
 				while (this.addedItemsToCart.length) {
 					const cartItem = this.addedItemsToCart[0];
@@ -280,7 +284,7 @@
 					this.removeProductFromCart(0);
 				}
 
-				ordersRepository.order({ orders })
+				ordersRepository.order({ orders, token })
 					.then(() => {
 					});
 			},

@@ -71,7 +71,7 @@
 								Password: comp.password,
 								ConfirmPassword: comp.confirmedPassword,
 								IsCompany: comp.legalEntity === "Юридическо лице" ? false : true,
-								Bulstat: comp.bulstat,
+								Bulstat: comp.bulstat || null,
 								Name: comp.fullName,
 								DeliveryCountry: comp.country,
 								DeliveryTown: comp.city,

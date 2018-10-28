@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-card class="admin__card">
-            <h2 class="admin__title">Профил <v-spacer></v-spacer> <v-btn flat>Изтрии</v-btn></h2>
+            <h2 class="admin__title">Профил <v-spacer></v-spacer> <v-btn flat @click="openConfirmDelete = true">Изтрии</v-btn></h2>
             <div class="profile-table">
                 <div class="profile-table-row" v-for="(value, key) in user" v-if="keyInUserIsAllowed(key)">
                     <div class="profile-table-row__key">{{ mapUserKey(key) }}</div>
@@ -10,6 +10,7 @@
             </div>
         </v-card>
         <admin-navigation-buttons></admin-navigation-buttons>
+        <confirm-delete-dialog :isOpen="openConfirmDelete" @submit="onDeleteUser()" @onClose="openConfirmDelete = false"></confirm-delete-dialog>
     </v-container>
 </template>
 
@@ -28,11 +29,18 @@
 	};
 
 	import adminNavigationButtons from '~/components/adminNavigationButtons';
+	import ConfirmDeleteDialog from '~/components/ConfirmDeleteDialog';
 
 	export default {
 		layout: 'my',
 		components: {
-			"admin-navigation-buttons": adminNavigationButtons
+			"admin-navigation-buttons": adminNavigationButtons,
+			ConfirmDeleteDialog
+		},
+		data() {
+			return {
+				openConfirmDelete: false
+			};
 		},
 		computed: {
 			user() {
@@ -45,6 +53,10 @@
 			},
 			mapUserKey(key) {
 				return userKeyMap[key] || key;
+			},
+			onDeleteUser() {
+				this.$router.push({ path: `/` });
+				this.$store.dispatch("modules/auth/logout");
 			}
 		}
 	};
