@@ -6,7 +6,7 @@
 			<span v-else>{{ status }}</span>
 		</span>
 		</div>
-		<div>
+		<div v-if="order.UserInfo || order.UserEmail">
 			<span>Потребител: </span>
 			{{ order.UserInfo }} - {{ order.UserЕmail }}
 		</div>

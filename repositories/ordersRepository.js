@@ -5,7 +5,8 @@ class OrdersRepository {
 	constructor() {
 		this.http = baseRepository;
 		this.URL = {
-			getOrders: "Administration/ManageOrderedItems",
+			getOrders: "Account/GetMyOrders",
+			getOrdersAdmin: "Administration/ManageOrderedItems",
 			changeStatus: "Administration/ManageOrderedItems/update",
 			makeOrder: "OrderedItems/order"
 		};
@@ -17,6 +18,14 @@ class OrdersRepository {
 		const pending = filter === "New";
 
 		return this.http.get(this.URL.getOrders, { done, ordered, pending }, null , { Authorization: token });
+	}
+
+	getOrdersAdmin({ token }, filter = "All") {
+		const done = filter === "Done";
+		const ordered = filter === "Ordered";
+		const pending = filter === "New";
+
+		return this.http.get(this.URL.getOrdersAdmin, { done, ordered, pending }, null , { Authorization: token });
 	}
 
 	changeStatus({ token, order, status }) {

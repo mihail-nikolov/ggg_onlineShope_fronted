@@ -98,8 +98,9 @@
 			selectOrderFilter(filter) {
 				if (this.token) {
 					const token = this.token;
+					const action = this.isAdmin ? "modules/auth/getOrdersAdmin" : "modules/auth/getOrders";
 					this.$store.dispatch("modules/auth/setOrdersFilter", filter);
-					this.$store.dispatch("modules/auth/getOrders", { token });
+					this.$store.dispatch(action, { token });
 				}
 			},
 			mapOrderStatus(status) {
@@ -108,7 +109,8 @@
 			fetchOrders() {
 				const token = this.token;
 				if (token && !this.ordersRequested) {
-					this.$store.dispatch("modules/auth/getOrders", { token });
+					const action = this.isAdmin ? "modules/auth/getOrdersAdmin" : "modules/auth/getOrders";
+					this.$store.dispatch(action, { token });
 					this.ordersRequested = true;
 				}
 			},

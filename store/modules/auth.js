@@ -251,6 +251,12 @@ const actions = {
 				commit("SET_ORDERS_LIST", orders);
 			});
 	},
+	async getOrdersAdmin({commit, state}, { token }) {
+		return ordersRepository.getOrdersAdmin( { token }, state.ordersFilter)
+			.then(orders => {
+				commit("SET_ORDERS_LIST", orders);
+			});
+	},
 	setOrdersFilter({ commit }, filter) {
 		commit("SET_ORDERS_FILTER", filter);
 	},
