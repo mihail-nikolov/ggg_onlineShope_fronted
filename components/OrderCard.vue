@@ -3,7 +3,8 @@
 		<div>
 			<b>#{{ order.EuroCode }}</b>&nbsp;<span>{{ order.Description }} ({{ order.Manufacturer }})</span> - <span class="order__status">
 			<multiselect class="status-multiselect" v-if="editable" v-model="status" :allow-empty="false" @select="onChangeOrderStatus" :options="orderStatuses" deselect-label="Премахни" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Избери статус"></multiselect>
-			<span v-else>{{ status }}</span>
+			<span v-else>{{ status }}</span></br>
+			<span>други кодове:</span><b>{{ order.OtherCodes }}</b>
 		</span>
 		</div>
 		<div v-if="order.UserInfo || order.UserEmail">

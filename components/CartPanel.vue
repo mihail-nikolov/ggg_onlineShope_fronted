@@ -336,7 +336,7 @@
 					IsInvoiceNeeded: false,
 					Description: "",
 					Eurocode: null,
-					OtherCodes: null,
+					OtherCodes: "",
 					DeliveryNotes: "",
 					PaidPrice: 0,
 					UserЕmail: "",
@@ -353,16 +353,14 @@
 				if (cartItem.item.EuroCode) {
 					order.Eurocode = cartItem.item.EuroCode;
 				}
-				else {
-					if (cartItem.item.OesCode) {
-						order.OtherCodes += `${cartItem.item.OesCode};`;
-					}
-					if (cartItem.item.MaterialNumber) {
-						order.OtherCodes += `${cartItem.item.MaterialNumber};`;
-					}
-					if (cartItem.item.LocalCode) {
-						order.OtherCodes += `${cartItem.item.LocalCode};`;
-					}
+				if (cartItem.item.OesCode) {
+					order.OtherCodes += `${cartItem.item.OesCode};`;
+				}
+				if (cartItem.item.MaterialNumber) {
+					order.OtherCodes += `${cartItem.item.MaterialNumber};`;
+				}
+				if (cartItem.item.LocalCode) {
+					order.OtherCodes += `${cartItem.item.LocalCode};`;
 				}
 				order.DeliveryNotes = this.description;
 				order.UserЕmail = this.email;
