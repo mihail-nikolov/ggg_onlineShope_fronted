@@ -96,9 +96,9 @@
 			bodyTypeOptions() {
 				return this.$store.getters["modules/products/getBodyTypes"];
 			},
-			productTypeOptions() {
-				return this.$store.getters["modules/products/getProductTypes"];
-			},
+			//productTypeOptions() {
+			//	return this.$store.getters["modules/products/getProductTypes"];
+			//},
 			foundProducts() {
 				return this.$store.getters["modules/products/getAllProducts"];
 			},

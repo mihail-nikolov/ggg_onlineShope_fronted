@@ -10,7 +10,6 @@ class ProductsRepository {
 			position: "Products/GetPositions",
 			productsByDetails: "Products/FindByVehicleInfo",
 			product: "Products/GetItemByFullCode",
-			productTypes: "Products/GetProductTypes",
 			fullProduct: "Products/GetDetailedInfo",
 			availability: "Products/GetPriceAndQuantities"
 		};
@@ -152,9 +151,6 @@ class ProductsRepository {
 
 	@return Array<string>
 	*/
-	getProductTypes(data) {
-		return this.http.post(this.URL.productTypes, data);
-	}
 
 	/**
 	@param data: {
@@ -190,13 +186,6 @@ class ProductsRepository {
 		InterchangeableParts: Array<InterchangeablePart>
 	}>
 	*/
-	getProductTypeById(data) {
-		if (data.id === void 0) {
-			return Promise.reject("no id");
-		}
-
-		return this.http.post(this.URL.productTypes, data);
-	}
 	/**
 	@param data: {
 		id: number

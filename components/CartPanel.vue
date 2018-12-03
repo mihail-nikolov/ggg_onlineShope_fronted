@@ -74,12 +74,21 @@
 
 				<div style="flex: 1; display: flex;">
 					<v-flex xs-6>
+						<input type="radio" id="noInstallation" value="" v-model="installation">
+						<label for="noInstallation">Без Монтаж</label>
+						<br>
+						<input type="radio" id="installationInPlace" value="installationInPlace" v-model="installation">
+						<label for="installationInPlace">Монтаж на място</label>
+						<br>
+						<input type="radio" id="installationInSofia" value="installationInSofia" v-model="installation">
+						<label for="installationInSofia">Монтаж сервиз София</label>
+						<br>
+						<input type="radio" id="installationInRuse" value="installationInRuse" v-model="installation">
+						<label for="installationInRuse">Монтаж сервиз Русе</label>
 						<v-chip v-if="isInvoiceNeeded" @click="removeInvoice()">+ ФАКТУРА</v-chip>
-						<v-chip v-if="isInstalationNeeded" @click="removeInstallation()">+ МОНТАЖ</v-chip>
 					</v-flex>
-					<v-spacer></v-spacer>
-					<v-btn flat small @click="addInvoice()" v-if="!this.isInvoiceNeeded">Фактура</v-btn>
-					<v-btn flat small @click="addInstallation()" v-if="!this.isInstalationNeeded">Монтаж</v-btn>
+					<br>
+					<v-btn small @click="addInvoice()" v-if="!this.isInvoiceNeeded">Фактура</v-btn>
 				</div>
 			</v-form>
 		</v-container>
@@ -164,7 +173,7 @@
 				email: '',
 				description: '',
 				isInvoiceNeeded: false,
-				isInstalationNeeded: false,
+				installation: '',
 				steps: 3,
 				activeStep: 1,
 				wayToPay: "cash-on-delivery"
@@ -313,12 +322,6 @@
 			removeInvoice() {
 				this.isInvoiceNeeded = false;
 			},
-			addInstallation() {
-				this.isInstalationNeeded = true;
-			},
-			removeInstallation() {
-				this.isInstalationNeeded = false;
-			},
 			setUserData(user) {
 				this.name = user.Name;
 				this.email = user.Email;
@@ -333,6 +336,8 @@
 					Price: 0,
 					Status: "New",
 					WithInstallation: false,
+					InstallationRuse: false,
+					InstallationSofia: false,
 					IsInvoiceNeeded: false,
 					Description: "",
 					Eurocode: null,
@@ -347,7 +352,21 @@
 
 				order.Manufacturer = this.getItemManufacturer(cartItem);
 				order.Price = this.getItemPrice(cartItem);
-				order.WithInstallation = this.isInstalationNeeded;
+				if (this.installation == '') {
+					order.WithInstallation = false;
+				}
+				else if (this.installation == 'installationInPlace') {
+					order.WithInstallation = true;
+				}
+				else if (this.installation == 'installationInSofia'){
+					order.WithInstallation = true;
+					order.InstallationSofia = true; 
+				}
+				else if (this.installation == 'installationInRuse'){
+					order.WithInstallation = true;
+					order.InstallationRuse = true;
+				}
+				
 				order.IsInvoiceNeeded = this.isInvoiceNeeded;
 				order.Description = cartItem.item.Description;
 				if (cartItem.item.EuroCode) {

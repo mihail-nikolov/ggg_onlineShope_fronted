@@ -20,7 +20,7 @@
 			{{ order.DeliveryNotes || ' - ' }}
 		</div>
 		<v-flex style="display: flex;">
-			<v-chip v-if="order.WithInstallation">+ Инсталация</v-chip>
+			<v-chip v-if="order.WithInstallation">+ Монтаж</v-chip>
 			<v-chip v-if="order.IsInvoiceNeeded">+ Фактура</v-chip>
 
 			<v-chip v-if="order.PaidPrice">+ Платено: {{ order.PaidPrice }}</v-chip>

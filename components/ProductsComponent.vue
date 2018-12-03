@@ -127,7 +127,7 @@
 		data() {
 			return {
 				pageNumProducts: 1,
-				maxElementsToShow: 6,
+				maxElementsToShow: 20,
 				dialogDetailsOpen: false,
 				dialogCartCountOpen: false,
 				curProductDetails: null,
@@ -304,26 +304,26 @@
 
 <style lang="css" scoped>
 	.products-container {
-		display: grid;
+		/*display: grid;
 		grid-template-areas: "products products products products products";
 		grid-column-gap: 40px;
 		grid-row-gap: 40px;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;*/
 		padding: 0 60px;
 	}
 
 	.products-container .products {
-		grid-area: products;
-		display: grid;
+		/*grid-area: products;
+		display: grid;*/
 		margin: 0 auto;
 		padding: 0;
 	}
 
 	.products-container .all-products {
-		display: grid;
+		/*display: grid;
 		grid-template-columns: repeat( auto-fill, minmax(350px, 1fr) );
 		grid-column-gap: 40px;
-		grid-row-gap: 40px;
+		grid-row-gap: 40px;*/
 		margin: 0;
 		padding: 0;
 	}
