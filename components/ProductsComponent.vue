@@ -23,10 +23,10 @@
 		<v-content v-if="dialogCartCountOpen" class="cart-count-container">
 			<v-container fluid style="width:100%;height:100px;background-color:white;">
 				<no-ssr>
-					<v-dialog v-model="dialogCartCountOpen" :max-width="hasAnyAvailability() ? 650 : 450">
+					<v-dialog v-model="dialogCartCountOpen" :max-width="cartGroupData.length ? 650 : 450">
 						<v-container row wrap align-center style="background-color:white;">
-							<div v-if="hasAnyAvailability()">
-								<v-flex v-if="cartGroupData.length">
+							<div v-if="cartGroupData.length">
+								<v-flex>
 									<v-flex row class="text-xs-center" style="margin-bottom:20px">
 										<h2 style="text-align:center; padding: 15px;">Производител</h2>
 									</v-flex>
@@ -62,19 +62,6 @@
 										</div>
 									</v-flex>
 								</v-flex>
-
-								<!--<v-flex row class="text-xs-center" style="margin-bottom:20px">-->
-								<!--<h2 style="text-align:center; padding: 15px;">Количество</h2>-->
-								<!--</v-flex>-->
-								<!--<v-flex row class="text-xs-center" style="margin-bottom:10px">-->
-								<!--<v-btn color="primary" icon flat @click="decreaseCartCount">-->
-								<!--<v-icon>mdi-minus</v-icon>-->
-								<!--</v-btn>-->
-								<!--<input type="number" min="1" step="1" name="cartCount" v-model="cartCount" style="display: inline-block; width: 50px; text-align: center; font-size: 20px;"></input>-->
-								<!--<v-btn color="primary" icon flat @click="increaseCartCount">-->
-								<!--<v-icon>mdi-plus</v-icon>-->
-								<!--</v-btn>-->
-								<!--</v-flex>-->
 							</div>
 							<div v-else>
 								<v-flex row class="text-xs-center" style="margin-bottom:20px">
@@ -86,13 +73,13 @@
 										href="http://www.glassgoldgroup.eu/%D0%B0%D0%B2%D1%82%D0%BE%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-%D1%81%D0%BE%D1%84%D0%B8%D1%8F-%D1%81%D0%BA%D0%BB%D0%B0%D0%B4-%D0%BF%D0%BB%D0%BE%D0%B2%D0%B4%D0%B8%D0%B2">тук</a>, или да направите запитване.
 								</v-flex>
 							</div>
-							<v-flex style="display:flex;" v-if="hasAnyAvailability()">
+							<v-flex style="display:flex;" v-if="cartGroupData.length">
 								<v-btn color="primary" flat @click="dialogCartCountOpen = false">
 									<v-icon left>mdi-close</v-icon>
 									Затвори
 								</v-btn>
 								<v-spacer></v-spacer>
-								<v-btn color="primary" v-bind:disabled="selectedCartGroup === null || selectedCartStore === null" @click="onAddCartCountDialogClick" v-if="hasAnyAvailability()">
+								<v-btn color="primary" v-bind:disabled="selectedCartGroup === null || selectedCartStore === null" @click="onAddCartCountDialogClick">
 									<v-icon left>fa-cart-plus</v-icon>
 									Добави
 								</v-btn>
@@ -259,14 +246,6 @@
 				}
 
 				return quantities > 0;
-			},
-			hasAnyAvailability() {
-				for (const group of this.cartGroupData) {
-					if (this.groupHasAvailability(group) > 0) {
-						return true;
-					}
-				}
-				return false;
 			},
 			onCloseDetailsAccessoryDialogClick(value) {
 				this.dialogDetailsAccessoryOpen = value;
