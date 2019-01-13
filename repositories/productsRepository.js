@@ -1,24 +1,20 @@
 import baseRepository from "./baseRepository";
 
-
 class ProductsRepository {
-	constructor() {
-		this.http = baseRepository;
-		this.URL = {
-			clean: "Products",
-			productsByCode: "Products/Get",
-			position: "Products/GetPositions",
-			productsByDetails: "Products/FindByVehicleInfo",
-			product: "Products/GetItemByFullCode",
-			fullProduct: "Products/GetDetailedInfo",
-			availability: "Products/GetPriceAndQuantities"
-		};
+    constructor() {
+        this.http = baseRepository;
+        this.URL = {
+            clean: "Products",
+            productsByCode: "Products/Get",
+            position: "Products/GetPositions",
+            productsByDetails: "Products/FindByVehicleInfo",
+            product: "Products/GetItemByFullCode",
+            fullProduct: "Products/GetDetailedInfo",
+            availability: "Products/GetPriceAndQuantities"
+        };
+    }
 
-		console.log(this);
-	}
-
-
-	/**
+    /**
 	 @param data: {
 	 	code ?: string,
 
@@ -42,44 +38,45 @@ class ProductsRepository {
 		}>
 	>
 	*/
-	getProducts(data) {
-		if (data.MakeId === void 0 && data.code === void 0) {
-			return Promise.reject("invalid params");
-		}
+    getProducts(data) {
+        if (data.MakeId === void 0 && data.code === void 0) {
+            return Promise.reject("invalid params");
+        }
 
-		if (data.code !== void 0) {
-			const { code } = data;
-			const requestParams = { code };
+        if (data.code !== void 0) {
+            const { code } = data;
+            const requestParams = { code };
 
-			return this.http.get(`${this.URL.clean}?${data.type}=${data.code}`)
-				.then(products => {
-					products.forEach(product => {
-						this.inflateProduct(product);
-					});
-					return products;
-				});
-		}
-		else {
-			const { MakeId, ModelId, BodyTypeId, ProductType } = data;
-			const requestData = { MakeId, ModelId, BodyTypeId, ProductType };
+            return this.http
+                .get(`${this.URL.clean}?${data.type}=${data.code}`)
+                .then(products => {
+                    products.forEach(product => {
+                        this.inflateProduct(product);
+                    });
+                    return products;
+                });
+        } else {
+            const { MakeId, ModelId, BodyTypeId, ProductType } = data;
+            const requestData = { MakeId, ModelId, BodyTypeId, ProductType };
 
-			return this.http.post(this.URL.productsByDetails, requestData)
-				.then(products => {
-					products.forEach(product => {
-						this.inflateProduct(product);
-					});
-					return products;
-				});
-		}
-	}
+            return this.http
+                .post(this.URL.productsByDetails, requestData)
+                .then(products => {
+                    products.forEach(product => {
+                        this.inflateProduct(product);
+                    });
+                    return products;
+                });
+        }
+    }
 
-	getPosition({ Id }) {
-		console.warn(!!Id);
+    getPosition({ Id }) {
+        console.warn(!!Id);
 
-		return this.http.post(this.URL.position, { makeId: Id });
-	}
+        return this.http.post(this.URL.position, { makeId: Id });
+    }
 
-	/**
+    /**
 	@param data: {
 		EuroCode ?: string,
 		OesCode ?: string,
@@ -87,61 +84,64 @@ class ProductsRepository {
 		IndustryCode ?: string
 	}
 	*/
-	getProduct(data) {
-		if (data.EuroCode !== void 0) {
-			return this.http.get(this.URL.product, { EuroCode: data.EuroCode });
-		}
-		else if (data.OesCode !== void 0) {
-			return this.http.get(this.URL.product, { OesCode: data.OesCode });
-		}
-		else if (data.MaterialNumber !== void 0) {
-			return this.http.get(this.URL.product, { MaterialNumber: data.MaterialNumber });
-		}
-		else if (data.IndustryCode !== void 0) {
-			return this.http.get(this.URL.product, { IndustryCode: data.IndustryCode });
-		}
-		else {
-			return Promise.reject("invalid code", data);
-		}
-	}
+    getProduct(data) {
+        if (data.EuroCode !== void 0) {
+            return this.http.get(this.URL.product, { EuroCode: data.EuroCode });
+        } else if (data.OesCode !== void 0) {
+            return this.http.get(this.URL.product, { OesCode: data.OesCode });
+        } else if (data.MaterialNumber !== void 0) {
+            return this.http.get(this.URL.product, {
+                MaterialNumber: data.MaterialNumber
+            });
+        } else if (data.IndustryCode !== void 0) {
+            return this.http.get(this.URL.product, {
+                IndustryCode: data.IndustryCode
+            });
+        } else {
+            return Promise.reject("invalid code", data);
+        }
+    }
 
-	getFullProduct(data) {
-		let id = data.Id || '',
-			eurocode = '',
-			localCode = '',
-			materialNumber = '',
-			industryCode = '';
+    getFullProduct(data) {
+        let id = data.Id || "",
+            eurocode = "",
+            localCode = "",
+            materialNumber = "",
+            industryCode = "";
 
-		if (data.hasOwnProperty('CleanEurocode') && data.CleanEurocode !== void 0) {
-			eurocode = data.CleanEurocode;
-		}
-		else if (data.EuroCode !== void 0) {
-			eurocode = data.EuroCode;
-		}
+        if (
+            data.hasOwnProperty("CleanEurocode") &&
+            data.CleanEurocode !== void 0
+        ) {
+            eurocode = data.CleanEurocode;
+        } else if (data.EuroCode !== void 0) {
+            eurocode = data.EuroCode;
+        }
 
-		if (data.OesCode !== void 0) {
-			localCode = data.localCode;
-		}
-		if (data.MaterialNumber !== void 0) {
-			materialNumber = data.MaterialNumber;
-		}
-		if (data.IndustryCode !== void 0) {
-			industryCode = data.IndustryCode;
-		}
+        if (data.OesCode !== void 0) {
+            localCode = data.localCode;
+        }
+        if (data.MaterialNumber !== void 0) {
+            materialNumber = data.MaterialNumber;
+        }
+        if (data.IndustryCode !== void 0) {
+            industryCode = data.IndustryCode;
+        }
 
-		return this.http.get(this.URL.fullProduct, {
-			id,
-			eurocode,
-			localCode,
-			materialNumber,
-			industryCode
-		})
-			.then(product => {
-				return this.inflateProduct(product);
-			});
-	}
+        return this.http
+            .get(this.URL.fullProduct, {
+                id,
+                eurocode,
+                localCode,
+                materialNumber,
+                industryCode
+            })
+            .then(product => {
+                return this.inflateProduct(product);
+            });
+    }
 
-	/**
+    /**
 	@param data: {
 		id ?: number,
 		EuroCode ?: string,
@@ -152,7 +152,7 @@ class ProductsRepository {
 	@return Array<string>
 	*/
 
-	/**
+    /**
 	@param data: {
 		id: number
 	}
@@ -186,30 +186,32 @@ class ProductsRepository {
 		InterchangeableParts: Array<InterchangeablePart>
 	}>
 	*/
-	/**
+    /**
 	@param data: {
 		id: number
 	}
 	*/
-	getProductAvailability(id, token) {
-		return this.http.get(`${this.URL.availability}/${id}`, null, null, { Authorization: token || undefined });
-	}
+    getProductAvailability(id, token) {
+        return this.http.get(`${this.URL.availability}/${id}`, null, null, {
+            Authorization: token || undefined
+        });
+    }
 
-	inflateProduct(product) {
-		if (product.Images.length > 0) {
-			product.Images = product.Images.map(image => {
-				const imagePath = "/Images/" + image + ".jpg";
-				return imagePath;
-			});
-		} else {
-			product.Images.push("/Images/no-image.png");
-		}
+    inflateProduct(product) {
+        if (product.Images.length > 0) {
+            product.Images = product.Images.map(image => {
+                const imagePath = "/Images/" + image + ".jpg";
+                return imagePath;
+            });
+        } else {
+            product.Images.push("/Images/no-image.png");
+        }
 
-		return product;
-	}
+        return product;
+    }
 }
 
-const productsRepository = new ProductsRepository;
+const productsRepository = new ProductsRepository();
 
 global.products = productsRepository;
 

@@ -65,7 +65,6 @@
 			},
 			onChangeOrderStatus(status) {
 				const reverseMapped = this.mapOrderStatus(status);
-				console.log(status);
 				this.$emit("statusChanged", {
 					order: this.order,
 					status: reverseMapped

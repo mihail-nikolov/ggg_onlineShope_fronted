@@ -23,7 +23,6 @@
 			}
 		},
 		created() {
-			console.log(this.model);
 			this.value = this.model;
 		}
 	};

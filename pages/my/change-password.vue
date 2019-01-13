@@ -65,7 +65,6 @@ export default {
 			return Validator.value(value).required().minLength(6);
 		},
 		'newPassword, newPassword2': function (newPassword, newPassword2) {
-			console.log(newPassword, newPassword2, (this.submitted || this.validation.isTouched('newPassword')));
 			if (this.submitted || this.validation.isTouched('newPassword')) {
 				return Validator.value(newPassword).required().minLength(6).match(newPassword2);
 			}

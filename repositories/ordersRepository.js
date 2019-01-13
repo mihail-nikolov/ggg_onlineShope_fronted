@@ -2,37 +2,52 @@ import baseRepository from "./baseRepository";
 import productsRepository from "./productsRepository";
 
 class OrdersRepository {
-	constructor() {
-		this.http = baseRepository;
-		this.URL = {
-			getOrders: "Account/GetMyOrders",
-			getOrdersAdmin: "Administration/ManageOrderedItems",
-			changeStatus: "Administration/ManageOrderedItems/update",
-			makeOrder: "OrderedItems/order"
-		};
-	}
+    constructor() {
+        this.http = baseRepository;
+        this.URL = {
+            getOrders: "Account/GetMyOrders",
+            getOrdersAdmin: "Administration/ManageOrderedItems",
+            changeStatus: "Administration/ManageOrderedItems/update",
+            makeOrder: "Orders/order"
+        };
+    }
 
-	getOrders({ token }, filter = "All") {
-		const done = filter === "Done";
-		const ordered = filter === "Ordered";
-		const pending = filter === "New";
+    getOrders({ token }, filter = "All") {
+        const done = filter === "Done";
+        const ordered = filter === "Ordered";
+        const pending = filter === "New";
 
-		return this.http.get(this.URL.getOrders, { done, ordered, pending }, null , { Authorization: token });
-	}
+        return this.http.get(
+            this.URL.getOrders,
+            { done, ordered, pending },
+            null,
+            { Authorization: token }
+        );
+    }
 
-	getOrdersAdmin({ token }, filter = "All") {
-		const done = filter === "Done";
-		const ordered = filter === "Ordered";
-		const pending = filter === "New";
+    getOrdersAdmin({ token }, filter = "All") {
+        const done = filter === "Done";
+        const ordered = filter === "Ordered";
+        const pending = filter === "New";
 
-		return this.http.get(this.URL.getOrdersAdmin, { done, ordered, pending }, null , { Authorization: token });
-	}
+        return this.http.get(
+            this.URL.getOrdersAdmin,
+            { done, ordered, pending },
+            null,
+            { Authorization: token }
+        );
+    }
 
-	changeStatus({ token, order, status }) {
-		return this.http.post(this.URL.changeStatus, { Id: order.Id, Status: status }, null , { Authorization: token });
-	}
+    changeStatus({ token, order, status }) {
+        return this.http.post(
+            this.URL.changeStatus,
+            { Id: order.Id, Status: status },
+            null,
+            { Authorization: token }
+        );
+    }
 
-	/*
+    /*
 	*   [Required] string Manufacturer
 		[Required] double Price
 		[Required] DeliveryStatus Status -> “New”, “Ordered”, “Done”
@@ -48,12 +63,14 @@ class OrdersRepository {
 		string UserId – if registered user orders it
 		[Required] string FullAddress
 	* */
-	order({ orders, token }) {
-		return this.http.post(this.URL.makeOrder, orders, null, { Authorization: token });
-	}
+    order({ order, token }) {
+        return this.http.post(this.URL.makeOrder, order, null, {
+            Authorization: token
+        });
+    }
 }
 
-const ordersRepository = new OrdersRepository;
+const ordersRepository = new OrdersRepository();
 
 global.orders = ordersRepository;
 

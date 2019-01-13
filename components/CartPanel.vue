@@ -90,7 +90,6 @@
                     elemType="text"
                     v-model="name"
                     fieldName="Име"
-                    :disabled="!!(this.user && this.user.Id)"
                     :hasError="validation.hasError('name')"
                     :firstError="validation.firstError('name')"
                 ></form-component>
@@ -338,7 +337,6 @@ export default {
     },
     watch: {
         addedItemsToCart(value) {
-            console.log("New items -> ", value);
             sessionStorage.removeItem("autoGlassAddedToCartItems");
             sessionStorage.setItem(
                 "autoGlassAddedToCartItems",
@@ -384,11 +382,8 @@ export default {
             }
         },
         decreaseProductQuantity(product, index) {
-            console.log("decrease product -> ", product, "index -> ", index);
             if (product.cartCount > 1) {
-                console.log("decrease cartCount ", product.cartCount);
                 let count = parseInt(product.cartCount) - 1;
-                console.log("decrease count ", count);
                 this.$store.dispatch("modules/cart/changeCountOfItemInCart", {
                     index: index,
                     count: count
@@ -396,9 +391,7 @@ export default {
             }
         },
         increaseProductQuantity(product, index) {
-            console.log("increase product -> ", product, "index -> ", index);
             let count = parseInt(product.cartCount) + 1;
-            console.log("increase count ", count);
             this.$store.dispatch("modules/cart/changeCountOfItemInCart", {
                 index: index,
                 count: count
@@ -408,17 +401,37 @@ export default {
             this.$store.dispatch("modules/cart/removeProductFromCart", index);
         },
         onCheckout() {
-            const orders = [];
+            let order = {
+                FullAddress: `${this.country}; ${this.city}; ${this.address}`,
+                Status: "Unpaid",
+                DeliveryNotes: this.description,
+                WithInstallation: this.installation != "",
+                InstallationRuse: this.installation == "installationInRuse",
+                InstallationSofia: this.installation == "installationInSofia",
+                IsInvoiceNeeded: this.isInvoiceNeeded,
+                PaidPrice: 0,
+                Price: 0,
+                DiscountPercentage: this.user.PercentageReduction,
+                UserЕmail: this.email,
+                UserInfo: this.name,
+                UserId: (this.user && this.user.Id) || null,
+                OrderedItems: []
+            };
+
             const token = this.token;
 
             while (this.addedItemsToCart.length) {
                 const cartItem = this.addedItemsToCart[0];
-                const order = this.createOrder(cartItem);
-                orders.push(order);
+                const orderedItem = this.createOrder(cartItem);
+                order.OrderedItems.push(orderedItem);
                 this.removeProductFromCart(0);
             }
+            order.Price = order.OrderedItems.map(x => x.Price).reduce(
+                (a, b) => a + b,
+                0
+            );
 
-            ordersRepository.order({ orders, token }).then(() => {});
+            ordersRepository.order({ order, token }).then(() => {});
         },
         slideDrawerOut() {
             this.$emit("slideDrawerOut");
@@ -458,38 +471,13 @@ export default {
         createOrder(cartItem) {
             const order = {
                 Manufacturer: "",
-                Price: 0,
-                Status: "New",
-                WithInstallation: false,
-                InstallationRuse: false,
-                InstallationSofia: false,
-                IsInvoiceNeeded: false,
-                Description: "",
                 Eurocode: null,
                 OtherCodes: "",
-                DeliveryNotes: "",
-                PaidPrice: 0,
-                UserЕmail: "",
-                UserInfo: "",
-                UserId: null,
-                FullAddress: ""
+                Description: "",
+                Price: 0
             };
 
             order.Manufacturer = this.getItemManufacturer(cartItem);
-            order.Price = this.getItemPrice(cartItem);
-            if (this.installation == "") {
-                order.WithInstallation = false;
-            } else if (this.installation == "installationInPlace") {
-                order.WithInstallation = true;
-            } else if (this.installation == "installationInSofia") {
-                order.WithInstallation = true;
-                order.InstallationSofia = true;
-            } else if (this.installation == "installationInRuse") {
-                order.WithInstallation = true;
-                order.InstallationRuse = true;
-            }
-
-            order.IsInvoiceNeeded = this.isInvoiceNeeded;
             order.Description = cartItem.item.Description;
             if (cartItem.item.EuroCode) {
                 order.Eurocode = cartItem.item.EuroCode;
@@ -503,13 +491,7 @@ export default {
             if (cartItem.item.LocalCode) {
                 order.OtherCodes += `${cartItem.item.LocalCode};`;
             }
-            order.DeliveryNotes = this.description;
-            order.UserЕmail = this.email;
-            order.UserInfo = this.name;
-            order.UserId = (this.user && this.user.Id) || null;
-            order.FullAddress = `${this.country}; ${this.city}; ${
-                this.address
-            }`;
+            order.Price = this.getItemPrice(cartItem);
 
             return order;
         },
