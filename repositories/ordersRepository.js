@@ -6,8 +6,8 @@ class OrdersRepository {
         this.http = baseRepository;
         this.URL = {
             getOrders: "Account/GetMyOrders",
-            getOrdersAdmin: "Administration/ManageOrderedItems",
-            changeStatus: "Administration/ManageOrderedItems/update",
+            getOrdersAdmin: "Administration/ManageOrders",
+            changeStatus: "Administration/ManageOrders/update",
             makeOrder: "Orders/order"
         };
     }
