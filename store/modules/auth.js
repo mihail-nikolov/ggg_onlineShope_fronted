@@ -350,6 +350,15 @@ const actions = {
         const token = state.token;
         commit("SET_ORDER_STATUS", { order, status });
         return ordersRepository.changeStatus({ token, order, status });
+    },
+    async forgotPassword({ commit }, { email }) {
+        return usersRepository.forgotPassword(email).then(res => {
+            this.dispatch("modules/general/setSnackbarNotification", {
+                message:
+                    "Кода за рестартиране на паролата е изпратен успешно на вашия имейл.",
+                status: "success"
+            });
+        });
     }
 };
 

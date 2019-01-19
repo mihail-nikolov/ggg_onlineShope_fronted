@@ -9,38 +9,11 @@
                 :hasError="validation.hasError('email')"
                 :firstError="validation.firstError('email')"
             ></form-component>
+
             <v-layout row wrap>
-                <v-flex xs12 offset-xs9 row wrap>
-                    <nuxt-link xs12 to="/forgotpassword" style="text-decoration: none">
-                        <v-btn flat class="btn-fat forgotPassword">Забравена парола?</v-btn>
-                    </nuxt-link>
-                </v-flex>
-            </v-layout>
-            <form-component
-                @onKeyUp="onKeyUp"
-                elemType="password"
-                v-model="password"
-                fieldName="Парола"
-                :hasError="validation.hasError('password')"
-                :firstError="validation.firstError('password')"
-            ></form-component>
-            <v-layout row wrap>
-                <v-flex xs6 row wrap>
-                    <nuxt-link xs12 to="/register" style="text-decoration: none">
-                        <v-btn flat class="btn-fat">Регистрация</v-btn>
-                    </nuxt-link>
-                </v-flex>
-                <v-flex xs6>
-                    <button type="button" class="button buttonBlue" @click="onSubmit">Вход
-                        <div
-                            class="ripples buttonRipples"
-                            v-bind:class="{ 'is-active': isButtonClicked }"
-                        >
-                            <span
-                                class="ripplesCircle"
-                                v-bind:style="{ top: circleY, left: circleX }"
-                            ></span>
-                        </div>
+                <v-flex xs4>
+                    <button type="button" class="button buttonBlue" @click="onSubmit">Продължи
+                        <div class="ripples" v-bind:class="{ 'is-active': isButtonClicked }"></div>
                     </button>
                 </v-flex>
             </v-layout>
@@ -53,27 +26,20 @@ import SimpleVueValidation from "simple-vue-validator";
 import FormInputComponent from "~/components/Form/FormInputComponent";
 const Validator = SimpleVueValidation.Validator;
 export default {
-    name: "LoginComponent",
+    name: "ForgotPassword",
     components: {
         "form-component": FormInputComponent
     },
     data() {
         return {
-            isEmailUsed: false,
-            isPasswordUsed: false,
-            isButtonClicked: false,
             email: "",
-            password: "",
-            circleX: "0px",
-            circleY: "0px"
+            isButtonClicked: false
         };
     },
     methods: {
         onSubmit(e) {
             if (!this.isButtonClicked && e) {
                 this.isButtonClicked = true;
-                this.circleX = e.pageX - (e.pageX - e.offsetX) + "px";
-                this.circleY = e.pageY - (e.pageY - e.offsetY) + "px";
                 setTimeout(function() {
                     this.isButtonClicked = false;
                 }, 400);
@@ -81,12 +47,11 @@ export default {
             this.$validate().then(success => {
                 if (success) {
                     this.$store
-                        .dispatch("modules/auth/login", {
-                            email: this.email,
-                            password: this.password
+                        .dispatch("modules/auth/forgotPassword", {
+                            email: this.email
                         })
                         .then(() => {
-                            this.$router.push({ path: `/my/profile` });
+                            this.$router.push({ path: `/` });
                         });
                 } else {
                     this.$store.dispatch(
@@ -98,7 +63,6 @@ export default {
                         }
                     );
                     this.email = "";
-                    this.password = "";
                 }
             });
         },
@@ -113,9 +77,6 @@ export default {
             return Validator.value(value)
                 .required()
                 .email();
-        },
-        password(value) {
-            return Validator.value(value).required();
         }
     }
 };
@@ -188,75 +149,6 @@ label {
     top: 10px;
     transition: all 0.2s ease;
 }
-/* active */
-
-input:focus ~ label,
-input.used ~ label {
-    top: -20px;
-    transform: scale(0.75);
-    left: -3px;
-    /* font-size: 14px; */
-    color: #37474f;
-}
-/* Underline */
-
-.bar {
-    position: relative;
-    display: block;
-    width: 100%;
-}
-
-.bar:before,
-.bar:after {
-    content: "";
-    height: 2px;
-    width: 0;
-    bottom: 1px;
-    position: absolute;
-    background: #37474f;
-    transition: all 0.2s ease;
-}
-
-.bar:before {
-    left: 50%;
-}
-
-.bar:after {
-    right: 50%;
-}
-/* active */
-
-input:focus ~ .bar:before,
-input:focus ~ .bar:after {
-    width: 50%;
-}
-/* Highlight */
-
-.highlight {
-    position: absolute;
-    height: 60%;
-    width: 100px;
-    top: 25%;
-    left: 0;
-    pointer-events: none;
-    opacity: 0.5;
-}
-/* active */
-
-input:focus ~ .highlight {
-    animation: inputHighlighter 0.3s ease;
-}
-/* Animations */
-
-@keyframes inputHighlighter {
-    from {
-        background: #37474f;
-    }
-    to {
-        width: 0;
-        background: transparent;
-    }
-}
 /* Button */
 
 .button {
@@ -305,43 +197,5 @@ input:focus ~ .highlight {
     height: 100%;
     overflow: hidden;
     background: transparent;
-}
-/* Ripples circle */
-
-.ripplesCircle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.ripples.is-active .ripplesCircle {
-    animation: ripples 0.4s ease-in;
-}
-/* Ripples animation */
-
-@keyframes ripples {
-    0% {
-        opacity: 0;
-    }
-    25% {
-        opacity: 1;
-    }
-    100% {
-        width: 200%;
-        padding-bottom: 200%;
-        opacity: 0;
-    }
-}
-
-.forgotPassword {
-    color: #0066c0;
-    font-size: 11px;
-    font-family: "Arial";
 }
 </style>

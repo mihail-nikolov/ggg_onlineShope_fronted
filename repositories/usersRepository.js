@@ -9,7 +9,8 @@ class UsersRepository {
             emailConfirmation:
                 "Administration/ManageUsers/SendEmailConfirmation",
             changePassword: "Account/ChangePassword",
-            changeDetails: "Account/UpdateUserInfo"
+            changeDetails: "Account/UpdateUserInfo",
+            forgotPassword: "Account/ForgotPassword"
         };
     }
 
@@ -59,6 +60,17 @@ class UsersRepository {
         return this.http.post(this.URL.changeDetails, user, null, {
             Authorization: token
         });
+    }
+
+    forgotPassword(email) {
+        return this.http.post(
+            this.URL.forgotPassword,
+            {
+                Email: email
+            },
+            null,
+            null
+        );
     }
 }
 
