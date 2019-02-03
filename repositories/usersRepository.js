@@ -10,7 +10,8 @@ class UsersRepository {
                 "Administration/ManageUsers/SendEmailConfirmation",
             changePassword: "Account/ChangePassword",
             changeDetails: "Account/UpdateUserInfo",
-            forgotPassword: "Account/ForgotPassword"
+            forgotPassword: "Account/ForgotPassword",
+            resetPassword: "Account/ResetPassword"
         };
     }
 
@@ -68,6 +69,15 @@ class UsersRepository {
             {
                 Email: email
             },
+            null,
+            null
+        );
+    }
+
+    resetPassword(resetPasswordModel) {
+        return this.http.post(
+            this.URL.resetPassword,
+            resetPasswordModel,
             null,
             null
         );

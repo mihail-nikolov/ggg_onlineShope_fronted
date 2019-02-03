@@ -359,6 +359,14 @@ const actions = {
                 status: "success"
             });
         });
+    },
+    async resetPassword({ commit }, resetPasswordModel) {
+        return usersRepository.resetPassword(resetPasswordModel).then(res => {
+            this.dispatch("modules/general/setSnackbarNotification", {
+                message: "Паролата е сменена успешно.",
+                status: "success"
+            });
+        });
     }
 };
 
