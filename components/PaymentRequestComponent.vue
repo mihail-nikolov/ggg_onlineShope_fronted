@@ -11,6 +11,7 @@
 <script>
 import FormInputComponent from "~/components/Form/FormInputComponent";
 import paymentsRepository from "~/repositories/paymentsRepository";
+
 export default {
     name: "PaymentRequest",
     components: {
@@ -24,14 +25,13 @@ export default {
             return this.$store.getters["modules/auth/getToken"];
         }
     },
-    props: ["min", "invoice", "amount", "expirationDate"],
+    props: ["invoice", "amount", "expirationDate"],
     data() {
         return {};
     },
     methods: {
         onSubmit() {
             paymentsRepository.paymentRequest(
-                this.min,
                 this.invoice,
                 this.amount,
                 this.expirationDate

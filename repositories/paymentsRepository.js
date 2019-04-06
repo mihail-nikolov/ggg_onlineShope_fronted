@@ -13,8 +13,10 @@ class PaymentsRepository {
         });
     }
 
-    paymentRequest(min, invoice, amount, expirationDate) {
-        const userSecret = "userSecretTest";
+    paymentRequest(invoice, amount, expirationDate) {
+        const min = process.env.VUE_APP_PAYMENT_MIN;
+        const userSecret = process.env.VUE_APP_PAYMENT_SECRET;
+
         let paymentData = {
             MIN: min,
             INVOICE: invoice,
