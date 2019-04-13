@@ -1,54 +1,66 @@
 <template>
     <v-container>
-        <button
-            type="button"
-            class="button buttonBlue"
-            @click="onSubmit"
-        >Изпращане на искане за плащане</button>
+        <form action="http://demo.epay.bg/" method="POST">
+            <input type="radio" name="PAGE" value="paylogin" v-model="page"> Нормално плащане
+            <br>
+            <input type="radio" name="PAGE" value="credit_paydirect" v-model="page"> Директно плащане с кредитна карта
+            <br>
+            <input type="hidden" name="ENCODED" :value="encoded">
+            <input type="hidden" name="CHECKSUM" :value="checksum">
+            <input type="submit" class="buttonBlue big-btn buttonBlue:hover">
+        </form>
     </v-container>
 </template>
 
 <script>
-import FormInputComponent from "~/components/Form/FormInputComponent";
-import paymentsRepository from "~/repositories/paymentsRepository";
+import CryptoJS from "crypto-js";
 
 export default {
     name: "PaymentRequest",
-    components: {
-        "form-input": FormInputComponent
-    },
     computed: {
-        user() {
-            return this.$store.getters["modules/auth/getUserDetails"];
+        encoded() {
+            const min = process.env.VUE_APP_PAYMENT_MIN;
+
+            let paymentData = {
+                MIN: min,
+                INVOICE: this.invoice,
+                AMOUNT: this.amount,
+                EXP_TIME: this.expirationDate
+            };
+
+            let encoded = Buffer.from(JSON.stringify(paymentData)).toString(
+                "base64"
+            );
+
+            return encoded;
         },
-        token() {
-            return this.$store.getters["modules/auth/getToken"];
+        checksum() {
+            const userSecret = process.env.VUE_APP_PAYMENT_SECRET;
+            let checksum = CryptoJS.HmacSHA1(this.encoded, userSecret);
+
+            return checksum;
         }
     },
     props: ["invoice", "amount", "expirationDate"],
     data() {
-        return {};
-    },
-    methods: {
-        onSubmit() {
-            paymentsRepository.paymentRequest(
-                this.invoice,
-                this.amount,
-                this.expirationDate
-            );
-        }
+        return {
+            page: "paylogin"
+        };
     }
 };
 </script>
 
 <style scoped>
-.btn-fat {
-    margin: 5px 0;
-}
-
 .buttonBlue {
     background: #37474f;
     text-shadow: 1px 1px 0 rgba(39, 110, 204, 0.5);
+    color: white;
+    margin: 5px 0;
+}
+
+.big-btn {
+    width: 80px;
+    height: 35px;
 }
 
 .buttonBlue:hover {

@@ -544,15 +544,6 @@ export default {
     padding-left: 10px;
 }
 
-.cart-panel-container {
-}
-
-.cart-panel-card {
-}
-
-.panel-card {
-}
-
 .panel-card-carousel {
     height: 130px;
 }
