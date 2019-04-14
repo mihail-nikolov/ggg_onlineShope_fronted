@@ -21,16 +21,12 @@ export default {
         encoded() {
             const min = process.env.VUE_APP_PAYMENT_MIN;
 
-            let paymentData = {
-                MIN: min,
-                INVOICE: this.invoice,
-                AMOUNT: this.amount,
-                EXP_TIME: this.expirationDate
-            };
+            let paymentData = `MIN=${min}
+            INVOICE=${this.invoice}
+            AMOUNT=${this.amount}
+            EXP_TIME=${this.expirationDate}`;
 
-            let encoded = Buffer.from(JSON.stringify(paymentData)).toString(
-                "base64"
-            );
+            let encoded = Buffer.from(paymentData).toString("base64");
 
             return encoded;
         },
