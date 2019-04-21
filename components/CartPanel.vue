@@ -210,13 +210,8 @@
             </v-layout>
             <v-layout row>
                 <v-radio-group v-model="wayToPay">
-                    <v-radio
-                        value="cash-on-delivery"
-                        label="Наложен платеж"
-                        color="primary"
-                        :disabled="true"
-                    ></v-radio>
-                    <v-radio value="epay" label="Ипей" color="primary" :disabled="true"></v-radio>
+                    <v-radio value="cash-on-delivery" label="Наложен платеж" color="primary"></v-radio>
+                    <v-radio value="epay" label="Ипей" color="primary"></v-radio>
                 </v-radio-group>
             </v-layout>
         </v-container>
@@ -415,7 +410,8 @@ export default {
                 UserЕmail: this.email,
                 UserInfo: this.name,
                 UserId: (this.user && this.user.Id) || null,
-                OrderedItems: []
+                OrderedItems: [],
+                WayToPay: this.wayToPay
             };
 
             const token = this.token;
@@ -426,12 +422,18 @@ export default {
                 order.OrderedItems.push(orderedItem);
                 this.removeProductFromCart(0);
             }
-            order.Price = order.OrderedItems.map(x => x.Price).reduce(
-                (a, b) => a + b,
-                0
-            );
+            order.Price = order.OrderedItems.map(x => x.Price)
+                .reduce((a, b) => a + b, 0)
+                .toFixed(2);
 
-            ordersRepository.order({ order, token }).then(() => {});
+            ordersRepository.order({ order, token }).then(data => {
+                if (this.wayToPay == "epay") {
+                    this.$router.push({
+                        name: "paymentrequest",
+                        params: { id: data.Id, amount: data.Price }
+                    });
+                }
+            });
         },
         slideDrawerOut() {
             this.$emit("slideDrawerOut");

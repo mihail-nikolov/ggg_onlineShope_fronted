@@ -1,6 +1,10 @@
 <template>
     <v-container>
-        <payment-request invoice="78521542" amount="24.00" expirationDate="24.01.2020"/>
+        <payment-request
+            :invoice="this.$route.params.id"
+            :amount="this.$route.params.amount"
+            :expirationDate="getDateAfterTomorrow"
+        />
     </v-container>
 </template>
 
@@ -10,6 +14,14 @@ export default {
     layout: "default",
     components: {
         PaymentRequest
+    },
+    computed: {
+        getDateAfterTomorrow() {
+            let myDate = new Date();
+            myDate.setDate(myDate.getDate() + 3);
+
+            return myDate.toLocaleDateString("bg-BG").slice(0, 10);
+        }
     }
 };
 </script>
