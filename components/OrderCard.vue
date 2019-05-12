@@ -1,52 +1,113 @@
 <template>
-    <v-card class="order">
-        <div>
-            <b>#{{ order.EuroCode }}</b>&nbsp;
-            <span>{{ order.Description }} ({{ order.Manufacturer }})</span> -
-            <span class="order__status">
-                <multiselect
-                    class="status-multiselect"
-                    v-if="editable"
-                    v-model="status"
-                    :allow-empty="false"
-                    @select="onChangeOrderStatus"
-                    :options="orderStatuses"
-                    deselect-label="Премахни"
-                    :searchable="true"
-                    :close-on-select="true"
-                    :show-labels="false"
-                    placeholder="Избери статус"
-                ></multiselect>
-                <span v-else>{{ status }}</span>
-                <br>
-                <span>други кодове:</span>
-                <b>{{ order.OtherCodes }}</b>
-            </span>
-        </div>
-        <div v-if="order.UserInfo || order.UserEmail">
-            <span>Потребител:</span>
-            {{ order.UserInfo }} - {{ order.UserЕmail }}
-        </div>
-        <div>
-            <span>Адрес:</span>
-            {{ order.FullAddress }}
-        </div>
-        <div>
-            <span>Описание:</span>
-            {{ order.DeliveryNotes || ' - ' }}
-        </div>
-        <v-flex style="display: flex;">
-            <v-chip v-if="order.WithInstallation">+ Монтаж</v-chip>
-            <v-chip v-if="order.IsInvoiceNeeded">+ Фактура</v-chip>
-
-            <v-chip v-if="order.PaidPrice">+ Платено: {{ order.PaidPrice }}</v-chip>
-            <v-chip v-else>- Неплатено</v-chip>
-
-            <v-spacer></v-spacer>
-
-            <b class="order__price">{{ order.Price }}лв.</b>
-        </v-flex>
-    </v-card>
+    <v-container fluid grid-list-sm>
+        <v-layout row wrap>
+            <v-flex>
+                <v-card class="ma-3">
+                    <v-card-title>{{order.CreatedOn}}</v-card-title>
+                    <v-card-text>
+                        <v-layout row wrap>
+                            <v-flex xs12 sm6 md3>
+                                <span>
+                                    <multiselect
+                                        class="status-multiselect"
+                                        v-if="editable"
+                                        v-model="status"
+                                        :allow-empty="false"
+                                        @select="onChangeOrderStatus"
+                                        :options="orderStatuses"
+                                        deselect-label="Премахни"
+                                        :searchable="true"
+                                        :close-on-select="true"
+                                        :show-labels="false"
+                                        placeholder="Избери статус"
+                                    ></multiselect>
+                                    <span v-else>{{ status }}</span>
+                                </span>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row wrap justify-space-between>
+                            <v-flex xs12 sm6 md3>
+                                <v-text-field
+                                    readonly
+                                    label="Обща сума:"
+                                    :value="order.Price.toFixed(2)"
+                                    suffix="лв."
+                                    outline
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md3>
+                                <v-text-field
+                                    readonly
+                                    label="Платена сума:"
+                                    :value="order.PaidPrice.toFixed(2)"
+                                    suffix="лв."
+                                    outline
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md3>
+                                <v-text-field
+                                    readonly
+                                    label="Процент отстъпка:"
+                                    :value="order.DiscountPercentage"
+                                    suffix="%"
+                                    outline
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                                <v-text-field
+                                    readonly
+                                    label="Адрес:"
+                                    :value="order.FullAddress"
+                                    outline
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md6 offset-md2>
+                                <v-text-field
+                                    readonly
+                                    label="Допълнителна информация за доставката:"
+                                    :value="order.DeliveryNotes"
+                                    outline
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                                <v-text-field
+                                    readonly
+                                    label="Потребител: "
+                                    :value="order.UserЕmail"
+                                    outline
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md6>
+                                <v-text-field
+                                    readonly
+                                    label="Информация за потребителя: "
+                                    :value="order.UserInfo"
+                                    outline
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs4 sm2 md1>
+                                <v-chip v-if="order.WithInstallation">+ Монтаж</v-chip>
+                                <v-chip v-if="order.IsInvoiceNeeded">+ Фактура</v-chip>
+                            </v-flex>
+                        </v-layout>
+                    </v-card-text>
+                    <v-data-table
+                        hide-actions
+                        :headers="orderItemsHeaders"
+                        :items="order.OrderedItems"
+                    >
+                        <template slot="items" scope="props">
+                            <td>{{ props.item.EuroCode }}</td>
+                            <td class="text-md-left">{{ props.item.Price.toFixed(2) }}</td>
+                            <td class="text-md-left">{{ props.item.Manufacturer }}</td>
+                            <td class="text-md-left">{{ props.item.OtherCodes }}</td>
+                            <td class="text-md-left">{{ props.item.Description }}</td>
+                        </template>
+                    </v-data-table>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -67,7 +128,14 @@ export default {
     data() {
         return {
             status: null,
-            orderStatuses: ["Завършена", "Нова", "Приета"]
+            orderStatuses: ["Завършена", "Нова", "Приета"],
+            orderItemsHeaders: [
+                { text: "Еврокод", align: "left", value: "EuroCode" },
+                { text: "Цена", value: "Price" },
+                { text: "Производител", value: "Manufacturer" },
+                { text: "Други кодове", value: "OtherCodes" },
+                { text: "Описание", value: "Description" }
+            ]
         };
     },
     created() {
