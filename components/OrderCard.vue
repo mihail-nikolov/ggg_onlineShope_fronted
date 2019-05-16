@@ -115,11 +115,20 @@ import Multiselect from "vue-multiselect";
 
 const orderStatusMap = {
     Done: "Завършена",
-    New: "Нова",
-    Ordered: "Приета",
+    Ordered: "Поръчана",
+    Unpaid: "Неплатена",
+    Paid: "Платена",
+    Accepted: "Приета",
+    Denied: "Отказана",
+    Expired: "Изтекла",
+
     Завършена: "Done",
-    Нова: "New",
-    Приета: "Ordered"
+    Поръчана: "Ordered",
+    Неплатена: "Unpaid",
+    Платена: "Paid",
+    Приета: "Accepted",
+    Отказана: "Denied",
+    Изтекла: "Expired"
 };
 
 export default {
@@ -128,7 +137,15 @@ export default {
     data() {
         return {
             status: null,
-            orderStatuses: ["Завършена", "Нова", "Приета"],
+            orderStatuses: [
+                "Завършена",
+                "Поръчана",
+                "Неплатена",
+                "Платена",
+                "Приета",
+                "Отказана",
+                "Изтекла"
+            ],
             orderItemsHeaders: [
                 { text: "Еврокод", align: "left", value: "EuroCode" },
                 { text: "Цена", value: "Price" },
