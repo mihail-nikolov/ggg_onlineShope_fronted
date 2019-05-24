@@ -166,7 +166,11 @@
                             v-model="installation"
                         >
                         <label for="installationInRuse">Монтаж сервиз Русе</label>
-                        <v-chip v-if="isInvoiceNeeded" @click="removeInvoice()">+ ФАКТУРА</v-chip>
+                        <v-layout row>
+                            <v-flex xs12>
+                                <v-chip v-if="isInvoiceNeeded" @click="removeInvoice()">+ ФАКТУРА</v-chip>
+                            </v-flex>
+                        </v-layout>
                     </v-flex>
                     <br>
                     <v-btn small @click="addInvoice()" v-if="!this.isInvoiceNeeded">Фактура</v-btn>
