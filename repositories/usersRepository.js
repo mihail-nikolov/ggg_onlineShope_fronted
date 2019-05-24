@@ -11,7 +11,8 @@ class UsersRepository {
             changePassword: "Account/ChangePassword",
             changeDetails: "Account/UpdateUserInfo",
             forgotPassword: "Account/ForgotPassword",
-            resetPassword: "Account/ResetPassword"
+            resetPassword: "Account/ResetPassword",
+            confirmEmail: "Account/ConfirmEmail"
         };
     }
 
@@ -81,6 +82,16 @@ class UsersRepository {
             null,
             null
         );
+    }
+
+    confirmEmail(confirmEmailModel) {
+        let urlPath =
+            this.URL.confirmEmail +
+            `?userId=${confirmEmailModel.userId}&code=${
+                confirmEmailModel.code
+            }`;
+        let response = this.http.post(urlPath, null, null, null);
+        return response;
     }
 }
 

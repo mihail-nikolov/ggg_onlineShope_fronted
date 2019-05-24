@@ -367,6 +367,9 @@ const actions = {
                 status: "success"
             });
         });
+    },
+    async confirmEmail({ commit }, confirmEmailModel) {
+        return usersRepository.confirmEmail(confirmEmailModel);
     }
 };
 
