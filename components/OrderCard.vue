@@ -69,7 +69,7 @@
                                     outline
                                 ></v-text-field>
                             </v-flex>
-                            <v-flex xs12 sm6 md4>
+                            <v-flex xs12 sm6 md4 v-if="editable">
                                 <v-text-field
                                     readonly
                                     label="Потребител: "
@@ -77,7 +77,7 @@
                                     outline
                                 ></v-text-field>
                             </v-flex>
-                            <v-flex xs12 sm6 md6>
+                            <v-flex xs12 sm6 md6 v-if="editable">
                                 <v-text-field
                                     readonly
                                     label="Информация за потребителя: "
