@@ -85,7 +85,9 @@
                                     outline
                                 ></v-text-field>
                             </v-flex>
-                            <v-flex xs4 sm2 md1>
+                        </v-layout>
+                        <v-layout row>
+                            <v-flex xs12 sm6 md4>
                                 <v-chip v-if="order.WithInstallation">+ Монтаж</v-chip>
                                 <v-chip v-if="order.IsInvoiceNeeded">+ Фактура</v-chip>
                             </v-flex>
