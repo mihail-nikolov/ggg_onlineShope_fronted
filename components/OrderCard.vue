@@ -3,10 +3,15 @@
         <v-layout row wrap>
             <v-flex>
                 <v-card class="ma-3">
-                    <v-card-title>{{order.CreatedOn}}</v-card-title>
+                    <v-card-title class="headline">
+                        Номер: {{order.Id}}
+                        <br>
+                        Създадена на: {{formatDate()}}
+                    </v-card-title>
                     <v-card-text>
                         <v-layout row wrap>
                             <v-flex xs12 sm6 md3>
+                                <span>Статус:</span>
                                 <span>
                                     <multiselect
                                         class="status-multiselect"
@@ -170,6 +175,10 @@ export default {
                 order: this.order,
                 status: reverseMapped
             });
+        },
+        formatDate() {
+            let createdOn = new Date(this.order.CreatedOn);
+            return createdOn.toLocaleString("bg-BG");
         }
     },
     components: {

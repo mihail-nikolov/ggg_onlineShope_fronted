@@ -9,10 +9,15 @@
                     @click="selectOrderFilter('All')"
                 >Всички</v-btn>
                 <v-btn
+                    :flat="ordersFilter !== 'Ordered'"
+                    v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
+                    @click="selectOrderFilter('Ordered')"
+                >Поръчана</v-btn>
+                <v-btn
                     :flat="ordersFilter !== 'New'"
                     v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
                     @click="selectOrderFilter('New')"
-                >Нови</v-btn>
+                >Неплатена</v-btn>
                 <v-btn
                     :flat="ordersFilter !== 'Done'"
                     v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
@@ -54,7 +59,8 @@ export default {
     },
     data() {
         return {
-            ordersRequested: false
+            ordersRequested: false,
+            filteredOrders: []
         };
     },
     computed: {
