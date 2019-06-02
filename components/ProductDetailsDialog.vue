@@ -111,7 +111,8 @@
                         <div class="availability-container">
                           <h5 class="pointer" v-for="accessory in curProductDetails.Accessories" @click="openAccessoryDialog(accessory)">{{ accessory.Description }}</h5>
                         </div>
-                      </div>
+                      </div>                      
+                      <br>
                       <div v-if="curProductDetails.InterchangeableParts.length" style="clear:both">
                         <h4>Взаимнозаменяеми части</h4>
                         <div class="availability-container">
