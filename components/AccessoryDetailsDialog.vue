@@ -207,7 +207,8 @@
                                                     row
                                                     class="text-xs-center"
                                                     style="margin-bottom:20px"
-                                                >Този продукт не е в наличност. Можете да се свържете с нас от
+                                                >
+                                                    Този продукт не е в наличност. Можете да се свържете с нас от
                                                     <a
                                                         target="_blank"
                                                         href="http://www.glassgoldgroup.eu/%D0%B0%D0%B2%D1%82%D0%BE%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-%D1%81%D0%BE%D1%84%D0%B8%D1%8F-%D1%81%D0%BA%D0%BB%D0%B0%D0%B4-%D0%BF%D0%BB%D0%BE%D0%B2%D0%B4%D0%B8%D0%B2"
@@ -265,6 +266,11 @@ export default {
             return this.$store.getters[
                 "modules/products/getCurrentObservedAccessoryAvailability"
             ];
+        },
+        cartGroupData() {
+            return this.$store.getters[
+                "modules/products/getCurrentObservedProductAvailability"
+            ];
         }
     },
     methods: {
@@ -320,10 +326,11 @@ export default {
             );
             product.selectedCartGroup = this.selectedCartGroup;
             product.selectedCartStore = this.selectedCartStore;
+
             comp.$store.dispatch("modules/cart/addItemToCart", {
-                productToBeAdded: product,
-                originalProduct: comp.curProductDetails
+                productToBeAdded: product
             });
+
             comp.cartCount = 1;
             comp.dialogCartCountOpen = false;
         }
