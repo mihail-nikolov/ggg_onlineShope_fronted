@@ -238,6 +238,13 @@
                             v-bind:class="{'success-color': !!user && user.PercentageReduction}"
                         >{{ round(reducedSum) }}лв.</span>
                     </h2>
+                    <div v-if="activeStep === 3">
+                        <v-checkbox
+                            v-model="agreeWithTermsAndConditions"
+                            label="Приемам общите условия"
+                            color="black--text"
+                        ></v-checkbox>
+                    </div>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -247,7 +254,12 @@
                     <v-card-actions>
                         <v-btn flat @click="onPrevStep" v-if="activeStep > 1">Назад</v-btn>
                         <v-spacer></v-spacer>
-                        <v-btn v-if="activeStep === 3" color="primary" @click="onCheckout">Изпрати</v-btn>
+                        <v-btn
+                            v-if="activeStep === 3"
+                            :disabled="!agreeWithTermsAndConditions"
+                            color="primary"
+                            @click="onCheckout"
+                        >Изпрати</v-btn>
                         <v-btn v-else color="primary" @click="onNextStep">Продължи</v-btn>
                     </v-card-actions>
                 </v-flex>
@@ -278,7 +290,8 @@ export default {
             installation: "",
             steps: 3,
             activeStep: 1,
-            wayToPay: "cash-on-delivery"
+            wayToPay: "cash-on-delivery",
+            agreeWithTermsAndConditions: false
         };
     },
     components: {
