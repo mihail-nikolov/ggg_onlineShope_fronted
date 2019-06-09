@@ -62,8 +62,9 @@
                                         <div
                                             class="group-card"
                                             v-for="group in cartGroupData"
+                                            :key="group.GoodId"
                                             @click="toggleSelectCartGroup(group)"
-                                            v-bind:class="{
+                                            :class="{
 											selected: selectedCartGroup === group.GoodId,
 											//disabled: !groupHasAvailability(group)
 										}"
@@ -77,18 +78,14 @@
                                     </v-flex>
                                     <v-flex row class="text-xs-center" style="margin-bottom:10px">
                                         <div
-                                            v-for="group in cartGroupData"
-                                            v-if="group.GoodId === selectedCartGroup"
+                                            :class="'group-card' 
+                                                    + (quantity > 0 ? ' light-green accent-1' : ' yellow lighten-3')
+                                                    + (selectedCartStore === store ? 'selected' : '')"
+                                            v-for="(quantity, store)  in cartGroupData.find(x => x.GoodId === selectedCartGroup).StoreQUantities"
+                                            :key="store"
+                                            @click="toggleSelectCartStore(store)"
                                         >
-                                            <div
-                                                class="group-card"
-                                                v-for="(quantity, store)  in group.StoreQUantities"
-                                                @click="toggleSelectCartStore(group, store)"
-                                                v-bind:class="{
-												selected: selectedCartStore === store,
-												//disabled: quantity === 0
-											}"
-                                            >{{ store }} - {{ quantity }}бр.</div>
+                                            <span>{{store}}</span>
                                         </div>
                                     </v-flex>
                                 </v-flex>
@@ -284,7 +281,7 @@ export default {
             this.selectedCartStore = null;
             //}
         },
-        toggleSelectCartStore(group, store) {
+        toggleSelectCartStore(store) {
             //if (this.groupHasAvailability(group)) {
             if (this.selectedCartStore === store) {
                 this.selectedCartStore = null;
