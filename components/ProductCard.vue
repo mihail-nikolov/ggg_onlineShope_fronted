@@ -1,16 +1,17 @@
 <template>
-    <v-layout>
-        <v-flex xs12 class="card" @click="onProductDetails(product)">
+    <v-layout align-center justify-center row wrap>
+        <v-flex xs2 @click="onAddProductToCart(product)">
+            <v-btn
+                class="right"
+                :color="(isInStock() ? 'light-green lighten-1' : 'amber lighten-2')"
+            >Наличности</v-btn>
+        </v-flex>
+        <v-flex xs10 class="card" @click="onProductDetails(product)">
             <div class="description-container">
-                <div class="actions">
-                    <v-btn :color="btnColor" @click.stop="onAddProductToCart(product)">
-                        <v-icon center>mdi-cart-outline</v-icon>
-                    </v-btn>
+                <div>
                     <v-btn flat icon @click.stop="onProductDetails(product)">
                         <v-icon>mdi-information-outline</v-icon>
                     </v-btn>
-                </div>
-                <div>
                     <b>{{product.EuroCode}}</b>
                     {{product.Description}}
                 </div>
@@ -27,7 +28,17 @@ export default {
             this.$emit("onAddProductToCart", product);
         },
         onProductDetails(product) {
+            console.log(JSON.stringify(product, 4));
             this.$emit("onProductDetails", product);
+        },
+        isInStock() {
+            let isInStock = false;
+            if (this.product && this.product.ProductInfos) {
+                isInStock = this.product.ProductInfos.some(x =>
+                    Object.values(x.StoreQUantities).some(sq => sq != 0)
+                );
+            }
+            return isInStock;
         }
     }
 };
