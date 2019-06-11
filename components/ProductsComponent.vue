@@ -77,15 +77,18 @@
                                         <h2 style="text-align:center; padding: 15px;">Сервиз</h2>
                                     </v-flex>
                                     <v-flex row class="text-xs-center" style="margin-bottom:10px">
-                                        <div
-                                            :class="'group-card' 
+                                        <div 
+                                            :class="'tooltip group-card' 
                                                     + (quantity > 0 ? ' light-green accent-1' : ' yellow lighten-3')
                                                     + (selectedCartStore === store ? 'selected' : '')"
-                                            v-for="(quantity, store)  in cartGroupData.find(x => x.GoodId === selectedCartGroup).StoreQUantities"
+                                            v-for="(quantity, store)  in cartGroupData.find(x => x.GoodId === selectedCartGroup).StoreQUantities"                                            
                                             :key="store"
                                             @click="toggleSelectCartStore(store)"
                                         >
-                                            <span>{{store}}</span>
+                                            <span>{{store}} 
+                                                <span v-if="quantity > 0" class="tooltiptext">на склад</span>
+                                                <span v-else class="tooltiptext">доставка 3-5 работни дни</span>
+                                            </span>
                                         </div>
                                     </v-flex>
                                 </v-flex>
@@ -341,6 +344,36 @@ export default {
 </script>
 
 <style lang="css" scoped>
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  top: 100%;
+  left: 50%; 
+  margin-left: -60px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 .products-container {
     /*display: grid;
 		grid-template-areas: "products products products products products";

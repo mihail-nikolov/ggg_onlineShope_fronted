@@ -215,7 +215,7 @@
             <v-layout row>
                 <v-radio-group v-model="wayToPay">
                     <v-radio value="cash-on-delivery" label="Наложен платеж" color="primary"></v-radio>
-                    <v-radio value="epay" label="Ипей" color="primary"></v-radio>
+                    <v-radio value="epay" label="Epay.bg (плащане с карта/epay акаунт)" color="primary"></v-radio>
                 </v-radio-group>
             </v-layout>
         </v-container>

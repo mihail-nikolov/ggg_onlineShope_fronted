@@ -2,9 +2,12 @@
     <v-layout align-center justify-center row wrap>
         <v-flex xs2 @click="onAddProductToCart(product)">
             <v-btn
-                class="right"
+                class="tooltip right"
                 :color="(isInStock() ? 'light-green lighten-1' : 'amber lighten-2')"
-            >Наличности</v-btn>
+            >Наличности
+                <span v-if="isInStock()" class="tooltiptext">на склад</span>
+                <span v-else class="tooltiptext">доставка</span>
+            </v-btn>
         </v-flex>
         <v-flex xs10 class="card" @click="onProductDetails(product)">
             <div class="description-container">
@@ -45,6 +48,38 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  top: 100%;
+  left: 50%; 
+  margin-left: -60px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  font-size: 10px;
+ 
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 .code {
     width: 100px;
     color: black;
