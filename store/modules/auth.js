@@ -212,6 +212,35 @@ const actions = {
                 throw e;
             });
     },
+    async remove({ commit }, token) {
+        let endPoint = "api/Account/RemoveUser";
+        return this.dispatch("modules/requester/request", {
+            method: "post",
+            endpoint: endPoint,
+            token: token
+        }).then(res =>{
+                localStorage.removeItem("autoGlassToken");
+                localStorage.removeItem("autoGlassExpiresIn");
+                localStorage.removeItem("autoGlassUserDetails");
+                commit("LOGOUT");
+                commit("SET_ORDERS_LIST", []);
+                commit("SET_USERS_LIST", []);
+                this.dispatch("modules/general/setSnackbarNotification", {
+                    message: "Успешно изтрит",
+                    status: "success"
+                 });
+            })
+            .catch(e => {
+                this.dispatch(
+                            "modules/general/setSnackbarNotification",
+                            {
+                                message: "Грешка при изтриването на акаунта",
+                                status: "error"
+                            }
+                        );
+                throw e;
+            });
+    },
     logout({ commit }) {
         localStorage.removeItem("autoGlassToken");
         localStorage.removeItem("autoGlassExpiresIn");

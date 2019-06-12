@@ -31,7 +31,9 @@
 		},
 		methods: {
 			submit() {
-				this.$emit("submit", true);
+				
+				this.$store.dispatch("modules/auth/remove");
+				this.$router.push("/");
 				this.openDialog = false;
 			}
 		},
