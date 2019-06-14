@@ -20,6 +20,8 @@ const state = () => ({
     productsAreFetched: false
 });
 
+const baseUrl = "http://﻿130.204.36.213/";
+
 const mutations = {
     SET_MAKES(state, makes) {
         state.makes = makes;
@@ -239,7 +241,7 @@ const actions = {
     },
     async fetchMakes({ commit }) {
         axios
-            .get("http://﻿130.204.36.213/api/Makes")
+            .get(baseUrl + "api/Makes")
             .then(response => {
                 if (response && response.data && response.data.length > 0) {
                     this.dispatch("modules/general/setSnackbarNotification", {
@@ -260,7 +262,7 @@ const actions = {
         let store = this;
         store.dispatch("modules/general/activateLoading");
         axios
-            .get("http://﻿130.204.36.213/api/Models/GetByMakeId/" + make.Id)
+            .get(baseUrl + "api/Models/GetByMakeId/" + make.Id)
             .then(response => {
                 if (response && response.data && response.data.length > 0) {
                     this.dispatch("modules/general/setSnackbarNotification", {
@@ -284,7 +286,7 @@ const actions = {
         store.dispatch("modules/general/activateLoading");
         axios
             .post(
-                "http://﻿130.204.36.213/api/BodyTypes/GetByMakeAndModelIds",
+                baseUrl + "api/BodyTypes/GetByMakeAndModelIds",
                 data.reqBody
             )
             .then(response => {

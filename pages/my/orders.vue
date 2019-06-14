@@ -4,20 +4,40 @@
             <h2 class="admin__title">Поръчки</h2>
             <div class="filters">
                 <v-btn
-                    :flat="ordersFilter !== 'All'"
+                    :flat="ordersFilter !== ''"
                     v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
-                    @click="selectOrderFilter('All')"
+                    @click="selectOrderFilter('')"
                 >Всички</v-btn>
+                <v-btn
+                    :flat="ordersFilter !== 'Accepted'"
+                    v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
+                    @click="selectOrderFilter('Accepted')"
+                >Приети</v-btn>
                 <v-btn
                     :flat="ordersFilter !== 'Ordered'"
                     v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
                     @click="selectOrderFilter('Ordered')"
-                >Поръчана</v-btn>
+                >Поръчани</v-btn>
                 <v-btn
-                    :flat="ordersFilter !== 'New'"
+                    :flat="ordersFilter !== 'Unpaid'"
                     v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
-                    @click="selectOrderFilter('New')"
-                >Неплатена</v-btn>
+                    @click="selectOrderFilter('Unpaid')"
+                >Неплатени</v-btn>
+                <v-btn
+                    :flat="ordersFilter !== 'Expired'"
+                    v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
+                    @click="selectOrderFilter('Expired')"
+                >Изтекли</v-btn>
+                <v-btn
+                    :flat="ordersFilter !== 'Denied'"
+                    v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
+                    @click="selectOrderFilter('Denied')"
+                >Отказани</v-btn>
+                <v-btn
+                    :flat="ordersFilter !== 'Paid'"
+                    v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
+                    @click="selectOrderFilter('Paid')"
+                >Платени</v-btn>
                 <v-btn
                     :flat="ordersFilter !== 'Done'"
                     v-bind:style="{ marginLeft: 0, marginRight: '15px' }"
@@ -48,8 +68,12 @@ import OrderCard from "~/components/OrderCard";
 
 const orderStatusMap = {
     Done: "Завършена",
-    New: "Нова",
-    Ordered: "Приета"
+    Unpaid: "Неплатени",
+    Paid: "Платени",
+    Accepted: "Приети",
+    Denied: "Отказани",
+    Expired: "Изтекли",
+    Ordered: "Поръчани"
 };
 
 export default {

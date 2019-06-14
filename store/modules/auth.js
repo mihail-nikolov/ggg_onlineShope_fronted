@@ -18,7 +18,7 @@ const state = () => ({
     isLoggedIn: false,
     usersList: [],
     ordersList: [],
-    ordersFilter: "All"
+    ordersFilter: ""
 });
 
 const mutations = {

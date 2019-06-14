@@ -12,27 +12,23 @@ class OrdersRepository {
         };
     }
 
-    getOrders({ token }, filter = "All") {
-        const done = filter === "Done";
-        const ordered = filter === "Ordered";
-        const pending = filter === "New";
+    getOrders({ token }, filter = "") {
+        var status = filter;
 
         return this.http.get(
             this.URL.getOrders,
-            { done, ordered, pending },
+            { status },
             null,
             { Authorization: token }
         );
     }
 
-    getOrdersAdmin({ token }, filter = "All") {
-        const done = filter === "Done";
-        const ordered = filter === "Ordered";
-        const pending = filter === "New";
+    getOrdersAdmin({ token }, filter = "") {
+        var status = filter;
 
         return this.http.get(
             this.URL.getOrdersAdmin,
-            { done, ordered, pending },
+            { status },
             null,
             { Authorization: token }
         );

@@ -88,8 +88,10 @@ class UsersRepository {
         let urlPath =
             this.URL.confirmEmail +
             `?userId=${confirmEmailModel.userId}&code=${
-                confirmEmailModel.code
+                encodeURIComponent(confirmEmailModel.code)
             }`;
+        let encodedUrlPath = encodeURI(urlPath);
+        console.log(encodeURIComponent(confirmEmailModel.code));
         let response = this.http.post(urlPath, null, null, null);
         return response;
     }
