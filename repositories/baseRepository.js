@@ -15,8 +15,7 @@ class BaseRepository {
 	
 	get(url, params, data, headers) {
 		const method = "GET";
-
-
+		
 		return this.http({ method, url, params, data, headers })
 			.then(resp => {
 				if (resp.status === 200 && resp.statusText === "OK") {

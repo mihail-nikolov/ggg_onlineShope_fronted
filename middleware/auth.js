@@ -20,7 +20,7 @@ function isAdmin(store) {
     const user = store.state.modules.auth.userDetails;
     const mail = user.Email;
     const adminMail = "admin@admin.com";
-
+// TODO admin
     if (mail.toLocaleLowerCase() === adminMail.toLocaleLowerCase()) {
         return true;
     }

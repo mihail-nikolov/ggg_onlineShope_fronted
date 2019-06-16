@@ -31,29 +31,7 @@ const getters = {
 
 const actions = {
     addItemToCart({ commit }, data) {
-        // let productToBeAdded = data.productToBeAdded,
-        // originalProduct = data.originalProduct,
-        // currentlyAddedItems = this.getters["modules/cart/getCartItems"],
-        // productIsInCart = false,
-        // indexOfProduct = 0;
-
         commit("ADD_ITEM_TO_CART", data.productToBeAdded);
-        // if (currentlyAddedItems.length > 0) {
-        // 	currentlyAddedItems.forEach(function(product, index) {
-        // 		if (JSON.stringify(productToBeAdded.item) === JSON.stringify(product.item)) {
-        // 			productIsInCart = true;
-        // 			indexOfProduct = index;
-        // 		}
-        // 	});
-        // }
-        // if (!productIsInCart) {
-        // 	commit('ADD_ITEM_TO_CART', productToBeAdded);
-        // } else {
-        // 	this.dispatch('modules/cart/addToCountOfItem', {
-        // 		index: indexOfProduct,
-        // 		count: productToBeAdded.cartCount
-        // 	});
-        // }
     },
     autoLoadItems({ commit }, data) {
         commit("AUTO_LOAD_ITEMS", data);

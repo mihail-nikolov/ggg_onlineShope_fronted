@@ -9,9 +9,7 @@ const state = () => ({
     productTypes: [],
     allProducts: [],
     filteredProducts: [],
-    currentlyObservedProductAvailability: [],
     currentlyObservedProductAcessory: null,
-    currentlyObservedAccessoryAvailability: [],
     windowTypes: [],
     selectedWindowTypes: [],
     allImages: [],
@@ -38,9 +36,6 @@ const mutations = {
     SET_ALL_PRODUCTS(state, allProducts) {
         state.allProducts = allProducts;
     },
-    SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY(state, availability) {
-        state.currentlyObservedProductAvailability = availability;
-    },
     SET_WINDOW_TYPES(state, types) {
         state.windowTypes = types;
     },
@@ -49,15 +44,15 @@ const mutations = {
     },
     SET_ALL_IMAGES(state, images) {
         state.allImages = images;
-        console.warn("all", images);
+        // console.warn("all", images);
     },
     SET_FILTERED_IMAGES(state, images) {
         state.filteredImages = images;
-        console.warn("filtered", images);
+        // console.warn("filtered", images);
     },
     SET_SELECTED_IMAGES(state, images) {
         state.selectedImages = images;
-        console.warn("selected", images);
+        // console.warn("selected", images);
     },
     SET_FILTERED_PRODUCTS(state, filteredProducts) {
         state.filteredProducts = filteredProducts;
@@ -91,9 +86,6 @@ const mutations = {
     },
     SET_CURRENT_OBSERVED_PRODUCT_ACCESSORY(state, accessory) {
         state.currentlyObservedProductAcessory = accessory;
-    },
-    SET_CURRENT_OBSERVED_ACCESSORY_AVAILABILITY(state, availability) {
-        state.currentlyObservedAccessoryAvailability = availability;
     }
 };
 
@@ -107,17 +99,11 @@ const getters = {
     getBodyTypes(state) {
         return state.bodyTypes;
     },
-    getProductTypes(state) {
-        return state.productTypes;
-    },
     getAllProducts(state) {
         return state.allProducts;
     },
     getFilteredProducts(state) {
         return state.filteredProducts;
-    },
-    getCurrentObservedProductAvailability(state) {
-        return state.currentlyObservedProductAvailability;
     },
     getWindowTypes(state) {
         return state.windowTypes;
@@ -136,9 +122,6 @@ const getters = {
     },
     getProductsAreFetched(state) {
         return state.productsAreFetched;
-    },
-    getCurrentObservedAccessoryAvailability(state) {
-        return state.currentlyObservedAccessoryAvailability;
     },
     getCurrentlyObservedProductAcessory(state) {
         return state.currentlyObservedProductAcessory;
@@ -314,36 +297,6 @@ const actions = {
                 });
             });
     },
-    async fetchProductTypes({ commit }, data) {
-        let store = this;
-        store.dispatch("modules/general/activateLoading");
-
-        return productsRepository
-            .getProductTypes(data.reqBody)
-            .then(data => {
-                if (data && data.length > 0) {
-                    this.dispatch("modules/general/setSnackbarNotification", {
-                        message:
-                            "Product types  for " +
-                            data.makeModelName +
-                            " are successfully fetched.",
-                        status: "success"
-                    });
-                }
-                store.dispatch("modules/general/deactivateLoading");
-                commit("SET_PRODUCT_TYPES", data);
-            })
-            .catch(e => {
-                store.dispatch("modules/general/deactivateLoading");
-                this.dispatch("modules/general/setSnackbarNotification", {
-                    message:
-                        "Product types  for " +
-                        data.makeModelName +
-                        " are unsuccessfully fetched.",
-                    status: "error"
-                });
-            });
-    },
     async searchForProducts({ commit }, reqBody) {
         let store = this;
         store.dispatch("modules/general/activateLoading");
@@ -364,7 +317,7 @@ const actions = {
                     }
                 });
 
-                console.warn(products);
+                // console.warn(products);
 
                 store.dispatch("modules/general/deactivateLoading");
                 commit("SET_WINDOW_TYPES", [...productTypes]);
@@ -380,36 +333,6 @@ const actions = {
             })
             .then(x => {
                 commit("SET_PRODUCTS_ARE_FETCHED", true);
-            });
-    },
-    async getProductAvailability({ commit }, { id, token }) {
-        this.dispatch("modules/general/activateLoading");
-        return productsRepository
-            .getProductAvailability(id, token)
-            .then(availability => {
-                commit(
-                    "SET_CURRENT_OBSERVED_PRODUCT_AVAILABILITY",
-                    availability
-                );
-                this.dispatch("modules/general/deactivateLoading");
-            })
-            .catch(e => {
-                this.dispatch("modules/general/deactivateLoading");
-            });
-    },
-    async getAccessoryAvailabilty({ commit }, { id, token }) {
-        this.dispatch("modules/general/activateLoading");
-        return productsRepository
-            .getProductAvailability(id, token)
-            .then(availability => {
-                commit(
-                    "SET_CURRENT_OBSERVED_ACCESSORY_AVAILABILITY",
-                    availability
-                );
-                this.dispatch("modules/general/deactivateLoading");
-            })
-            .catch(e => {
-                this.dispatch("modules/general/deactivateLoading");
             });
     },
     async getFullProduct({ commit }, { product }) {

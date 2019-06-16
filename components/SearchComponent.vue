@@ -218,10 +218,6 @@
 						ModelId: this.modelValue.Id,
 						BodyTypeId: this.bodyTypeValue.Id
 					};
-					this.$store.dispatch("modules/products/fetchProductTypes", {
-						reqBody: reqBody,
-						makeModelName: this.makeValue.Name + " " + this.modelValue.Name + " " + this.bodyTypeValue.Description
-					});
 					this.productTypeValue = null;
 					this.search();
 				}

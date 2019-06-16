@@ -134,80 +134,43 @@
                                                     v-if="curProductDetails.IsCalibration"
                                                 >{{ "IsCalibration" }}</v-chip>
                                             </div>
-                                            <div v-if="hasAnyAvailability()">
-                                                <v-flex v-if="currentAccessoryAvailability.length">
-                                                    <v-flex
-                                                        row
-                                                        class="text-xs-center"
-                                                        style="margin-bottom:20px"
-                                                    >
-                                                        <h2
-                                                            style="text-align:center; padding: 15px;"
-                                                        >Производител</h2>
-                                                    </v-flex>
-                                                    <v-flex
-                                                        row
-                                                        class="text-xs-center"
-                                                        style="margin-bottom:10px"
-                                                    >
-                                                        <div
-                                                            class="group-card"
-                                                            v-for="group in currentAccessoryAvailability"
-                                                            @click="toggleSelectCartGroup(group)"
-                                                            v-bind:class="{
-																selected: selectedCartGroup === group.GoodId,
-																disabled: !groupHasAvailability(group)
-															}"
-                                                        >{{ group.Group }} - {{ round(group.Price) }}лв.</div>
-                                                    </v-flex>
+                                            <div v-if="curProductDetails.ProductInfos.length">
+                                                <v-flex row class="text-xs-center">
+                                                    <h2 style="text-align:center; padding: 15px;">Производител</h2>
                                                 </v-flex>
-                                                <v-flex v-if="selectedCartGroup !== null">
-                                                    <v-flex
-                                                        row
-                                                        class="text-xs-center"
-                                                        style="margin-bottom:20px"
-                                                    >
-                                                        <h2
-                                                            style="text-align:center; padding: 15px;"
-                                                        >Сервиз</h2>
+                                                <v-flex row class="text-xs-center" style="margin-bottom:10px">
+                                                    <div style="display: inline-block" v-for="group in this.curProductDetails.ProductInfos" :key="group.GoodId" >
+                                                        <span
+                                                            @click="toggleSelectCartGroup(group.GoodId)"
+                                                            :class="'group-card tooltip'
+                                                                    + (groupHasAvailability(group.GoodId) ? ' light-green accent-1' : ' yellow lighten-3')
+                                                                    + (selectedCartGroupId === group.GoodId ? 'selected' : '')"
+                                                        >   {{ group.Group }} - {{ round(group.Price) }}лв.
+                                                            <span class="tooltiptext">{{groupHasAvailability(group.GoodId)? "на склад": "доставка 3-5 работни дни" }} </span>
+                                                        </span>
+                                                    </div>
+                                                </v-flex>
+                                                <v-flex v-if="selectedCartGroupId !== null && groupHasAvailability(selectedCartGroupId)">
+                                                    <v-flex row  class="text-xs-center"  style="margin-bottom:20px">
+                                                        <h2 style="text-align:center; padding: 15px;">Налично в сервиз:</h2>
                                                     </v-flex>
-                                                    <v-flex
-                                                        row
-                                                        class="text-xs-center"
-                                                        style="margin-bottom:10px"
-                                                    >
-                                                        <div
-                                                            v-for="group in currentAccessoryAvailability"
-                                                            v-if="group.GoodId === selectedCartGroup"
-                                                        >
-                                                            <div
-                                                                class="group-card"
-                                                                v-for="(quantity, store)  in group.StoreQUantities"
-                                                                @click="quantity !== 0 && toggleSelectCartStore(group, store)"
-                                                                v-bind:class="{
-																selected: selectedCartStore === store,
-																disabled: quantity === 0
-															}"
-                                                            >{{ store }} - {{ quantity }}бр.</div>
+                                                    <v-flex row class="text-xs-center" style="margin-bottom:10px" >
+                                                        <div style="display:inline-block"
+                                                            v-for="(quantity, store) in this.curProductDetails.ProductInfos.find(x => x.GoodId === selectedCartGroupId).StoreQUantities"                                            
+                                                            :key="store"
+                                                        ><span 
+                                                            @click="toggleSelectCartStore(store)"
+                                                            :class="'group-card ' + (selectedCartStore === store ? 'selected' : '')"
+                                                            v-if="quantity > 0">{{store}}</span>
                                                         </div>
                                                     </v-flex>
                                                 </v-flex>
                                             </div>
                                             <div v-else>
-                                                <v-flex
-                                                    row
-                                                    class="text-xs-center"
-                                                    style="margin-bottom:20px"
-                                                >
-                                                    <h2
-                                                        style="text-align:center; padding: 15px;"
-                                                    >Наличност</h2>
+                                                <v-flex row class="text-xs-center" style="margin-bottom:20px">
+                                                    <h2 style="text-align:center; padding: 15px;">Наличност</h2>
                                                 </v-flex>
-                                                <v-flex
-                                                    row
-                                                    class="text-xs-center"
-                                                    style="margin-bottom:20px"
-                                                >
+                                                <v-flex  row class="text-xs-center" style="margin-bottom:20px">
                                                     Този продукт не е в наличност. Можете да се свържете с нас от
                                                     <a
                                                         target="_blank"
@@ -220,21 +183,13 @@
                                 </v-flex>
                                 <v-flex style="padding-bottom: 8px;">
                                     <v-card-actions style="padding: 0">
-                                        <v-btn
-                                            color="primary"
-                                            v-bind:disabled="selectedCartGroup === null || selectedCartStore === null"
+                                        <v-btn color="primary" v-bind:disabled="!canAddToCart()"
                                             @click="onAddCartCountDialogClick"
-                                            v-if="hasAnyAvailability()"
                                         >
                                             <v-icon left>fa-cart-plus</v-icon>Добави
                                         </v-btn>
                                         <v-spacer></v-spacer>
-                                        <v-btn
-                                            color="primary"
-                                            flat
-                                            @click="openDialog = false"
-                                            style="padding-right:5px"
-                                        >
+                                        <v-btn color="primary" flat @click="openDialog = false" style="padding-right:5px"                                        >
                                             <v-icon>mdi-close</v-icon>Затвори
                                         </v-btn>
                                     </v-card-actions>
@@ -252,69 +207,68 @@
 import productsRepository from "~/repositories/productsRepository";
 
 export default {
-    name: "ProductDetailsDialog",
+    name: "AccessoryDetailsDialog",
     props: ["dialogDetailsOpen", "curProductDetails"],
     data() {
         return {
             openDialog: false,
-            selectedCartGroup: null,
-            selectedCartStore: null
+            selectedCartGroupId: null,
+            selectedCartStore: null,
+            cartCount: 1,
         };
-    },
-    computed: {
-        currentAccessoryAvailability() {
-            return this.$store.getters[
-                "modules/products/getCurrentObservedAccessoryAvailability"
-            ];
-        },
-        cartGroupData() {
-            return this.$store.getters[
-                "modules/products/getCurrentObservedProductAvailability"
-            ];
-        }
     },
     methods: {
         round: num => num.toFixed(2),
         openAccessoryDialog(acc) {
             this.$emit("onOpenAccessoryDialog", acc);
-            productsRepository.getFullProduct(acc).then(console.warn);
+            productsRepository.getFullProduct(acc).then();
         },
-        hasAnyAvailability() {
-            for (const group of this.currentAccessoryAvailability) {
-                if (this.groupHasAvailability(group) > 0) {
-                    return true;
-                }
+        toggleSelectCartGroup(groupId) {
+            if (this.selectedCartGroupId === groupId) {
+                this.selectedCartGroupId = null;
+            } else {
+                this.selectedCartGroupId = groupId;
             }
-            return false;
+            this.selectedCartStore = null;
         },
-        toggleSelectCartGroup(group) {
-            if (this.groupHasAvailability(group)) {
-                if (this.selectedCartGroup === group.GoodId) {
-                    this.selectedCartGroup = null;
-                } else {
-                    this.selectedCartGroup = group.GoodId;
-                }
+        toggleSelectCartStore(store) {
+            if (this.selectedCartStore === store) {
                 this.selectedCartStore = null;
+            } else {
+                this.selectedCartStore = store;
             }
         },
-        toggleSelectCartStore(group, store) {
-            if (this.groupHasAvailability(group)) {
-                if (this.selectedCartStore === store) {
-                    this.selectedCartStore = null;
-                } else {
-                    this.selectedCartStore = store;
+        groupHasAvailability(groupId) {
+            let result = false;
+            let group = this.curProductDetails.ProductInfos.find(x => x.GoodId === groupId);
+            if (group){
+                for (let store in group.StoreQUantities) {
+                    if (group.StoreQUantities[store] > 0){
+                        result = true;
+                        break;
+                    }
                 }
             }
+            return result;
         },
-        groupHasAvailability(group) {
-            let quantities = 0;
-
-            for (const store in group.StoreQUantities) {
-                const storeQuantity = group.StoreQUantities[store];
-                quantities += storeQuantity;
+        canAddToCart(){
+            let canAdd = false;
+            if(this.selectedCartGroupId){
+                let selectedGroupHasAvailability = this.groupHasAvailability(this.selectedCartGroupId);
+                if(selectedGroupHasAvailability && this.selectedCartStore) canAdd = true;
+                else if(!selectedGroupHasAvailability) canAdd = true;
             }
 
-            return quantities > 0;
+            return canAdd;
+        },
+        storesWithQuantitiesFromSelectedGroup() {
+           let storeQuantities = this.curProductDetails.ProductInfos
+                .find(x => x.GoodId === this.selectedCartGroupId).StoreQUantities;
+
+            var filtered = Object.keys(storeQuantities).reduce(function (filtered, key) {
+                if (storeQuantities[key] > 0) filtered[key] = storeQuantities[key];
+                return filtered;
+            }, {});
         },
         onAddCartCountDialogClick() {
             let comp = this,
@@ -322,9 +276,9 @@ export default {
             product.item = JSON.parse(JSON.stringify(comp.curProductDetails));
             product.cartCount = ~~comp.cartCount;
             product.cartGroupData = JSON.parse(
-                JSON.stringify(this.cartGroupData)
+                JSON.stringify(this.curProductDetails.ProductInfos)
             );
-            product.selectedCartGroup = this.selectedCartGroup;
+            product.selectedCartGroup = this.selectedCartGroupId;
             product.selectedCartStore = this.selectedCartStore;
 
             comp.$store.dispatch("modules/cart/addItemToCart", {
@@ -332,7 +286,7 @@ export default {
             });
 
             comp.cartCount = 1;
-            comp.dialogCartCountOpen = false;
+            comp.openDialog = false;
         }
     },
     watch: {
@@ -341,6 +295,9 @@ export default {
         },
         openDialog(value) {
             if (value === false) {
+                this.cartCount = 1;
+                this.selectedCartGroupId = null;
+                this.selectedCartStore = null;
                 this.$emit("onCloseDetailsDialogClick", this.openDialog);
             }
         }
@@ -349,6 +306,34 @@ export default {
 </script>
 
 <style lang="css" scoped>
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  top: 100%;
+  left: 50%; 
+  margin-left: -60px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 .details-dialog-carousel-container {
     padding: 25px !important;
 }
@@ -385,7 +370,7 @@ export default {
 }
 
 .group-card {
-    display: inline-block;
+    float: left;
     border: 1px solid #ccc;
     border-radius: 3px;
     padding: 10px;

@@ -50,45 +50,37 @@
                 <no-ssr>
                     <v-dialog
                         v-model="dialogCartCountOpen"
-                        :max-width="cartGroupData.length ? 650 : 450"
+                        :max-width="currentCartProductToAdd.ProductInfos.length ? 650 : 450"
                     >
                         <v-container row wrap align-center style="background-color:white;">
-                            <div v-if="cartGroupData.length">
-                                <v-flex>
-                                    <v-flex row class="text-xs-center" style="margin-bottom:20px">
-                                        <h2 style="text-align:center; padding: 15px;">Производител</h2>
-                                    </v-flex>
-                                    <v-flex row class="text-xs-center" style="margin-bottom:10px">
-                                        <div
-                                            class="group-card"
-                                            v-for="group in cartGroupData"
-                                            :key="group.GoodId"
-                                            @click="toggleSelectCartGroup(group)"
-                                            :class="{
-											selected: selectedCartGroup === group.GoodId,
-											//disabled: !groupHasAvailability(group)
-										}"
-                                        >{{ group.Group }} - {{ round(group.Price) }}лв.</div>
-                                    </v-flex>
+                            <div v-if="currentCartProductToAdd.ProductInfos.length">
+                                <v-flex row class="text-xs-center" style="margin-bottom:20px">
+                                    <h2 style="text-align:center; padding: 15px;">Производител</h2>
                                 </v-flex>
-
-                                <v-flex v-if="selectedCartGroup !== null">
-                                    <v-flex row class="text-xs-center" style="margin-bottom:20px">
-                                        <h2 style="text-align:center; padding: 15px;">Сервиз</h2>
+                                <v-flex row class="text-xs-center" style="margin-bottom:10px">
+                                    <div style="display: inline-block" v-for="group in this.currentCartProductToAdd.ProductInfos" :key="group.GoodId" >
+                                        <span
+                                            @click="toggleSelectCartGroup(group.GoodId)"
+                                            :class="'group-card tooltip'
+                                                    + (groupHasAvailability(group.GoodId) ? ' light-green accent-1' : ' yellow lighten-3')
+                                                    + (selectedCartGroupId === group.GoodId ? 'selected' : '')"
+                                        >   {{ group.Group }} - {{ round(group.Price) }}лв.
+                                            <span class="tooltiptext">{{groupHasAvailability(group.GoodId)? "на склад": "доставка 3-5 работни дни" }} </span>
+                                        </span>
+                                    </div>
+                                </v-flex>
+                                <v-flex v-if="selectedCartGroupId !== null && groupHasAvailability(selectedCartGroupId)">
+                                    <v-flex row  class="text-xs-center"  style="margin-bottom:20px">
+                                        <h2 style="text-align:center; padding: 15px;">Налично в сервиз:</h2>
                                     </v-flex>
-                                    <v-flex row class="text-xs-center" style="margin-bottom:10px">
-                                        <div 
-                                            :class="'tooltip group-card' 
-                                                    + (quantity > 0 ? ' light-green accent-1' : ' yellow lighten-3')
-                                                    + (selectedCartStore === store ? 'selected' : '')"
-                                            v-for="(quantity, store)  in cartGroupData.find(x => x.GoodId === selectedCartGroup).StoreQUantities"                                            
+                                    <v-flex row class="text-xs-center" style="margin-bottom:10px" >
+                                        <div style="display:inline-block"
+                                            v-for="(quantity, store) in this.currentCartProductToAdd.ProductInfos.find(x => x.GoodId === selectedCartGroupId).StoreQUantities"                                            
                                             :key="store"
+                                        ><span 
                                             @click="toggleSelectCartStore(store)"
-                                        >
-                                            <span>{{store}} 
-                                                <span v-if="quantity > 0" class="tooltiptext">на склад</span>
-                                                <span v-else class="tooltiptext">доставка 3-5 работни дни</span>
-                                            </span>
+                                            :class="'group-card ' + (selectedCartStore === store ? 'selected' : '')"
+                                            v-if="quantity > 0">{{store}}</span>
                                         </div>
                                     </v-flex>
                                 </v-flex>
@@ -105,20 +97,14 @@
                                     >тук</a>, или да направите запитване.
                                 </v-flex>
                             </div>
-                            <v-flex style="display:flex;" v-if="cartGroupData.length">
-                                <v-btn color="primary" flat @click="dialogCartCountOpen = false">
-                                    <v-icon left>mdi-close</v-icon>Затвори
-                                </v-btn>
-                                <v-spacer></v-spacer>
+                            <v-flex style="display:flex;">
                                 <v-btn
                                     color="primary"
-                                    v-bind:disabled="selectedCartGroup === null || selectedCartStore === null"
+                                    v-bind:disabled="!canAddToCart()"
                                     @click="onAddCartCountDialogClick"
                                 >
                                     <v-icon left>fa-cart-plus</v-icon>Добави
                                 </v-btn>
-                            </v-flex>
-                            <v-flex style="display:flex;" v-else>
                                 <v-spacer></v-spacer>
                                 <v-btn color="primary" flat @click="dialogCartCountOpen = false">
                                     <v-icon left>mdi-close</v-icon>Затвори
@@ -152,7 +138,7 @@ export default {
             dialogCartCountOpen: false,
             curProductDetails: null,
             cartCount: 1,
-            selectedCartGroup: null,
+            selectedCartGroupId: null,
             selectedCartStore: null,
             currentCartProductToAdd: null,
             dialogDetailsAccessoryOpen: false,
@@ -195,11 +181,11 @@ export default {
         filteredProducts() {
             return this.$store.getters["modules/products/getFilteredProducts"];
         },
-        cartGroupData() {
-            return this.$store.getters[
-                "modules/products/getCurrentObservedProductAvailability"
-            ];
-        },
+        // cartGroupData() {
+        //     return this.$store.getters[
+        //         "modules/products/getCurrentObservedProductAvailability"
+        //     ];
+        // },
         productsAreFetched() {
             return this.$store.getters[
                 "modules/products/getProductsAreFetched"
@@ -219,14 +205,7 @@ export default {
         },
         onAddProductToCart(product) {
             this.currentCartProductToAdd = product;
-            this.$store
-                .dispatch("modules/products/getProductAvailability", {
-                    id: product.Id,
-                    token: this.token
-                })
-                .then(() => {
-                    this.dialogCartCountOpen = true;
-                });
+            this.dialogCartCountOpen = true;
         },
         onProductDetails(product) {
             this.$store
@@ -238,19 +217,37 @@ export default {
                     this.dialogDetailsOpen = true;
                 });
         },
-        increaseCartCount() {
-            if (this.cartCount < 1) {
-                this.cartCount = 1;
-            } else {
-                this.cartCount++;
+        groupHasAvailability(groupId) {
+            let result = false;
+            let group = this.currentCartProductToAdd.ProductInfos.find(x => x.GoodId === groupId);
+            if (group){
+                for (let store in group.StoreQUantities) {
+                    if (group.StoreQUantities[store] > 0){
+                        result = true;
+                        break;
+                    }
+                }
             }
+            return result;
         },
-        decreaseCartCount() {
-            if (this.cartCount > 1) {
-                this.cartCount--;
-            } else {
-                this.cartCount = 1;
+        canAddToCart(){
+            let canAdd = false;
+            if(this.selectedCartGroupId){
+                let selectedGroupHasAvailability = this.groupHasAvailability(this.selectedCartGroupId);
+                if(selectedGroupHasAvailability && this.selectedCartStore) canAdd = true;
+                else if(!selectedGroupHasAvailability) canAdd = true;
             }
+
+            return canAdd;
+        },
+        storesWithQuantitiesFromSelectedGroup() {
+           let storeQuantities = this.currentCartProductToAdd.ProductInfos
+                .find(x => x.GoodId === this.selectedCartGroupId).StoreQUantities;
+
+            var filtered = Object.keys(storeQuantities).reduce(function (filtered, key) {
+                if (storeQuantities[key] > 0) filtered[key] = storeQuantities[key];
+                return filtered;
+            }, {});
         },
         onAddCartCountDialogClick() {
             let comp = this,
@@ -260,9 +257,9 @@ export default {
             );
             product.cartCount = ~~comp.cartCount;
             product.cartGroupData = JSON.parse(
-                JSON.stringify(this.cartGroupData)
+                JSON.stringify(this.currentCartProductToAdd.ProductInfos)
             );
-            product.selectedCartGroup = this.selectedCartGroup;
+            product.selectedCartGroup = this.selectedCartGroupId;
             product.selectedCartStore = this.selectedCartStore;
             comp.$store.dispatch("modules/cart/addItemToCart", {
                 productToBeAdded: product,
@@ -274,35 +271,21 @@ export default {
         onCloseDetailsDialogClick(value) {
             this.dialogDetailsOpen = value;
         },
-        toggleSelectCartGroup(group) {
-            //if (this.groupHasAvailability(group)) {
-            if (this.selectedCartGroup === group.GoodId) {
-                this.selectedCartGroup = null;
+        toggleSelectCartGroup(groupId) {
+            if (this.selectedCartGroupId === groupId) {
+                this.selectedCartGroupId = null;
             } else {
-                this.selectedCartGroup = group.GoodId;
+                this.selectedCartGroupId = groupId;
             }
             this.selectedCartStore = null;
-            //}
         },
         toggleSelectCartStore(store) {
-            //if (this.groupHasAvailability(group)) {
             if (this.selectedCartStore === store) {
                 this.selectedCartStore = null;
             } else {
                 this.selectedCartStore = store;
             }
-            //}
         },
-        // groupHasAvailability(group) {
-        //     let quantities = 0;
-
-        //     for (const store in group.StoreQUantities) {
-        //         const storeQuantity = group.StoreQUantities[store];
-        //         quantities += storeQuantity;
-        //     }
-
-        //     return quantities > 0;
-        // },
         onCloseDetailsAccessoryDialogClick(value) {
             this.dialogDetailsAccessoryOpen = value;
             this.curProductAccessory = [];
@@ -314,10 +297,6 @@ export default {
                     this.curProductAccessory = this.$store.getters[
                         "modules/products/getCurrentlyObservedProductAcessory"
                     ];
-                    return this.$store.dispatch(
-                        "modules/products/getAccessoryAvailabilty",
-                        { id: this.curProductAccessory.Id, token: this.token }
-                    );
                 })
                 .then(() => {
                     this.dialogDetailsAccessoryOpen = true;
@@ -334,7 +313,7 @@ export default {
         dialogCartCountOpen(value) {
             if (value === false) {
                 this.cartCount = 1;
-                this.selectedCartGroup = null;
+                this.selectedCartGroupId = null;
                 this.selectedCartStore = null;
                 this.currentCartProductToAdd = null;
             }

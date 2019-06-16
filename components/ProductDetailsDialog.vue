@@ -85,17 +85,6 @@
                           </div>
                         </div>
                       </div>
-                      <!--<div v-if="currentProductAvailability.length">-->
-                      <!--<h4>Наличност</h4>-->
-                      <!--<div class="availability-container">-->
-                      <!--<div class="group" v-for="group in currentProductAvailability">-->
-                      <!--<h5>{{ group.Group }} - {{ round(group.Price) }}лв</h5>-->
-                      <!--<div v-for="(quantity, store) in group.StoreQUantities" v-bind:class="{ empty: quantity === 0 }">-->
-                      <!--{{ store }} - {{ quantity }}бр.-->
-                      <!--</div>-->
-                      <!--</div>-->
-                      <!--</div>-->
-                      <!--</div>-->
                       <div v-if="curProductDetails.Characteristics.length" style="clear:both">
                         <h4>Характеристики</h4>
                         <div class="availability-container">
@@ -122,15 +111,15 @@
                     </v-card-text>
 									</v-flex>
 								</v-flex>
-                                <v-flex style="padding-bottom: 8px;">
-                                    <v-card-actions style="padding: 0">
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="primary" flat @click="openDialog = false" style="padding-right:5px">
-                                            <v-icon>mdi-close</v-icon>
-                                            Затвори
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-flex>
+                <v-flex style="padding-bottom: 8px;">
+                    <v-card-actions style="padding: 0">
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" flat @click="openDialog = false" style="padding-right:5px">
+                            <v-icon>mdi-close</v-icon>
+                            Затвори
+                        </v-btn>
+                    </v-card-actions>
+                </v-flex>
 							</v-layout>
 						</v-container>
 					</v-card>

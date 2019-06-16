@@ -9,8 +9,7 @@ class ProductsRepository {
             position: "Products/GetPositions",
             productsByDetails: "Products/FindByVehicleInfo",
             product: "Products/GetItemByFullCode",
-            fullProduct: "Products/GetDetailedInfo",
-            availability: "Products/GetPriceAndQuantities"
+            fullProduct: "Products/GetDetailedInfo"
         };
     }
 
@@ -191,11 +190,6 @@ class ProductsRepository {
 		id: number
 	}
 	*/
-    getProductAvailability(id, token) {
-        return this.http.get(`${this.URL.availability}/${id}`, null, null, {
-            Authorization: token || undefined
-        });
-    }
 
     inflateProduct(product) {
         if (product.Images.length > 0) {
