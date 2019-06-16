@@ -11,7 +11,7 @@
                     <v-card-text>
                         <v-layout row wrap>
                             <v-flex xs12 sm6 md3>
-                                <span>Статус:</span>
+                                <span>Статус: </span>
                                 <span>
                                     <multiselect
                                         class="status-multiselect"
@@ -29,6 +29,12 @@
                                     <span v-else>{{ status }}</span>
                                 </span>
                             </v-flex>
+                            <v-flex xs12 sm6 md3>
+                                <span>Монтаж:{{order.WithInstallation ? " Да " : " Не "}}</span>
+                            </v-flex>
+                             <v-flex xs12 sm6 md3>
+                                <span>Фактура:{{order.IsInvoiceNeeded ? " Да " : " Не "}}</span>
+                            </v-flex>
                         </v-layout>
                         <v-layout row wrap justify-space-between>
                             <v-flex xs12 sm6 md3>
@@ -40,7 +46,7 @@
                                     outline
                                 ></v-text-field>
                             </v-flex>
-                            <v-flex xs12 sm6 md3>
+                            <!-- <v-flex xs12 sm6 md3>
                                 <v-text-field
                                     readonly
                                     label="Платена сума:"
@@ -48,13 +54,22 @@
                                     suffix="лв."
                                     outline
                                 ></v-text-field>
-                            </v-flex>
+                            </v-flex> -->
                             <v-flex xs12 sm6 md3>
                                 <v-text-field
                                     readonly
                                     label="Процент отстъпка:"
                                     :value="order.DiscountPercentage"
                                     suffix="%"
+                                    outline
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md3>
+                                <v-text-field
+                                    readonly
+                                    label="Сума след отстъпка:"
+                                    :value="(order.Price - order.DiscountPercentage/100*order.Price).toFixed(2)"
+                                    suffix="лв."
                                     outline
                                 ></v-text-field>
                             </v-flex>
@@ -89,12 +104,6 @@
                                     :value="order.UserInfo"
                                     outline
                                 ></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                        <v-layout row>
-                            <v-flex xs12 sm6 md4>
-                                <v-chip v-if="order.WithInstallation">+ Монтаж</v-chip>
-                                <v-chip v-if="order.IsInvoiceNeeded">+ Фактура</v-chip>
                             </v-flex>
                         </v-layout>
                     </v-card-text>

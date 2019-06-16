@@ -181,11 +181,6 @@ export default {
         filteredProducts() {
             return this.$store.getters["modules/products/getFilteredProducts"];
         },
-        // cartGroupData() {
-        //     return this.$store.getters[
-        //         "modules/products/getCurrentObservedProductAvailability"
-        //     ];
-        // },
         productsAreFetched() {
             return this.$store.getters[
                 "modules/products/getProductsAreFetched"

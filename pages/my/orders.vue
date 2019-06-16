@@ -45,20 +45,26 @@
                 >Завършени</v-btn>
             </div>
         </v-card>
-        <div class="orders-list" v-if="orderGroups">
-            <div v-for="(group, date) in orderGroups" :key="date" class="order-group">
-                <div class="date-delimeter">{{ date }}</div>
+        <div class="orders-list" v-if="orderGroups.length">
+            <div v-for="order in listComponentItems" :key="order.Id" class="order-group">
+                <!-- <div class="date-delimeter">{{ date }}</div> -->
                 <order-card
-                    v-for="order in group"
                     :key="order.Id"
                     :order="order"
                     :editable="isAdmin"
                     @statusChanged="onChangeOrderStatus"
                 ></order-card>
             </div>
+            <v-container fluid class="text-xs-center"
+                v-if="(orderGroups.length > maxElementsToShow)"
+            >
+                <v-pagination class="pagination" :length.number="paginationLengthOrders"
+                    @input="scrollToResults" v-model="pageNumProducts" :total-visible="7"
+                ></v-pagination>
+            </v-container>
         </div>
         <div v-else>
-            <h2 class="no-data-label">Все още няма направени поръчки</h2>
+            <h2 class="no-data-label">Няма намерени поръчки</h2>
         </div>
     </v-container>
 </template>
@@ -84,7 +90,9 @@ export default {
     data() {
         return {
             ordersRequested: false,
-            filteredOrders: []
+            pageNumProducts: 1,
+            maxElementsToShow: 10,
+            // filteredOrders: []
         };
     },
     computed: {
@@ -96,21 +104,22 @@ export default {
             return user && user.Email === "admin@admin.com";
         },
         orderGroups() {
-            const orders = this.$store.getters["modules/auth/getOrders"];
-            const orderGroups = {};
-            let empty = true;
+            // const orders = 
+            return this.$store.getters["modules/auth/getOrders"];
+            // const orderGroups = {};
+            // let empty = true;
 
-            orders.forEach(order => {
-                const orderDateString = this.getDateString(order.CreatedOn);
-                if (orderGroups[orderDateString]) {
-                    orderGroups[orderDateString].push(order);
-                } else {
-                    orderGroups[orderDateString] = [order];
-                }
-                empty = false;
-            });
-            console.log(orderGroups);
-            return empty ? null : orderGroups;
+            // orders.forEach(order => {
+            //     const orderDateString = this.getDateString(order.CreatedOn);
+            //     if (orderGroups[orderDateString]) {
+            //         orderGroups[orderDateString].push(order);
+            //     } else {
+            //         orderGroups[orderDateString] = [order];
+            //     }
+            //     empty = false;
+            // });
+            // // console.log(orderGroups);
+            // return empty ? null : orderGroups;
         },
         orderStatusModels() {
             const orders = this.$store.getters["modules/auth/getOrders"];
@@ -121,6 +130,17 @@ export default {
             });
 
             return statuses;
+        },
+        paginationLengthOrders() {
+            if (this.orderGroups.length) {
+                return Math.ceil(this.orderGroups.length / this.maxElementsToShow);
+            }
+        },
+        listComponentItems() {
+            let startElem = (this.pageNumProducts - 1) * this.maxElementsToShow;
+            if (this.orderGroups.length) {
+                return this.orderGroups.slice(startElem,this.maxElementsToShow * this.pageNumProducts);
+            }
         },
         ordersFilter() {
             return this.$store.getters["modules/auth/getOrdersFilter"];
@@ -141,6 +161,13 @@ export default {
             const day = date.getDate();
 
             return `${day}.${month}.${year}`;
+        },
+        scrollToResults() {
+            const ordersContainer = document.body.querySelector(
+                "main.content .orders-list"
+            );
+
+            scrollTo(ordersContainer.offsetTop - 120, 300);
         },
         selectOrderFilter(filter) {
             if (this.token) {
@@ -185,6 +212,10 @@ export default {
     line-height: 1;
     margin-bottom: 20px;
 }
+.text-xs-center {
+    clear: both;
+}
+
 .admin__card {
     padding: 20px;
 }
@@ -195,7 +226,9 @@ export default {
     width: 100%;
     height: 40px;
 }
-
+.pagination {
+    margin-top: 10px;
+}
 .date-delimeter {
     display: flex;
     align-items: center;
