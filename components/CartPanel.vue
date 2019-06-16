@@ -362,12 +362,12 @@ export default {
         },
         installation(value) {
             if (value == "installationInSofia") {
-                this.address = "гр. София Ж.К Слатина, ул.Гео Милев 171";
+                this.address = "Ж.К Слатина, ул.Гео Милев 171";
                 this.city = "София";
                 this.country = "България";
             } else if (value == "installationInRuse") {
-                this.address = "гр. Русе, бул. България 115";
-                this.city = "София";
+                this.address = "бул. България 115";
+                this.city = "Русе";
                 this.country = "България";
             }
         }
