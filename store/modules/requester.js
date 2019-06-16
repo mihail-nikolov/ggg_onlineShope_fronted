@@ -4,7 +4,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.put['Content-Type'] = 'application/json';
 
 const state = () => ({
-	baseUrl: 'http://﻿130.204.36.213/'
+	baseUrl: 'http://﻿130.204.36.213/backend/'
 });
 
 const getters = {

@@ -18,7 +18,7 @@ const state = () => ({
     productsAreFetched: false
 });
 
-const baseUrl = "http://﻿130.204.36.213/";
+const baseUrl = "http://﻿130.204.36.213/backend/";
 
 const mutations = {
     SET_MAKES(state, makes) {

@@ -3,7 +3,7 @@ import axios from "axios";
 class BaseRepository {
 	constructor() {
 		this.http = axios.create({
-			baseURL: "http://﻿130.204.36.213/api/",
+			baseURL: "http://﻿130.204.36.213/backend/api/",
 			headers: {
 				'Authorization': null,
 				'Cache-Control': 'no-cache',
